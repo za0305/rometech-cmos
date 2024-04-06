@@ -1,0 +1,285 @@
+{{ 'instruction-section.css' | asset_url | stylesheet_tag }}
+{{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign instruction_id = section.settings.instruction.id | default: section.settings.video_url.id
+  assign instruction_alt = section.settings.instruction.alt | default: section.settings.description
+  assign alt = 'sections.instruction.load_instruction' | t: description: instruction_alt | escape
+  assign poster = section.settings.instruction.preview_image | default: section.settings.cover_image
+
+  if section.settings.instruction != null
+    assign ratio_diff = section.settings.instruction.aspect_ratio | minus: poster.aspect_ratio | abs
+    if ratio_diff < 0.01 and ratio_diff > 0
+      assign fix_ratio = true
+    endif
+  endif
+-%}
+
+{%- capture sizes -%}
+  {% if section.settings.full_width -%}
+    100vw
+  {%- else -%}
+    (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px)
+    calc(100vw - 10rem), 100vw
+  {%- endif %}
+{%- endcapture -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="instruction-section isolate{% unless section.settings.full_width %} page-width{% endunless %} section-{{ section.id }}-padding">
+    <div class="instruction_container">
+      <div class="{% if section.settings.full_width %}page-width{% endif %}">
+        <div class="instruction-caption-wrapper">
+          {%- unless section.settings.heading == blank -%}
+            <h2 class="title inline-richtext {{ section.settings.heading_size }} scroll-trigger animate--slide-in">{{ section.settings.heading }}</h2>
+          {%- endunless -%}
+          {%- unless section.settings.text == blank -%}
+            <p class="text">{{ section.settings.text }}</p>
+          {%- endunless -%}
+        </div>
+      </div>
+    </div>
+    <noscript>
+      <div
+        class="instruction-section__media"
+        {% if poster != null %}
+          style="--ratio-percent: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
+        {% endif %}
+      >
+        {%- if section.settings.instruction == null and section.settings.video_url != null -%}
+          <a
+            href="{{ section.settings.video_url }}"
+            class="instruction-section__poster media media--transparent{% if poster == null %} instruction-section__placeholder{% endif %}"
+          >
+            {%- if poster != null -%}
+              {{
+                poster
+                | image_url: width: 3840
+                | image_tag: sizes: sizes, widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840', alt: alt
+              }}
+            {%- else -%}
+              {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+            {%- endif -%}
+          </a>
+        {%- else -%}
+          {{
+            section.settings.instruction
+            | instruction_tag: image_size: '1100x', loop: section.settings.enable_instruction_looping, controls: true, muted: false
+          }}
+        {%- endif -%}
+      </div>
+    </noscript>
+    
+    <div class="instruction_video-container page-width">
+      <div class="instruction_video-inner">
+        <deferred-media
+          class="instruction-section__media deferred-media no-js-hidden gradient global-media-settings{% if section.settings.full_width %} global-media-settings--full-width{% endif %}{% if fix_ratio %} media-fit-cover{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in-left{% endif %}"
+          data-media-id="{{ instruction_id }}"
+          {% if poster != null %}
+            style="--ratio-percent: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
+          {% endif %}
+        >
+          <button
+            id="Deferred-Poster-Modal-{{ instruction_id }}"
+            class="instruction-section__poster media deferred-media__poster media--landscape"
+            type="button"
+            aria-label="{{ alt }}"
+          >
+            {%- if poster != null -%}
+              {{
+                poster
+                | image_url: width: 3840
+                | image_tag: sizes: sizes, widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840', alt: alt
+              }}
+            {%- else -%}
+              {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+            {%- endif -%}
+            <span class="deferred-media__poster-button motion-reduce instruction_transparent">
+              {%- render 'icon-play' -%}
+            </span>
+          </button>
+          <template>
+            {%- if section.settings.instruction == null and section.settings.video_url != null -%}
+              {%- liquid
+                assign loop = ''
+                if section.settings.enable_instruction_looping
+                  assign loop = '&loop=1&playlist=' | append: instruction_id
+                endif
+              -%}
+              {%- if section.settings.video_url.type == 'youtube' -%}
+                <iframe
+                  src="https://www.youtube.com/embed/{{ instruction_id }}?enablejsapi=1&autoplay=1{{ loop }}"
+                  class="js-youtube"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  title="{{ section.settings.description | escape }}"
+                ></iframe>
+              {%- else -%}
+                <iframe
+                  src="https://player.vimeo.com/instruction/{{ instruction_id }}?autoplay=1{{ loop }}"
+                  class="js-vimeo"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                  title="{{ section.settings.description | escape }}"
+                ></iframe>
+              {%- endif -%}
+            {%- else -%}
+              {{
+                section.settings.instruction
+                | instruction_tag:
+                  image_size: '1100x',
+                  autoplay: true,
+                  loop: section.settings.enable_instruction_looping,
+                  controls: true,
+                  muted: false
+              }}
+            {%- endif -%}
+          </template>
+        </deferred-media>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Instruction",
+  "tag": "section",
+  "class": "section instruction-index-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1",
+      "label": "Font size"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_instruction_looping",
+      "label": "Play video on loop",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Shopify-hosted video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "video"
+    },
+    {
+      "type": "header",
+      "content": "Or embed video from URL"
+    },
+    {
+      "type": "paragraph",
+      "content": "Shows when no Shopify-hosted video is selected."
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "accept": ["youtube", "vimeo"],
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+      "label": "Url",
+      "info": "Use a YouTube or Vimeo URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image",
+      "label": "Cover image"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Video alt text",
+      "info": "Describe the video for customers using screen readers."
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section full width",
+      "default": false
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instruction"
+    }
+  ]
+}
+{% endschema %}

@@ -31,7 +31,7 @@
   .localization-form:only-child {
     justify-content: start;
     width: auto;
-    margin: 0 1rem 0 0;
+    /* margin: 0 1rem 0 0; */
   }
 
   .localization-form:only-child .button,
@@ -93,11 +93,12 @@ noscript .localization-form__select {
 }
 
 .localization-form__select .icon-caret {
-  position: absolute;
+  position: relative;
+  margin-left: 5px;
   content: '';
   height: 0.6rem;
-  right: calc(var(--inputs-border-width) + 1.5rem);
-  top: calc(50% - 0.2rem);
+  /* right: calc(var(--inputs-border-width) + 1.5rem);
+  top: calc(50% - 0.2rem); */
 }
 
 .localization-selector.link {
@@ -141,6 +142,26 @@ noscript .localization-selector.link {
   padding: 0 1.5rem 0 1.5rem;
   font-size: 1.3rem;
   background-color: transparent;
+}
+
+.disclosure__button .icon-caret path {
+  fill: rgb(var(--color-foreground));
+}
+
+.disclosure__button_fullname {
+  display: none;
+}
+
+@media screen and (min-width: 990px) {
+  .disclosure__button_fullname {
+    display: inline;
+  }
+  .disclosure__button_shortname {
+    display: none;
+  }
+  .disclosure__button .icon-earth {
+    display: block;
+  }
 }
 
 .disclosure__list-wrapper {

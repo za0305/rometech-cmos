@@ -60,6 +60,12 @@
           },
           {
             "type": "color",
+            "id": "text_accent",
+            "label": "Text accent color",
+            "default": "#FFBE00"
+          },
+          {
+            "type": "color",
             "id": "button",
             "label": "t:settings_schema.colors.settings.button_background.label",
             "default": "#121212"
@@ -81,6 +87,12 @@
             "id": "shadow",
             "label": "t:settings_schema.colors.settings.shadow.label",
             "default": "#121212"
+          },
+          {
+            "type": "color",
+            "id": "accented",
+            "label": "Accent color", 
+            "default": "#00E04F"
           }
         ],
         "role": {
@@ -155,8 +167,8 @@
         "type": "range",
         "id": "page_width",
         "min": 1000,
-        "max": 1600,
-        "step": 100,
+        "max": 1800,
+        "step": 20,
         "default": 1200,
         "unit": "px",
         "label": "t:settings_schema.layout.settings.page_width.label"
@@ -230,6 +242,12 @@
         "default": "default",
         "label": "t:settings_schema.animations.settings.animations_hover_elements.label",
         "info": "t:settings_schema.animations.settings.animations_hover_elements.info"
+      },
+      {
+        "type": "checkbox",
+        "id": "cursor_animation",
+        "label": "Use cursor animation",
+        "default": true
       }
     ]
   },

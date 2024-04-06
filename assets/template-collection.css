@@ -78,6 +78,7 @@
 @media screen and (min-width: 990px) {
   .collection__title--desktop-slider .title {
     margin-bottom: 2.5rem;
+    font-size: 40px;
   }
 
   .collection__title.title-wrapper--self-padded-tablet-down {

@@ -1,0 +1,144 @@
+.instruction-index-section {
+  padding: 80px 0;
+}
+
+.shopify-section.instruction-index-section {
+  background: white;
+}
+
+.instruction-section {
+  position: relative;
+}
+
+.instruction-section__media {
+  --ratio-percent: 56.25%;
+  position: relative;
+  padding-bottom: calc(var(--ratio-percent) - var(--media-border-width));
+}
+
+/* Needed for gradient continuity with or without animation so that transparent PNG images come up as we would expect */
+.scroll-trigger:where(.gradient.instruction-section__media) {
+  background: transparent;
+}
+
+.instruction_container {
+  position: relative;
+  padding-left: 50%;
+
+}
+
+.instruction_container:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: calc(100% - 8rem);
+  height: 170px;
+  left: 0;
+  top: 0;
+  background: rgb(0,224,79);
+  background: linear-gradient(90deg, rgba(0,224,79,1) 0%, rgba(230,255,177,1) 100%);
+}
+
+.instruction_container:after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 8rem;
+  height: 170px;
+  right: 0;
+  top: 0;
+  background: rgba(251,188,5,0.51);
+}
+
+.instruction_video-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.instruction_video-inner {
+  width: 50%;
+}
+
+.instruction-caption-wrapper {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.instruction-caption-wrapper:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 39px;
+  height: 39px;
+  right: 10px;
+  top: 30px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='39' height='40' viewBox='0 0 39 40' fill='none'%3e%3ccircle cx='19.3514' cy='20.1473' r='19.3514' fill='white'/%3e%3cpath d='M28.3816 20.1468H19.351M19.351 20.1468H10.3203M19.351 20.1468V29.1775M19.351 20.1468V11.1162' stroke='%2300E04F' stroke-width='3' stroke-linecap='round'/%3e%3c/svg%3e");
+}
+
+.instruction-caption-wrapper:after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 39px;
+  height: 39px;
+  right: 10px;
+  top: 100px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='39' height='40' viewBox='0 0 39 40' fill='none'%3e%3ccircle cx='19.3514' cy='19.8123' r='19.3514' fill='white'/%3e%3cpath d='M10.3203 19.8125H28.3816' stroke='%2300E04F' stroke-width='3' stroke-linecap='round'/%3e%3c/svg%3e");
+}
+
+
+.instruction-caption-wrapper .title {
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  padding: 30px 0;
+}
+
+.instruction-caption-wrapper p {
+  margin: 0;
+}
+
+.instruction-section__media.global-media-settings--full-width {
+  padding-bottom: var(--ratio-percent);
+}
+
+.instruction-section__media.deferred-media {
+  box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius)
+    rgba(var(--color-shadow), var(--media-shadow-opacity));
+}
+
+.instruction-section__media.deferred-media:after {
+  content: none;
+}
+
+.instruction-section__poster.deferred-media__poster:focus {
+  outline-offset: 0.3rem;
+}
+
+.instruction-section__media iframe {
+  background-color: rgba(var(--color-foreground), 0.03);
+  border: 0;
+}
+
+.instruction-section__poster,
+.instruction-section__media iframe,
+.instruction-section__media instruction {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.instruction-section__media instruction {
+  background: #000000;
+}
+
+.instruction-section__media.media-fit-cover instruction {
+  object-fit: cover;
+}
+
+.instruction_transparent {
+  visibility: hidden;
+}

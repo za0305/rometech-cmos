@@ -1,0 +1,1059 @@
+{{ 'section-image-builder.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.image_height == 'adapt' and section.settings.image != blank -%}
+  {%- style -%}
+    @media screen and (max-width: 749px) {
+      #Builder-{{ section.id }}::before,
+      #Builder-{{ section.id }} .builder__media::before,
+      #Builder-{{ section.id }}:not(.builder--mobile-bottom) .builder__content::before {
+        padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
+        content: '';
+        display: block;
+      }
+    }
+
+    @media screen and (min-width: 750px) {
+      #Builder-{{ section.id }}::before,
+      #Builder-{{ section.id }} .builder__media::before {
+        padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
+        content: '';
+        display: block;
+      }
+    }
+  {%- endstyle -%}
+{%- endif -%}
+
+{%- style -%}
+  #Builder-{{ section.id }}::after {
+    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign full_width = '100vw'
+  assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+  assign half_width = '50vw'
+  assign stacked_sizes = '(min-width: 750px) 50vw, 100vw'
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+-%}
+
+<div
+  id="Builder-{{ section.id }}"
+  class="builder builder--content-align-left builder--content-align-mobile-center builder--{{ section.settings.image_height }} {% if section.settings.image_height == 'adapt' and section.settings.image != blank %} builder--adapt{% endif %}{% if section.settings.show_text_box == false %} builder--desktop-transparent{% endif %}"
+>
+  {%- if section.settings.image != blank -%}
+    <div class="builder__media media{% if section.settings.image == blank %} placeholder{% endif %}">
+      {%- liquid
+        assign image_height = section.settings.image.width | divided_by: section.settings.image.aspect_ratio
+        assign sizes = full_width
+      -%}
+      {{
+        section.settings.image
+        | image_url: width: 3840
+        | image_tag:
+          width: section.settings.image.width,
+          height: image_height,
+          class: image_class,
+          sizes: sizes,
+          widths: widths,
+          fetchpriority: fetch_priority
+      }}
+    </div>
+
+  {%- else -%}
+    <div class="builder__media media placeholder"></div>
+
+  {%- endif -%}
+
+  <div :class="slide == 0 ? '' : 'opened'" class="builder__content builder__content--middle-left page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    <div class="builder__box content-container content-container--full-width-mobile color-{{ section.settings.color_scheme }} gradient">
+      <div class="builder__box-banner">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'heading' -%}
+              <h2
+                class="builder__heading inline-richtext {{ block.settings.heading_size }}"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.heading }}
+              </h2>
+            {%- when 'text' -%}
+              <div class="builder__text rte" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+
+                {%- if block.settings.divider != blank -%}
+                  <p class="builder__divider">
+                    <span>{{ block.settings.divider }}</span>
+                  </p>
+                {%- endif -%}
+
+                {%- if block.settings.footer_text != blank -%}
+                  <div class="builder__text-footer">{{ block.settings.footer_text }}</div>
+                {%- endif -%}
+              </div>
+            {%- when 'buttons' -%}
+              <div
+                class="builder__buttons"
+                {{ block.shopify_attributes }}
+              >
+                {%- if block.settings.button_label_1 != blank -%}
+                  <a
+                    {% if block.settings.button_link_1 == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link_1 }}"
+                    {% endif %}
+                    class="button button--primary button--plus"
+                  >
+                    {{- block.settings.button_label_1 | escape -}}
+                  </a>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {% comment %} builder start {% endcomment %}
+    <div 
+      :class="slide == 0 ? 'first-slide' : ''"
+      class="builder__box builder__box-wrap" 
+      style="background-image: url({{ 'noise.png' | asset_img_url: 'grande' }});" 
+    >
+      <p class="builder__pagination-title">Step</p>
+
+      <div class="builder__pagination">
+        <span :class="slide == 0 ? 'active' : ''" class="bullet">1</span>
+        <span :class="slide == 1 ? 'active' : ''" class="bullet">2</span>
+        <span :class="slide == 2 ? 'active' : ''" class="bullet">3</span>
+        <span :class="slide == 3 ? 'active' : ''" class="bullet">4</span>
+        <span v-if="active == 'second'" :class="slide == 4 ? 'active' : ''" class="bullet">5</span>
+      </div>
+
+      <div class="builder__slider-container">
+        <div class="builder__slider">
+          {% comment %} first slide / chose product {% endcomment %}
+          <div class="builder_step">
+            <div class="builder__first-step-title">Start with</div> 
+            <div class="builder__first-step-content">
+              {%- if section.settings.linklist != blank -%}
+                <div 
+                  @click="choiceBuilderProduct('first')"
+                  :class="active == 'first' ? 'active' : '' " 
+                  class="builder__box-item"
+                >
+                  {%- if section.settings.image_first -%}
+                    {{
+                      section.settings.image_first
+                      | image_url: width: 360
+                      | image_tag:
+                        width: 360,
+                        class: 'builder__box-item-image'
+                    }}
+                  {%- endif -%}
+
+                  {%- if section.settings.text_first != blank -%}
+                    <h4>{{ section.settings.text_first }}</h4>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              {%- if section.settings.page_second != blank -%}
+                <div 
+                  @click="choiceBuilderProduct('second')"
+                  :class="active == 'second' ? 'active' : '' " 
+                  class="builder__box-item"
+                >
+                  {%- if section.settings.image_second -%}
+                    {{
+                      section.settings.image_second
+                      | image_url: width: 360
+                      | image_tag:
+                        width: 360,
+                        class: 'builder__box-item-image'
+                    }}
+                  {%- endif -%}
+
+                  {%- if section.settings.text_second != blank -%}
+                    <h4>{{ section.settings.text_second }}</h4>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+
+          {% comment %} for laptop {% endcomment %}
+          <div 
+            v-if="first.mainLinks.length > 0 && active == 'first'" 
+            class="builder_step"
+          >
+            <div class="builder_step-container">
+              <div 
+                v-for="(item, index) in first.mainLinks" 
+                @click="choiceFirstOption(0, index)" 
+                :class="isFirstActive(0,index)"
+                class="builder_step-item item-laptop item-laptop_step-1"
+              >
+                <p v-html="item.title"></p>
+              </div>
+            </div>
+          </div>
+
+          <div 
+            v-if="first.mainLinks[first.brand].sublinks.length > 0 && active == 'first'" 
+            class="builder_step"
+          >
+            <div class="builder_step-container">
+              <div 
+                v-for="(subitem, index) in first.mainLinks[first.brand].sublinks" 
+                @click="choiceFirstOption(1, index)"
+                :class="isFirstActive(1,index)" 
+                class="builder_step-item item-laptop item-laptop_step-2"
+              >
+                <p v-html="subitem.title"></p>
+              </div>
+            </div>
+          </div>
+
+          <div 
+            v-if="first.mainLinks[first.brand].sublinks.length > 0 && first.mainLinks[first.brand].sublinks[first.series].subsublinks.length > 0 && active == 'first'" 
+            class="builder_step"
+          >
+            <div class="builder_step-container">
+              <div 
+                v-for="(subsubitem, index) in first.mainLinks[first.brand].sublinks[first.series].subsublinks" 
+                @click="choiceFirstOption(2, index)" 
+                :class="isFirstActive(2,index)"
+                class="builder_step-item item-laptop item-laptop_step-3"
+              >
+                <p v-html="subsubitem.title"></p>
+              </div>
+            </div>
+          </div> 
+
+          {% comment %} for CMOS {% endcomment %}
+          <div 
+            v-if="second.step_2.length > 0 && active == 'second'" 
+            class="builder_step"
+          >
+            <div class="builder_step-container">
+              <div 
+                v-for="(item, index) in second.step_2" 
+                @click="choiceSecondOption(0, index, item.tag, item.link)"
+                :class="isSecondActive(0,index)"
+                class="builder_step-item builder_step-2-item" 
+              >
+                <img v-bind:src="item.image" alt="">
+                <p v-html="item.name" class="builder_item-name"></p>
+              </div>
+            </div>
+          </div>
+
+          <div 
+            v-if="second.step_3.length > 0 && active == 'second'" 
+            class="builder_step"
+          >
+            <div class="builder_step-container">
+              <div 
+                v-for="(item, index) in second.step_2[secondSelected[0]].descent" 
+                @click="choiceSecondOption(1, index, item.tag, item.link)"
+                :class="isSecondActive(1,index)"
+                class="builder_step-item builder_step-3-item" 
+              >
+                <p v-html="getItemName(3, item.tag)" class="builder_item-name"></p>
+                <img v-bind:src="getItemImage(3, item.tag)" alt="">
+              </div>
+            </div>
+          </div>
+
+          <div 
+            v-if="second.step_4.length > 0 && active == 'second'" 
+            class="builder_step"
+          >
+            <div v-if="secondSelected[1] !== false" class="builder_step-container">
+              <div 
+                v-for="(item, index) in second.step_2[secondSelected[0]].descent[secondSelected[1]].sublinks" 
+                @click="choiceSecondOption(2, index, item.tag, item.link)"
+                :class="isSecondActive(2,index)"
+                class="builder_step-item builder_step-4-item" 
+              >
+                <p v-html="getItemName(4, item.tag)" class="builder_item-name"></p>
+                <p v-html="getItemInfo(4, item.tag)" class="builder_item-info"></p>
+                <img v-bind:src="getItemImage(4, item.tag)" alt="">
+                <p v-html="getItemSize(4, item.tag)" class="builder_item-size"></p>
+              </div>
+            </div>
+          </div>
+
+          <div 
+            v-if="second.step_5.length > 0 && active == 'second'" 
+            class="builder_step"
+          >
+            <div v-if="secondSelected[2] !== false" class="builder_step-container">
+              <div 
+                v-for="(item, index) in second.step_2[secondSelected[0]].descent[secondSelected[1]].sublinks[secondSelected[2]].subsublinks" 
+                @click="choiceSecondOption(3, index, item.tag, item.link)"
+                :class="isSecondActive(3,index)"
+                class="builder_step-item builder_step-5-item" 
+                :data-link="item.link"
+              >
+                <p v-html="getItemName(5, item.tag)" class="builder_item-name"></p>
+                <p v-html="getItemInfo(5, item.tag)" class="builder_item-info"></p>
+                <img v-bind:src="getItemImage(5, item.tag)" alt="">
+                <p v-html="getItemType(5, item.tag)" class="builder_item-type"></p>
+              </div>
+            </div>
+          </div>
+
+          {% comment %} empty {% endcomment %}
+          <div 
+            v-if="first.mainLinks[first.brand].sublinks.length == 0 && active == 'first'" 
+            class="builder_step"
+          >
+            <div class="builder_step-container">
+              <p>Nothing to Select</p>
+            </div>
+          </div> 
+
+        </div>
+      </div>
+
+      <div class="builder__navigation">
+        <span 
+          v-show="slide != 0" 
+          class="button builder__prev" 
+          v-text="getArrowName"
+        ></span>
+
+        <p v-if="active == 'first'" v-text="getSlideName" class="builder_step-title"></p>
+        <p v-if="active == 'second'" v-text="getSlideName" class="builder_step-title"></p>
+
+        <span 
+          @click="goToLink"
+          :disabled="isButtonNextActive"
+          v-text="getNextStepName" 
+          class="button button--primary button--arrow builder__next"
+        ></span>
+      </div>
+      
+    </div>
+
+  </div>
+
+  {% comment %} animation {% endcomment %}
+  <div class="moving-shape">
+      <svg class="a_1 " xmlns="http://www.w3.org/2000/svg" width="369" height="322" viewBox="0 0 369 322" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M183.792 23.5786C200.049 27.2313 216.716 26.8373 233.319 25.4329C259.987 23.1771 288.872 -0.885009 311.906 12.7415C332.329 24.8232 318.17 59.8709 328.023 81.4575C337.504 102.23 372.656 113.778 368.249 136.183C363.029 162.719 317.426 163.378 307 188.331C298.222 209.342 328.952 234.792 318.581 255.063C309.095 273.603 281.889 277.374 261.076 278.093C240.718 278.796 223.061 253.142 203.562 259.034C180.708 265.94 176.145 300.376 154.437 310.314C133.062 320.099 103.568 327.368 84.5855 313.5C64.8806 299.105 77.8354 263.859 63.6587 243.996C49.9733 224.822 17.8031 224.328 6.27646 203.783C-4.79248 184.055 2.2918 159.154 3.37978 136.558C4.49656 113.364 -0.63023 87.0728 12.8079 68.1357C26.6639 48.6097 55.1348 46.9789 75.6758 34.6777C92.8509 24.3922 104.907 3.09932 124.822 1.05491C145.933 -1.11238 163.086 18.9261 183.792 23.5786Z" fill="#FFC553"/>
+      </svg>
+  
+      <svg  class="a_2 " xmlns="http://www.w3.org/2000/svg" width="315" height="331" viewBox="0 0 315 331" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M172.224 3.59618C220.696 -9.96399 277.556 20.9868 304.566 63.4581C329.247 102.268 300.755 150.24 294.459 195.8C289.592 231.018 296.36 269.712 272.43 296.006C247.742 323.132 208.866 331.763 172.224 330.106C137.25 328.524 108.239 308.94 80.6916 287.333C47.6021 261.377 -3.29527 237.634 1.00144 195.8C5.32398 153.714 69.6005 152.908 97.7425 121.318C129.852 85.2738 125.737 16.6013 172.224 3.59618Z" fill="#77A366"/>
+      </svg>
+  
+      <svg class="a_3 " xmlns="http://www.w3.org/2000/svg" width="314" height="331" viewBox="0 0 314 331" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M171.693 3.55322C220.165 -10.007 277.025 20.9438 304.035 63.4152C328.716 102.225 300.224 150.197 293.928 195.757C289.061 230.975 295.829 269.669 271.899 295.963C247.211 323.089 208.335 331.72 171.693 330.063C136.718 328.481 107.707 308.897 80.1604 287.29C47.0708 261.334 -3.82652 237.591 0.47019 195.757C4.79273 153.671 69.0693 152.865 97.2113 121.275C129.321 85.2308 125.206 16.5583 171.693 3.55322Z" fill="#DAF8CF"/>
+      </svg>
+  
+      <svg class="a_4 " xmlns="http://www.w3.org/2000/svg" width="370" height="322" viewBox="0 0 370 322" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M184.478 23.4565C200.735 27.1093 217.401 26.7153 234.004 25.3108C260.672 23.055 289.558 -1.00708 312.592 12.6194C333.015 24.7011 318.856 59.7488 328.708 81.3354C338.19 102.108 373.342 113.656 368.934 136.061C363.715 162.597 318.112 163.256 307.686 188.209C298.908 209.22 329.638 234.67 319.266 254.941C309.781 273.481 282.574 277.252 261.761 277.971C241.404 278.673 223.747 253.02 204.248 258.912C181.394 265.817 176.83 300.254 155.122 310.192C133.748 319.977 104.253 327.246 85.2711 313.378C65.5662 298.983 78.521 263.737 64.3442 243.874C50.6588 224.7 18.4887 224.206 6.96201 203.661C-4.10694 183.933 2.97735 159.032 4.06533 136.436C5.18211 113.242 0.0553173 86.9508 13.4934 68.0136C27.3494 48.4876 55.8204 46.8569 76.3614 34.5556C93.5364 24.2702 105.593 2.97725 125.507 0.932842C146.619 -1.23445 163.771 18.8041 184.478 23.4565Z" fill="#FFDE9C"/>
+      </svg>
+  
+      <svg  class="a_5 " xmlns="http://www.w3.org/2000/svg" width="315" height="331" viewBox="0 0 315 331" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M171.763 3.95263C220.235 -9.60754 277.095 21.3432 304.105 63.8146C328.787 102.624 300.294 150.596 293.998 196.156C289.131 231.374 295.899 270.069 271.969 296.362C247.281 323.489 208.405 332.12 171.763 330.462C136.789 328.88 107.778 309.297 80.2307 287.689C47.1411 261.734 -3.75621 237.991 0.540502 196.156C4.86304 154.07 69.1396 153.265 97.2816 121.675C129.391 85.6303 125.276 16.9578 171.763 3.95263Z" fill="#A9CE9B"/>
+      </svg>
+    </div>
+
+</div>
+
+<script>
+  {%- assign linklist_first = section.settings.linklist -%}
+  {%- assign page_second = section.settings.page_second -%}
+  {%- assign page_second_step_2 = page_second.metafields.custom.builder_step_2 -%}
+  {%- assign page_second_step_3 = page_second.metafields.custom.builder_step_3 -%}
+  {%- assign page_second_step_4 = page_second.metafields.custom.builder_step_4 -%}
+  {%- assign page_second_step_5 = page_second.metafields.custom.builder_step_5 -%}
+  {%- assign page_second_step_selected = '' -%}
+  const  builderData = {
+    "active": 'second',
+    "slide": 0,
+    "slides": 5,
+    "first": {
+      {%- if linklist_first != blank -%}
+        "mainLinks": [
+          {%- for link in linklist_first.links -%}
+            {
+              "title": {{ link.title | json }},
+              "link": {{ link.url | json }},
+              "sublinks": [
+                {%- for sublink in link.links -%}
+                  {
+                    "title": {{ sublink.title | json }},
+                    "link": {{ sublink.url | json }},
+                    "subsublinks": [
+                      {%- for subsublink in sublink.links -%}
+                        {
+                          "title": {{ subsublink.title | json }},
+                          "link": {{ subsublink.url | json }},
+                        }{%- unless forloop.last -%},{%- endunless -%}
+                      {%- endfor -%}
+                    ]
+                  }{%- unless forloop.last -%},{%- endunless -%}
+                {%- endfor -%}
+              ]
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ],
+      {%- endif -%}
+      "brand": 0,
+      "series": 0,
+      "subseries": 0
+    },
+    "firstSelected": [0,0,0],
+    "second": {
+      {%- if page_second_step_2 != blank -%}
+        "step_2": [
+          {%- for meta_item in page_second_step_2.value -%}
+            {%- assign item_linklist_handle = false -%}
+            {%- if forloop.first -%}
+              {%- assign page_second_step_selected = meta_item.tag -%}
+            {%- endif -%}
+            {
+              "name": {{ meta_item.name | json }},
+              "image": {%- if meta_item.image -%}{{ meta_item.image | image_url | json }}{%- else -%}{{'no-image.png' | asset_img_url | json }}{%- endif -%},
+              "tag": {{ meta_item.tag | json }},
+              "descent": 
+                {%- assign item_linklist_handle = meta_item.linklist_handle -%}
+                {%- if item_linklist_handle -%}
+                  {%- assign item_linklist = linklists[meta_item.linklist_handle] -%}
+                  [
+                    {%- for link in item_linklist.links -%}
+                      {
+                        "tag": {{ link.title | json }},
+                        "link": {{ link.url | json }},
+                        "sublinks": [
+                          {%- for sublink in link.links -%}
+                            {
+                              "tag": {{ sublink.title | json }},
+                              "link": {{ sublink.url | json }},
+                              "subsublinks": [
+                                {%- for subsublink in sublink.links -%}
+                                  {
+                                    "tag": {{ subsublink.title | json }},
+                                    "link": {{ subsublink.url | json }},
+                                  }{%- unless forloop.last -%},{%- endunless -%}
+                                {%- endfor -%}
+                              ]
+                            }{%- unless forloop.last -%},{%- endunless -%}
+                          {%- endfor -%}
+                        ]
+                      }{%- unless forloop.last -%},{%- endunless -%}
+                    {%- endfor -%}
+                  ]
+                {% else %}
+                    false
+                {%- endif -%}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      {%- endif -%}
+      {%- if page_second_step_3 != blank -%}
+        , "step_3": [
+          {%- for meta_item in page_second_step_3.value -%}
+            {
+              "name": {{ meta_item.name | json }},
+              "image": {%- if meta_item.image -%}{{ meta_item.image | image_url | json }}{%- else -%}{{'no-image.png' | asset_img_url: 'large' | json }}{%- endif -%},
+              "tag": {{ meta_item.tag | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      {%- endif -%}
+      {%- if page_second_step_4 != blank -%}
+        , "step_4": [
+          {%- for meta_item in page_second_step_4.value -%}
+            {
+              "name": {{ meta_item.name | json }},
+              "info": {{ meta_item.info | json }},
+              "size": {{ meta_item.size | json }},
+              "image": {%- if meta_item.image -%}{{ meta_item.image | image_url | json }}{%- else -%}{{'no-image.png' | asset_img_url: 'large' | json }}{%- endif -%},
+              "tag": {{ meta_item.tag | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      {%- endif -%}
+      {%- if page_second_step_5 != blank -%}
+        , "step_5": [
+          {%- for meta_item in page_second_step_5.value -%}
+            {
+              "name": {{ meta_item.name | json }},
+              "info": {{ meta_item.info | json }},
+              "type": {{ meta_item.type | json }},
+              "image": {%- if meta_item.image -%}{{ meta_item.image | image_url | json }}{%- else -%}{{'no-image.png' | asset_img_url: 'large' | json }}{%- endif -%},
+              "tag": {{ meta_item.tag | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      {%- endif -%}
+    },
+    "secondProductSelected": ['{{ page_second_step_selected }}','','',''],
+    "secondSelected": [0,false,false,false],
+    "secondSelectedLink": '/'
+  };
+
+  const app = new Vue({
+    el: '#Builder-{{ section.id }}',
+    data: builderData,
+    computed: {
+      getArrowName: function() { // change prev arrov text based on current step
+        if (this.slide == 0) {
+          return ''
+        } else {
+          return `Back to ${this.slide} step`
+        }
+      },
+      getNextStepName: function() { // change next arrov text based on current step
+        if (this.active == 'second' && this.slide == 4) {
+          return 'Go to product'
+        } else if (this.active == 'first' && this.slide == 3) {
+          return 'Go to product'
+        } else {
+          return 'Next step'
+        }
+      },
+      getSlideName: function() { // change slide title text based on current step
+        if(this.active == 'first' && this.slide == 1){
+          return 'Laptop brands'
+        } else if (this.active == 'first' && this.slide == 2) {
+          return 'Laptop series'
+        } else if (this.active == 'first' && this.slide == 3) {
+          return 'Laptop subseries'
+        } else if (this.active == 'second' && this.slide == 1) {
+          return 'Choose connector type'
+        } else if (this.active == 'second' && this.slide == 2) {
+          return 'Choose polarity'
+        } else if (this.active == 'second' && this.slide == 3) {
+          return 'Choose cable size'
+        } else if (this.active == 'second' && this.slide == 4) {
+          return 'Choose battery type'
+        } else {
+          return ''
+        }
+      },
+      isButtonNextActive: function() {  // add disabled attribute to button in requared slides
+        if (this.active == 'second') {
+          if (this.slide == 2 && this.secondProductSelected[1] == '') {
+            return true
+          } else if (this.slide == 3 && this.secondProductSelected[2] == '') {
+            return true
+          } else if (this.slide == 4 && this.secondProductSelected[3] == '') {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        } 
+      }
+    },
+    methods: {
+      isFirstActive: function(item, index){ // add "active" class to base products
+        if (this.firstSelected[item] == index) {
+          return 'active'
+        } else {
+          return ''
+        }
+      },
+      isSecondActive: function(item, index){ // add "active" class to base products
+        switch (item) {
+          case 0:
+            if (this.secondSelected[0] === index) {
+              return 'active'
+            } else {
+              return ''
+            }
+            break;
+
+          case 1: 
+            if (this.secondSelected[1] === index) {
+              return 'active'
+            } else {
+              return ''
+            }
+            break;
+
+          case 2: 
+            if (this.secondSelected[2] === index) {
+              return 'active'
+            } else {
+              return ''
+            }
+            break;
+
+          case 3:
+            if (this.secondSelected[3] === index) {
+              return 'active'
+            } else {
+              return ''
+            }
+            break;
+        };
+      },
+      sliderInit: function() {  // init slideshow function
+        const self = this;
+        const slider = self.$el.querySelector('.builder__slider');
+        const slides = self.$el.querySelectorAll('.builder_step');
+        const pagination = self.$el.querySelector('.builder__pagination');
+        const prevBtn = self.$el.querySelector('.builder__prev');
+        const nextBtn = self.$el.querySelector('.builder__next');
+        let currentIndex = 0;
+
+        function goToSlide(index) { 
+          if (index < 0 || index >= self.slides) return;
+          currentIndex = index;
+          slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+          return self.slide = currentIndex;
+        }
+
+        function updatePagination() {
+          const bullets = document.querySelectorAll('.bullet');
+          bullets.forEach((bullet, index) => {
+            if (index === currentIndex) {
+              bullet.classList.add('active');
+            } else {
+              bullet.classList.remove('active');
+            }
+          });
+        }
+
+        function prevSlide() {
+          if (!this.hasAttribute('disabled')) {
+            goToSlide(currentIndex - 1);
+
+          }
+        }
+
+        function nextSlide(el) {
+          if (!this.hasAttribute('disabled')) {
+            goToSlide(currentIndex + 1);
+          }
+        }
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        updatePagination();
+      },
+      getItemName: function(step, tag) {
+        let name = ''
+        switch (step) {
+          case 3:
+            for (let i = 0; i < this.second.step_3.length; i++) {
+              if (this.second.step_3[i].tag == tag) {
+                name = this.second.step_3[i].name
+              }
+            }
+            break;
+
+          case 4:
+            for (let i = 0; i < this.second.step_4.length; i++) {
+              if (this.second.step_4[i].tag == tag) {
+                name = this.second.step_4[i].name
+              }
+            }
+            break;
+
+          case 5:
+            for (let i = 0; i < this.second.step_5.length; i++) {
+              if (this.second.step_5[i].tag == tag) {
+                name = this.second.step_5[i].name
+              }
+            }
+            break;
+        };
+        return name
+      },
+      getItemImage: function(step, tag) {
+        let image = ''
+        switch (step) {
+          case 3:
+            for (let i = 0; i < this.second.step_3.length; i++) {
+              if (this.second.step_3[i].tag == tag) {
+                image = this.second.step_3[i].image
+              }
+            }
+            break;
+
+          case 4:
+            for (let i = 0; i < this.second.step_4.length; i++) {
+              if (this.second.step_4[i].tag == tag) {
+                image = this.second.step_4[i].image
+              }
+            }
+            break;
+
+          case 5:
+            for (let i = 0; i < this.second.step_5.length; i++) {
+              if (this.second.step_5[i].tag == tag) {
+                image = this.second.step_5[i].image
+              }
+            }
+            break;
+        };
+        return image
+      },
+      getItemInfo: function(step, tag) {
+        let info = ''
+        switch (step) {
+          case 3:
+            for (let i = 0; i < this.second.step_3.length; i++) {
+              if (this.second.step_3[i].tag == tag) {
+                info = this.second.step_3[i].info
+              }
+            }
+            break;
+
+          case 4:
+            for (let i = 0; i < this.second.step_4.length; i++) {
+              if (this.second.step_4[i].tag == tag) {
+                info = this.second.step_4[i].info
+              }
+            }
+            break;
+
+          case 5:
+            for (let i = 0; i < this.second.step_5.length; i++) {
+              if (this.second.step_5[i].tag == tag) {
+                info = this.second.step_5[i].info
+              }
+            }
+            break;
+        };
+        return info
+      },
+      getItemSize: function(step, tag) {
+        let size = ''
+        switch (step) {
+          case 3:
+            for (let i = 0; i < this.second.step_3.length; i++) {
+              if (this.second.step_3[i].tag == tag) {
+                size = this.second.step_3[i].size
+              }
+            }
+            break;
+
+          case 4:
+            for (let i = 0; i < this.second.step_4.length; i++) {
+              if (this.second.step_4[i].tag == tag) {
+                size = this.second.step_4[i].size
+              }
+            }
+            break;
+
+          case 5:
+            for (let i = 0; i < this.second.step_5.length; i++) {
+              if (this.second.step_5[i].tag == tag) {
+                size = this.second.step_5[i].size
+              }
+            }
+            break;
+        };
+        return size
+      },
+      getItemType: function(step, tag) {
+        let type = ''
+        switch (step) {
+          case 3:
+            for (let i = 0; i < this.second.step_3.length; i++) {
+              if (this.second.step_3[i].tag == tag) {
+                type = this.second.step_3[i].type
+              }
+            }
+            break;
+
+          case 4:
+            for (let i = 0; i < this.second.step_4.length; i++) {
+              if (this.second.step_4[i].tag == tag) {
+                type = this.second.step_4[i].type
+              }
+            }
+            break;
+
+          case 5:
+            for (let i = 0; i < this.second.step_5.length; i++) {
+              if (this.second.step_5[i].tag == tag) {
+                type = this.second.step_5[i].type
+              }
+            }
+            break;
+        };
+        return type
+      },
+      choiceBuilderProduct: function(active) {  // toggle base products - laptop or CMOS
+        if (active == 'first') {
+          this.active = 'first';
+          this.slides = 4;
+        } else {
+          this.active = 'second';
+          this.slides = 5;
+        }
+      },
+      choiceFirstOption: function(index,option) {  // set options for laptop
+        switch (index) {
+          case 0:
+            this.first.brand = option;
+            break;
+
+          case 1:
+            this.first.series = option;
+            break;
+
+          case 2:
+            this.first.subseries = option;
+            break;
+        };
+        Vue.set(this.firstSelected, index, option);
+      },
+      choiceSecondOption: function(index, option, tag, link) { // create arr with selected tags - secondProductSelected
+        console.log('choiceSecondOption-index',index,option,tag); 
+        // проблема в том что option не является текущим порядковым индексом 
+        //Vue.set(this.secondSelected, index, option);
+        switch (index) {
+          case 0:
+            this.secondSelected = [option,false,false,false];
+            this.secondProductSelected = [tag,'','',''];
+            break;
+
+          case 1:
+            this.secondSelected = [this.secondSelected[0],option,false,false];
+            this.secondProductSelected = [this.secondProductSelected[0],tag,'','']
+            break;
+
+          case 2:
+            this.secondSelected = [this.secondSelected[0],this.secondSelected[1],option,false];
+            this.secondProductSelected = [this.secondProductSelected[0],this.secondProductSelected[1],tag,'']
+            break;
+
+          case 3:
+            Vue.set(this.secondSelected, index, option);
+            Vue.set(this.secondProductSelected, index, tag);
+            this.secondSelectedLink = link;
+            break;
+        };
+        this.$forceUpdate();
+      },
+      goToLink: function() { // action in go to product button
+        if (this.active == 'first' && this.slide == 3) {
+          console.log('test-goToLink-first');
+          document.location.href = this.first.mainLinks[this.firstSelected[0]].sublinks[this.firstSelected[1]].subsublinks[this.firstSelected[2]].link;
+        } else if (this.active == 'second' && this.slide == 4) {
+          console.log('test-goToLink-second',this.secondProductSelected);
+          document.location.href = this.secondSelectedLink;
+        }
+      }
+    },
+    mounted: function(){  // init slideshow after Vue component is mounted
+      this.$nextTick(function () {
+        this.sliderInit();
+      })
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Builder",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "First image"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Image overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to first image"
+        },
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium",
+      "label": "Banner height",
+      "info": "For best results, use an image with a 3:2 aspect ratio."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_text_box",
+      "default": true,
+      "label": "Show container on desktop"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Builder settings"
+    },
+    {
+      "type": "link_list",
+      "id": "linklist",
+      "label": "Chose linklist",
+      "info": "Used for structure"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_first",
+      "label": "First image"
+    },
+    {
+      "type": "text",
+      "id": "text_first",
+      "default": "Laptop models",
+      "label": "First name"
+    },
+    {
+      "type": "page",
+      "id": "page_second",
+      "label": "Second page"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_second",
+      "label": "Second image"
+    },
+    {
+      "type": "text",
+      "id": "text_second",
+      "default": "Type of battery",
+      "label": "Second name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Image builder",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "Small"
+            },
+            {
+              "value": "h1",
+              "label": "Medium"
+            },
+            {
+              "value": "h0",
+              "label": "Large"
+            }
+          ],
+          "default": "h1",
+          "label": "Heading size"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Give customers details about the builder image(s) or content on the template.</p>",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "divider",
+          "default": "or",
+          "label": "Divider"
+        },
+        {
+          "type": "textarea",
+          "id": "footer_text",
+          "default": "You can see all the CMOS batteries on our website.",
+          "label": "Footer text"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Button label",
+          "label": "First button label",
+          "info": "Leave the label blank to hide the button."
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "First button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Builder",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "buttons"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

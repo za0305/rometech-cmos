@@ -30,6 +30,7 @@
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
     {%- if settings.animations_reveal_on_scroll -%}
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
@@ -39,15 +40,19 @@
 
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
+      assign body_font_semibold = settings.type_body_font | font_modify: 'weight', '500'
       assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
       assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
     %}
 
     {% style %}
       {{ settings.type_body_font | font_face: font_display: 'swap' }}
-      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_semibold | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_face: font_display: 'swap' }} 
       {{ body_font_italic | font_face: font_display: 'swap' }}
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_modify: 'weight', 'lighter' | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_modify: 'weight', '500' | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
 
       {% for scheme in settings.color_schemes -%}
@@ -87,11 +92,13 @@
         --color-badge-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
         --color-badge-border: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
         --payment-terms-background-color: rgb({{ scheme.settings.background.rgb }});
+        --color-text-accent: rgb({{ scheme.settings.text_accent.rgb }});
+        --color-accent: rgb({{ scheme.settings.accented.rgb }});
       }
       {% endfor %}
 
       {{ scheme_classes | prepend: 'body' }} {
-        color: rgba(var(--color-foreground), 0.75);
+        color: var(--color-foreground);
         background-color: rgb(var(--color-background));
       }
 
@@ -282,7 +289,7 @@
     </script>
   </head>
 
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %} template_{{ template.name }}{% if template.suffix %}__{{ template.suffix }}{% endif %}">
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>
@@ -290,14 +297,17 @@
     {%- if settings.cart_type == 'drawer' -%}
       {%- render 'cart-drawer' -%}
     {%- endif -%}
+    
+    <div id="app">
+      {% sections 'header-group' %}
+  
+      <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
+        {{ content_for_layout }}
+      </main>
+  
+      {% sections 'footer-group' %}
 
-    {% sections 'header-group' %}
-
-    <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
-      {{ content_for_layout }}
-    </main>
-
-    {% sections 'footer-group' %}
+    </div>
 
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
@@ -348,6 +358,15 @@
 
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- if settings.cursor_animation -%}
+      <!-- custom cursor -->
+      <div class="cursor"></div>
+      <div class="cursor2"></div>
+      <!-- custom cursor -->
+      <script src="{{ 'cursor.js' | asset_url }}" defer="defer"></script>
+      {{ 'cursor.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
   </body>
 </html>

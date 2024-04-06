@@ -101,7 +101,15 @@
             </div>
           </div>
         {%- endif -%}
-        <div class="card__content">
+
+        {% comment %} wishlist {% endcomment %}
+        <div class="card__wishlist">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="19" viewBox="0 0 22 19" fill="none">
+            <path d="M9.62607 16.9599L10.1941 16.3945L9.62607 16.9599ZM2.89475 10.1968L2.32669 10.7622L2.89475 10.1968ZM12.4334 16.9599L13.0015 17.5253L12.4334 16.9599ZM10.0536 3.00428L10.6216 2.43889V2.43889L10.0536 3.00428ZM19.1648 10.1968L18.5967 9.63144V9.63144L19.1648 10.1968ZM12.006 3.00428L12.574 3.56967V3.56967L12.006 3.00428ZM11.0298 3.98508L10.4617 4.55047C10.6121 4.70159 10.8165 4.78655 11.0298 4.78655C11.243 4.78655 11.4474 4.70159 11.5978 4.55047L11.0298 3.98508ZM10.1941 16.3945L3.4628 9.63144L2.32669 10.7622L9.05801 17.5253L10.1941 16.3945ZM11.8654 16.3945C11.4034 16.8586 10.6561 16.8586 10.1941 16.3945L9.05801 17.5253C10.1465 18.6189 11.913 18.6189 13.0015 17.5253L11.8654 16.3945ZM3.4628 3.56967C5.12636 1.89827 7.82194 1.89827 9.4855 3.56967L10.6216 2.43889C8.33147 0.137942 4.61684 0.137942 2.32669 2.43888L3.4628 3.56967ZM2.32669 2.43888C0.0386213 4.73774 0.0386217 8.46337 2.32669 10.7622L3.4628 9.63144C1.79717 7.95796 1.79717 5.24315 3.4628 3.56967L2.32669 2.43888ZM18.5967 9.63144L11.8654 16.3945L13.0015 17.5253L19.7328 10.7622L18.5967 9.63144ZM18.5967 3.56967C20.2623 5.24315 20.2623 7.95796 18.5967 9.63144L19.7328 10.7622C22.0209 8.46337 22.0209 4.73774 19.7328 2.43888L18.5967 3.56967ZM12.574 3.56967C14.2376 1.89827 16.9332 1.89827 18.5967 3.56967L19.7328 2.43888C17.4427 0.137942 13.728 0.137943 11.4379 2.43889L12.574 3.56967ZM11.5978 4.55047L12.574 3.56967L11.4379 2.43889L10.4617 3.41969L11.5978 4.55047ZM9.4855 3.56967L10.4617 4.55047L11.5978 3.41969L10.6216 2.43889L9.4855 3.56967Z" fill="#333333" fill-opacity="0.6"/>
+          </svg>
+        </div>
+
+        <div class="card__content card__content-aditional">
           <div class="card__information">
             <h3
               class="card__heading"
@@ -119,6 +127,7 @@
               </a>
             </h3>
           </div>
+
           <div class="card__badge {{ settings.badge_position }}">
             {%- if card_product.available == false -%}
               <span
@@ -132,7 +141,8 @@
                 id="NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
                 class="badge badge--bottom-left color-{{ settings.sale_badge_color_scheme }}"
               >
-                {{- 'products.product.on_sale' | t -}}
+                {% comment %} {{- 'products.product.on_sale' | t -}} {% endcomment %}
+                –{{ card_product.compare_at_price_max | minus: card_product.price | times: 100.0 | divided_by: card_product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' }}%
               </span>
             {%- endif -%}
           </div>
@@ -159,6 +169,10 @@
             {%- if show_vendor -%}
               <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
               <div class="caption-with-letter-spacing light">{{ card_product.vendor }}</div>
+            {%- endif -%}
+
+            {%- if card_product.type != blank -%}
+              <p class="card__type">{{ card_product.type }}</p>
             {%- endif -%}
 
             <span class="caption-large light">{{ block.settings.description | escape }}</span>
@@ -258,7 +272,7 @@
                 {%- form 'product',
                   card_product,
                   id: product_form_id,
-                  class: 'form',
+                  class: 'form quick-add-form',
                   novalidate: 'novalidate',
                   data-type: 'add-to-cart-form'
                 -%}
@@ -271,6 +285,31 @@
                       disabled
                     {% endif %}
                   >
+                    <quantity-input class="quantity">
+                      <button class="quantity__button no-js-hidden" name="minus" type="button">
+                        {% render 'icon-minus' %}
+                      </button>
+                      <input
+                        class="quantity__input"
+                        type="number"
+                        name="quantity"
+                        id="Quantity-{{ section.id }}"
+                        data-cart-quantity="{{ cart_qty }}"
+                        data-min="{{ card_product.selected_or_first_available_variant.quantity_rule.min }}"
+                        min="{{ card_product.selected_or_first_available_variant.quantity_rule.min }}"
+                        {% if card_product.selected_or_first_available_variant.quantity_rule.max != null %}
+                          data-max="{{ card_product.selected_or_first_available_variant.quantity_rule.max }}"
+                          max="{{ card_product.selected_or_first_available_variant.quantity_rule.max }}"
+                        {% endif %}
+                        step="{{ card_product.selected_or_first_available_variant.quantity_rule.increment }}"
+                        value="{{ card_product.selected_or_first_available_variant.quantity_rule.min }}"
+                        form="{{ product_form_id }}"
+                      >
+                      <button class="quantity__button no-js-hidden" name="plus" type="button">
+                        {% render 'icon-plus' %}
+                      </button>
+                    </quantity-input>
+
                   <button
                     id="{{ product_form_id }}-submit"
                     type="submit"

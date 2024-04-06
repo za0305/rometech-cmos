@@ -12,8 +12,12 @@
     aria-expanded="false"
     aria-controls="{{ localPosition }}List"
     aria-describedby="{{ localPosition }}Label"
-  >
-    <span>{{ localization.language.endonym_name | capitalize }}</span>
+  > 
+    <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none" class="icon-earth">
+    <path d="M4.40391 8C4.18281 8.62556 4.0625 9.29873 4.0625 10C4.0625 13.3137 6.74879 16 10.0625 16C13.3762 16 16.0625 13.3137 16.0625 10C16.0625 9.29873 15.9422 8.62556 15.7211 8M4.40391 8C5.22758 5.66962 7.45006 4 10.0625 4C12.6749 4 14.8974 5.66962 15.7211 8M4.40391 8H15.7211M4.40391 12H15.7211M10.5625 4.02054C10.5625 4.02054 12.5625 6.5 12.5625 10C12.5625 13.5 10.5625 16 10.5625 16M9.5625 4.02054C9.5625 4.02054 7.5625 6.5 7.5625 10C7.5625 13.5 9.5625 15.9795 9.5625 15.9795" stroke="white"/>
+    </svg>
+    <span class="disclosure__button_fullname">{{ localization.language.endonym_name | capitalize }}</span>
+    <span class="disclosure__button_shortname">{{ localization.language.iso_code | capitalize }}</span>
     {% render 'icon-caret' %}
   </button>
   <div class="disclosure__list-wrapper" hidden>

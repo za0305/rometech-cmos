@@ -26,9 +26,9 @@
 <noscript>{{ 'component-cart-items.css' | asset_url | stylesheet_tag }}</noscript>
 
 <style>
-  header-drawer {
+  header-drawer,
+  header-megamenu-drawer {
     justify-self: start;
-    margin-left: -1.2rem;
   }
 
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
@@ -45,8 +45,15 @@
     }
   {%- endif -%}
 
-  .menu-drawer-container {
+  .menu-drawer-container,
+  .megamenu-drawer-container {
     display: flex;
+  }
+
+  @media screen and (max-width: 779px) {
+    .megamenu-drawer-container {
+      justify-content: center;
+    }
   }
 
   .list-menu {
@@ -160,39 +167,116 @@
         render 'header-drawer'
       endif
 
+      render 'header-megamenu-drawer'
+
       if section.settings.logo_position == 'top-center' or section.settings.menu == blank
         render 'header-search', input_id: 'Search-In-Modal-1'
       endif
     -%}
 
     {%- if section.settings.logo_position != 'middle-center' -%}
-      {%- if request.page_type == 'index' -%}
-        <h1 class="header__heading">
-      {%- endif -%}
-          <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-            {%- if settings.logo != blank -%}
-              <div class="header__heading-logo-wrapper">
-                {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-                {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-                {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
-                {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
-                {{ settings.logo | image_url: width: 600 | image_tag:
-                  class: 'header__heading-logo motion-reduce',
-                  widths: widths,
-                  height: logo_height,
-                  width: settings.logo_width,
-                  alt: logo_alt,
-                  sizes: sizes,
-                  preload: true
-                }}
-              </div>
-            {%- else -%}
-              <span class="h2">{{ shop.name }}</span>
-            {%- endif -%}
-          </a>
-      {%- if request.page_type == 'index' -%}
-        </h1>
-      {%- endif -%}
+      <div class="header__heading header__base">
+        {%- if request.page_type == 'index' -%}
+          <h1 class="header__logo-link">
+        {%- else -%}
+          <div class="header__logo-link">
+        {%- endif -%}
+            <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
+              {%- if settings.logo != blank -%}
+                <div class="header__heading-logo-wrapper">
+                  {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+                  {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+                  {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+                  {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+                  {{ settings.logo | image_url: width: 600 | image_tag:
+                    class: 'header__heading-logo motion-reduce',
+                    widths: widths,
+                    height: logo_height,
+                    width: settings.logo_width,
+                    alt: logo_alt,
+                    sizes: sizes,
+                    preload: true
+                  }}
+                </div>
+              {%- else -%}
+                <span class="h2">{{ shop.name }}</span>
+              {%- endif -%}
+            </a>
+        {%- if request.page_type == 'index' -%}
+          </h1>
+        {%- else -%}
+          </div>
+        {%- endif -%}
+
+        <div class="header__heading-localization">
+          {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+            <noscript class="small-hide medium-hide">
+              {%- form 'localization', id: 'HeaderCountryMobileFormNoScript', class: 'localization-form' -%}
+                <div class="localization-form__select">
+                  <h2 class="visually-hidden" id="HeaderCountryMobileLabelNoScript">{{ 'localization.country_label' | t }}</h2>
+                  <select class="localization-selector link" name="country_code" aria-labelledby="HeaderCountryMobileLabelNoScript">
+                    {%- for country in localization.available_countries -%}
+                      <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+                        {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                  {% render 'icon-caret' %}
+                </div>
+                <button class="button button--tertiary">{{ 'localization.update_country' | t }}</button>
+              {%- endform -%}
+            </noscript>
+
+            <localization-form class="small-hide medium-hide no-js-hidden" data-prevent-hide>
+              {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
+                <div>
+                  <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
+                  {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
+                </div>
+              {%- endform -%}
+            </localization-form>
+          {% endif %}
+
+          {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+            <noscript class="small-hide medium-hide">
+              {%- form 'localization', id: 'HeaderLanguageMobileFormNoScript', class: 'localization-form' -%}
+                <div class="localization-form__select">
+                  <h2 class="visually-hidden" id="HeaderLanguageMobileLabelNoScript">{{ 'localization.language_label' | t }}</h2>
+                  <select class="localization-selector link" name="locale_code" aria-labelledby="HeaderLanguageMobileLabelNoScript">
+                    {%- for language in localization.available_languages -%}
+                      <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}" {%- if language.iso_code == localization.language.iso_code %} selected{% endif %}>
+                        {{ language.endonym_name | capitalize }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                  {% render 'icon-caret' %}
+                </div>
+                <button class="button button--tertiary">{{ 'localization.update_language' | t }}</button>
+              {%- endform -%}
+            </noscript>
+
+            <localization-form class="no-js-hidden" data-prevent-hide>
+              {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
+                <div>
+                  <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+                  {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
+                </div>
+              {%- endform -%}
+            </localization-form>
+          {%- endif -%}
+        </div>
+
+        {% if section.settings.header_phone != blank %}
+          <div class="header__heading-phone">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="33" viewBox="0 0 25 33" fill="none">
+            <path d="M11.0747 5.04307L10.6642 4.3466C10.3872 3.87608 10.2489 3.64092 10.1071 3.45767C9.06157 2.1066 7.19963 1.63062 5.58714 2.30154C5.36843 2.39254 5.12561 2.52899 4.63951 2.80426C2.00086 4.45038 2.19947 10.0685 2.36922 10.9009C2.36922 10.9009 2.40358 13.6533 6.23072 20.155C10.0579 26.6567 12.8809 28.7595 12.8809 28.7595C14.4869 30.057 18.3921 32.2975 21.1648 30.8792C21.6509 30.604 21.8937 30.4661 22.0834 30.3259C23.4821 29.2916 23.9923 27.4714 23.3222 25.9078C23.2313 25.6957 23.0931 25.4602 22.8161 24.9897L22.4062 24.2933C21.9602 23.5356 21.6648 23.0347 21.3934 22.6737C21.1619 22.3659 20.8271 22.1536 20.4728 21.9835C18.9418 21.2488 15.9188 21.9441 14.3275 21.3314C14.1628 21.268 14.0019 21.1939 13.8453 21.1098C13.6852 21.0238 13.532 20.9288 13.3941 20.8122C12.9647 20.4495 11.9505 19.4975 11.016 17.9099C9.80624 15.8547 9.70921 14.4038 9.70685 14.3655V14.363C9.68172 13.9124 9.72552 13.4659 9.83144 13.0346C10.2224 11.4425 12.2179 9.24246 12.1934 7.61997C12.1898 7.37983 12.167 7.13924 12.0824 6.91591C11.9115 6.46518 11.5964 5.92937 11.0747 5.04307Z" stroke="white" stroke-width="2.66667"/>
+            </svg>
+            <a href="tel:{{ section.settings.header_phone }}" class="header__heading-phone_link">{{ section.settings.header_phone }}</a>
+          </div>
+        {% endif %}
+
+        {% render 'header-menu' %}
+      </div>
     {%- endif -%}
 
     {%- liquid
@@ -237,78 +321,7 @@
 
     <div class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header-localization{% endif %}">
       <div class="desktop-localization-wrapper">
-        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
-          <noscript class="small-hide medium-hide">
-            {%- form 'localization', id: 'HeaderCountryMobileFormNoScript', class: 'localization-form' -%}
-              <div class="localization-form__select">
-                <h2 class="visually-hidden" id="HeaderCountryMobileLabelNoScript">{{ 'localization.country_label' | t }}</h2>
-                <select class="localization-selector link" name="country_code" aria-labelledby="HeaderCountryMobileLabelNoScript">
-                  {%- for country in localization.available_countries -%}
-                    <option value="{{ country.iso_code }}" {%- if country.iso_code == localization.country.iso_code %} selected{% endif %}>
-                      {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
-                    </option>
-                  {%- endfor -%}
-                </select>
-                {% render 'icon-caret' %}
-              </div>
-              <button class="button button--tertiary">{{ 'localization.update_country' | t }}</button>
-            {%- endform -%}
-          </noscript>
-
-          <localization-form class="small-hide medium-hide no-js-hidden" data-prevent-hide>
-            {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
-              <div>
-                <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
-                {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
-              </div>
-            {%- endform -%}
-          </localization-form>
-        {% endif %}
-
-        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
-          <noscript class="small-hide medium-hide">
-            {%- form 'localization', id: 'HeaderLanguageMobileFormNoScript', class: 'localization-form' -%}
-              <div class="localization-form__select">
-                <h2 class="visually-hidden" id="HeaderLanguageMobileLabelNoScript">{{ 'localization.language_label' | t }}</h2>
-                <select class="localization-selector link" name="locale_code" aria-labelledby="HeaderLanguageMobileLabelNoScript">
-                  {%- for language in localization.available_languages -%}
-                    <option value="{{ language.iso_code }}" lang="{{ language.iso_code }}" {%- if language.iso_code == localization.language.iso_code %} selected{% endif %}>
-                      {{ language.endonym_name | capitalize }}
-                    </option>
-                  {%- endfor -%}
-                </select>
-                {% render 'icon-caret' %}
-              </div>
-              <button class="button button--tertiary">{{ 'localization.update_language' | t }}</button>
-            {%- endform -%}
-          </noscript>
-
-          <localization-form class="small-hide medium-hide no-js-hidden" data-prevent-hide>
-            {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
-              <div>
-                <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
-                {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
-              </div>
-            {%- endform -%}
-          </localization-form>
-        {%- endif -%}
-      </div>
       {% render 'header-search', input_id: 'Search-In-Modal' %}
-
-      {%- if shop.customer_accounts_enabled -%}
-        <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
-          {% render 'icon-account' %}
-          <span class="visually-hidden">
-            {%- liquid
-              if customer
-                echo 'customer.account_fallback' | t
-              else
-                echo 'customer.log_in' | t
-              endif
-            -%}
-          </span>
-        </a>
-      {%- endif -%}
 
       {%- for block in section.blocks -%}
         {%- case block.type -%}
@@ -317,13 +330,13 @@
         {%- endcase -%}
       {%- endfor -%}
 
+      <div class="header__wishlist">
+        {% comment %} {% render 'icon-heart' %} {% endcomment %}
+      </div>
+
       <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
         {%- liquid
-          if cart == empty
-            render 'icon-cart-empty'
-          else
-            render 'icon-cart'
-          endif
+          render 'icon-cart-empty'
         -%}
         <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
         {%- if cart != empty -%}
@@ -335,6 +348,73 @@
           </div>
         {%- endif -%}
       </a>
+
+      {%- if shop.customer_accounts_enabled -%}
+        <div class="header__account">
+          {%- if customer -%}
+            <div class="header__account-wrap">
+              <details>
+                <summary class="header__icon focus-inset modal__toggle" aria-label="Account" role="button">
+                  <p class="header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
+                    <span class="header__icon--account_personal">{{ customer.first_name | slice: 0 }} {{ customer.last_name | slice: 0 }}</span>
+                    <span class="visually-hidden">
+                      {%- echo 'customer.account_fallback' | t -%}
+                    </span>
+                  </p>
+                </summary>
+
+                <div class="header__account-popup" aria-label="Account">
+                  <button class="header__account_close" type="button" onclick="this.closest('details').removeAttribute('open')" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M13.6054 2.22529L7.83066 8M7.83066 8L2.05596 13.7747M7.83066 8L13.6054 13.7747M7.83066 8L2.05596 2.22529" stroke="#333333" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+
+                  <p class="header__account-popup_title">
+                    Hi, {{ customer.first_name }}
+                  </p>
+                  <ul class="header__account-popup_links">
+                    <li class="header__account-popup_item">
+                      <a href="{{ routes.account_url }}" class="header__account-popup_link">
+                        {% render 'icon-account-simple' %}
+                        My Account
+                      </a>
+                    </li>
+                    <li class="header__account-popup_item">
+                      <a href="/account/orders" class="header__account-popup_link">
+                      {% render 'icon-orders' %}
+                        My Orders
+                      </a>
+                    </li>
+                    <li class="header__account-popup_item">
+                      <a href="/" class="header__account-popup_link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="17" viewBox="0 0 27 17" fill="none">
+                          <path d="M1.33008 5.37838H20.0193C22.9523 5.37838 25.3301 7.75611 25.3301 10.6892C25.3301 13.6223 22.9523 16 20.0193 16H3.33008M1.33008 5.37838L5.83008 9.75676M1.33008 5.37838L5.83008 1" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        My Returns
+                      </a>
+                    </li>
+                  </ul>
+                  <a href="{{ routes.account_logout_url }}" class="header__account-popup_logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="29" height="26" viewBox="0 0 29 26" fill="none">
+                      <path d="M24.054 24.346L24.508 25.237H24.508L24.054 24.346ZM26.6761 21.7239L25.7851 21.27H25.7851L26.6761 21.7239ZM10.6061 24.346L10.1521 25.237L10.6061 24.346ZM7.98404 21.7239L8.87505 21.27L7.98404 21.7239ZM10.6061 1.65396L11.0601 2.54497V2.54497L10.6061 1.65396ZM7.98404 4.27606L7.09303 3.82207V3.82207L7.98404 4.27606ZM24.054 1.65396L24.508 0.762954L24.054 1.65396ZM26.6761 4.27606L27.5671 3.82207L26.6761 4.27606ZM8.36578 7.0486C8.33894 7.60023 7.87 8.02566 7.31836 7.99882C6.76673 7.97198 6.3413 7.50304 6.36814 6.9514L8.36578 7.0486ZM6.36814 19.0486C6.3413 18.497 6.76673 18.028 7.31836 18.0012C7.87 17.9743 8.33894 18.3998 8.36578 18.9514L6.36814 19.0486ZM12.3301 12C12.8824 12 13.3301 12.4477 13.3301 13C13.3301 13.5523 12.8824 14 12.3301 14V12ZM1.33008 13L0.69684 13.774C0.464705 13.584 0.330078 13.2999 0.330078 13C0.330078 12.7001 0.464705 12.416 0.69684 12.226L1.33008 13ZM4.36351 9.22604C4.79095 8.87632 5.42098 8.93932 5.7707 9.36676C6.12043 9.79421 6.05743 10.4242 5.62998 10.774L4.36351 9.22604ZM5.62998 15.226C6.05743 15.5758 6.12043 16.2058 5.7707 16.6332C5.42098 17.0607 4.79095 17.1237 4.36351 16.774L5.62998 15.226ZM17.7301 2H16.9301V0H17.7301V2ZM16.9301 24H17.7301V26H16.9301V24ZM26.3301 15.4V10.6H28.3301V15.4H26.3301ZM17.7301 24C19.4267 24 20.6391 23.9992 21.5894 23.9216C22.5281 23.8449 23.1228 23.6982 23.6 23.455L24.508 25.237C23.7018 25.6478 22.8147 25.8281 21.7523 25.9149C20.7016 26.0008 19.3937 26 17.7301 26V24ZM28.3301 15.4C28.3301 17.0637 28.3309 18.3715 28.245 19.4222C28.1582 20.4846 27.9779 21.3717 27.5671 22.1779L25.7851 21.27C26.0283 20.7927 26.175 20.198 26.2517 19.2594C26.3293 18.309 26.3301 17.0967 26.3301 15.4H28.3301ZM23.6 23.455C24.5408 22.9757 25.3057 22.2108 25.7851 21.27L27.5671 22.1779C26.896 23.4951 25.8251 24.5659 24.508 25.237L23.6 23.455ZM16.9301 26C15.2664 26 13.9585 26.0008 12.9079 25.9149C11.8455 25.8281 10.9583 25.6478 10.1521 25.237L11.0601 23.455C11.5374 23.6982 12.132 23.8449 13.0707 23.9216C14.0211 23.9992 15.2334 24 16.9301 24V26ZM8.87505 21.27C9.35441 22.2108 10.1193 22.9757 11.0601 23.455L10.1521 25.237C8.83501 24.5659 7.76415 23.4951 7.09303 22.1779L8.87505 21.27ZM16.9301 2C15.2334 2 14.0211 2.00078 13.0707 2.07842C12.132 2.15512 11.5374 2.30179 11.0601 2.54497L10.1521 0.762954C10.9583 0.352173 11.8455 0.171864 12.9079 0.0850662C13.9585 -0.000777721 15.2664 0 16.9301 0V2ZM11.0601 2.54497C10.1193 3.02433 9.35441 3.78924 8.87505 4.73005L7.09303 3.82207C7.76415 2.50493 8.83501 1.43407 10.1521 0.762954L11.0601 2.54497ZM17.7301 0C19.3937 0 20.7016 -0.000777721 21.7523 0.0850662C22.8147 0.171864 23.7018 0.352173 24.508 0.762954L23.6 2.54497C23.1228 2.30179 22.5281 2.15512 21.5894 2.07842C20.6391 2.00078 19.4267 2 17.7301 2V0ZM26.3301 10.6C26.3301 8.90334 26.3293 7.69099 26.2517 6.74064C26.175 5.80197 26.0283 5.20731 25.7851 4.73005L27.5671 3.82207C27.9779 4.62827 28.1582 5.51543 28.245 6.57778C28.3309 7.62846 28.3301 8.93634 28.3301 10.6H26.3301ZM24.508 0.762954C25.8251 1.43407 26.896 2.50493 27.5671 3.82207L25.7851 4.73005C25.3057 3.78924 24.5408 3.02433 23.6 2.54497L24.508 0.762954ZM6.36814 6.9514C6.43147 5.64963 6.60366 4.78252 7.09303 3.82207L8.87505 4.73005C8.55807 5.35214 8.42103 5.91303 8.36578 7.0486L6.36814 6.9514ZM8.36578 18.9514C8.42103 20.087 8.55807 20.6479 8.87505 21.27L7.09303 22.1779C6.60366 21.2175 6.43147 20.3504 6.36814 19.0486L8.36578 18.9514ZM12.3301 14H1.33008V12H12.3301V14ZM0.69684 12.226L4.36351 9.22604L5.62998 10.774L1.96332 13.774L0.69684 12.226ZM1.96332 12.226L5.62998 15.226L4.36351 16.774L0.69684 13.774L1.96332 12.226Z" fill="#333333"/>
+                    </svg>
+                    Sign out
+                  </a>
+                </div>
+              </details>
+            </div>
+
+          {%- else -%}
+            <a href="{{ routes.account_login_url }}" class="header__icon header__icon--account link focus-inset{% if section.settings.menu != blank %} small-hide{% endif %}">
+              {% render 'icon-account' %}
+              <span class="visually-hidden">
+                {%- echo 'customer.log_in' | t -%}
+              </span>
+            </a>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
     </div>
   </header>
 </{% if section.settings.sticky_header_type != 'none' %}sticky-header{% else %}div{% endif %}>
@@ -499,7 +579,7 @@
 {
   "name": "t:sections.header.name",
   "class": "section-header",
-  "max_blocks": 3,
+  "max_blocks": 8,
   "settings": [
     {
       "type": "select",
@@ -612,6 +692,23 @@
     },
     {
       "type": "header",
+      "content": "Aditional info",
+      "info": "Contact information"
+    },
+    {
+      "type": "text",
+      "id": "header_phone",
+      "default": "856-336-8157",
+      "label": "Header Phone"
+    },
+    {
+      "type": "text",
+      "id": "header_email",
+      "default": "support@rometechbatteries.com",
+      "label": "Header Email"
+    },
+    {
+      "type": "header",
       "content": "t:sections.header.settings.header__5.content",
       "info": "t:sections.header.settings.header__6.info"
     },
@@ -681,6 +778,38 @@
     }
   ],
   "blocks": [
+    {
+      "type": "megamenu_item",
+      "name": "Megamenu item",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Item name"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Item image"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "link_list",
+          "id": "item_menu",
+          "label": "Item menu"
+        }
+      ]
+    },
     {
       "type": "@app"
     }

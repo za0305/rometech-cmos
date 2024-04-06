@@ -8,6 +8,7 @@
 <header-drawer data-breakpoint="{% if section.settings.menu_type_desktop == 'drawer' %}desktop{% else %}tablet{% endif %}">
   <details id="Details-menu-drawer-container" class="menu-drawer-container">
     <summary
+      id="menu-drawer__trigger"
       class="header__icon header__icon--menu header__icon--summary link focus-inset"
       aria-label="{{ 'sections.header.menu' | t }}"
     >
@@ -17,8 +18,61 @@
       </span>
     </summary>
     <div id="menu-drawer" class="gradient menu-drawer motion-reduce color-{{ section.settings.menu_color_scheme }}">
+      <div class="menu-drawer__inner-cover"></div>
       <div class="menu-drawer__inner-container">
         <div class="menu-drawer__navigation-container">
+          <div class="menu-drawer__header">
+            <div class="menu-drawer__header_logo">
+              <a href="{{ routes.root_url }}" class="menu-drawer__header_logo-link">
+                {%- if settings.logo != blank -%}
+                  <div class="header__heading-logo-wrapper">
+                    {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
+                    {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+                    {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
+                    {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
+                    {{ settings.logo | image_url: width: 600 | image_tag:
+                      class: 'header__heading-logo motion-reduce',
+                      widths: widths,
+                      height: logo_height,
+                      width: settings.logo_width,
+                      alt: logo_alt,
+                      sizes: sizes,
+                      preload: true
+                    }}
+                  </div>
+                {%- else -%}
+                  <span class="h2">{{ shop.name }}</span>
+                {%- endif -%}
+              </a>
+            </div>
+
+            <div class="menu-drawer__header-close" onclick="document.getElementById('menu-drawer__trigger').click()">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M13.6054 2.22529L7.83066 8M7.83066 8L2.05596 13.7747M7.83066 8L13.6054 13.7747M7.83066 8L2.05596 2.22529" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </div>
+
+            {%- if shop.customer_accounts_enabled -%}
+              <div class="menu-drawer__header_account">
+                {%- if customer -%}
+                  <p class="header__icon--account">
+                    <span class="header__icon--account_personal">{{ customer.first_name | slice: 0 }} {{ customer.last_name | slice: 0 }}</span>
+                  </p>
+
+                  <a href="{{ routes.account_url }}" class="header__account-popup_link">My Account</a>|<a href="{{ routes.account_logout_url }}" class="header__account-popup_link">{{ 'customer.log_out' | t }}</a>
+      
+                {%- else -%}
+                  <a href="{{ routes.account_login_url }}" class="header__icon--account">
+                    {% render 'icon-account' %}
+                    <div class="header__icon--account_caption">
+                      <span class="header__icon--account_title">{%- echo 'customer.log_in' | t -%}</span>|<span class="header__icon--account_title">{%- echo 'customer.login_page.sign_in' | t -%}</span>
+                      <span>Log in for advanced features</span>
+                    </div>
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
           <nav class="menu-drawer__navigation">
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
               {%- for link in section.settings.menu.links -%}
@@ -40,7 +94,7 @@
                       >
                         <div class="menu-drawer__inner-submenu">
                           <button class="menu-drawer__close-button link link--text focus-inset" aria-expanded="true">
-                            {% render 'icon-arrow' %}
+                            {% render 'icon-caret' %}-
                             {{ link.title | escape }}
                           </button>
                           <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
@@ -75,7 +129,7 @@
                                         class="menu-drawer__close-button link link--text focus-inset"
                                         aria-expanded="true"
                                       >
-                                        {% render 'icon-arrow' %}
+                                      {% render 'icon-caret' %}=
                                         {{ childlink.title | escape }}
                                       </button>
                                       <ul
@@ -121,189 +175,38 @@
                   {%- endif -%}
                 </li>
               {%- endfor -%}
+              <li class="mobile-only">
+                <a
+                  href="/pages/wishlist"
+                  class="menu-drawer__menu-item list-menu__item link link--text focus-inset"
+                >
+                  Your Wishlist 
+                </a>
+              </li>
             </ul>
           </nav>
-          <div class="menu-drawer__utility-links">
-            {%- if shop.customer_accounts_enabled -%}
-              <a
-                href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-                class="menu-drawer__account link focus-inset h5 medium-hide large-up-hide"
-              >
-                {% render 'icon-account' %}
-                {%- liquid
-                  if customer
-                    echo 'customer.account_fallback' | t
-                  else
-                    echo 'customer.log_in' | t
-                  endif
-                -%}
-              </a>
-            {%- endif -%}
-            {%- if localization.available_countries or localization.available_languages -%}
-              <div class="menu-drawer__localization header-localization">
-                {%- if localization.available_countries and localization.available_countries.size > 1 -%}
-                  <noscript>
-                    {%- form 'localization', id: 'HeaderCountryMobileFormNoScriptDrawer', class: 'localization-form' -%}
-                      <div class="localization-form__select">
-                        <h2 class="visually-hidden" id="HeaderCountryMobileLabelNoScriptDrawer">
-                          {{ 'localization.country_label' | t }}
-                        </h2>
-                        <select
-                          class="localization-selector link"
-                          name="country_code"
-                          aria-labelledby="HeaderCountryMobileLabelNoScriptDrawer"
-                        >
-                          {%- for country in localization.available_countries -%}
-                            <option
-                              value="{{ country.iso_code }}"
-                              {%- if country.iso_code == localization.country.iso_code %}
-                                selected
-                              {% endif %}
-                            >
-                              {{ country.name }} ({{ country.currency.iso_code }}
-                              {{ country.currency.symbol }})
-                            </option>
-                          {%- endfor -%}
-                        </select>
-                        {% render 'icon-caret' %}
-                      </div>
-                      <button class="button button--tertiary">{{ 'localization.update_country' | t }}</button>
-                    {%- endform -%}
-                  </noscript>
 
-                  <localization-form class="no-js-hidden">
-                    {%- form 'localization', id: 'HeaderCountryMobileForm', class: 'localization-form' -%}
-                      <div>
-                        <h2 class="visually-hidden" id="HeaderCountryMobileLabel">
-                          {{ 'localization.country_label' | t }}
-                        </h2>
-                        {%- render 'country-localization', localPosition: 'HeaderCountryMobile' -%}
-                      </div>
-                    {%- endform -%}
-                  </localization-form>
-                {% endif %}
-
-                {%- if localization.available_languages and localization.available_languages.size > 1 -%}
-                  <noscript>
-                    {%- form 'localization',
-                      id: 'HeaderLanguageMobileFormNoScriptDrawer',
-                      class: 'localization-form'
-                    -%}
-                      <div class="localization-form__select">
-                        <h2 class="visually-hidden" id="HeaderLanguageMobileLabelNoScriptDrawer">
-                          {{ 'localization.language_label' | t }}
-                        </h2>
-                        <select
-                          class="localization-selector link"
-                          name="locale_code"
-                          aria-labelledby="HeaderLanguageMobileLabelNoScriptDrawer"
-                        >
-                          {%- for language in localization.available_languages -%}
-                            <option
-                              value="{{ language.iso_code }}"
-                              lang="{{ language.iso_code }}"
-                              {%- if language.iso_code == localization.language.iso_code %}
-                                selected
-                              {% endif %}
-                            >
-                              {{ language.endonym_name | capitalize }}
-                            </option>
-                          {%- endfor -%}
-                        </select>
-                        {% render 'icon-caret' %}
-                      </div>
-                      <button class="button button--tertiary">{{ 'localization.update_language' | t }}</button>
-                    {%- endform -%}
-                  </noscript>
-
-                  <localization-form class="no-js-hidden">
-                    {%- form 'localization', id: 'HeaderLanguageMobileForm', class: 'localization-form' -%}
-                      <div>
-                        <h2 class="visually-hidden" id="HeaderLanguageMobileLabel">
-                          {{ 'localization.language_label' | t }}
-                        </h2>
-                        {%- render 'language-localization', localPosition: 'HeaderLanguageMobile' -%}
-                      </div>
-                    {%- endform -%}
-                  </localization-form>
-                {%- endif -%}
+          <div class="menu-drawer__footer">
+            <p>Do you need help?</p>
+            {% if section.settings.header_phone != blank %}
+              <div class="menu-drawer__phone">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="20" viewBox="0 0 14 20" fill="none">
+                  <path d="M5.94632 3.46172L5.71539 3.06997C5.55959 2.80529 5.48179 2.67302 5.40203 2.56994C4.81393 1.80996 3.76659 1.54222 2.85956 1.91962C2.73654 1.9708 2.59995 2.04756 2.32652 2.2024C0.842279 3.12834 0.953999 6.28852 1.04948 6.75678C1.04948 6.75678 1.06881 8.30497 3.22158 11.9622C5.37434 15.6194 6.96229 16.8022 6.96229 16.8022C7.86569 17.5321 10.0623 18.7924 11.622 17.9946C11.8954 17.8398 12.032 17.7622 12.1387 17.6833C12.9255 17.1016 13.2125 16.0777 12.8355 15.1981C12.7844 15.0788 12.7066 14.9464 12.5508 14.6817L12.3203 14.29C12.0694 13.8638 11.9033 13.582 11.7506 13.3789C11.6203 13.2058 11.4321 13.0864 11.2328 12.9907C10.3716 12.5774 8.67113 12.9686 7.77601 12.6239C7.68335 12.5882 7.59285 12.5466 7.50477 12.4993C7.41474 12.4509 7.32856 12.3974 7.25096 12.3319C7.00942 12.1278 6.43895 11.5923 5.91328 10.6993C5.2328 9.54328 5.17823 8.72716 5.1769 8.7056V8.70418C5.16277 8.45074 5.1874 8.19957 5.24698 7.95699C5.46692 7.06142 6.58937 5.82388 6.57558 4.91123C6.57354 4.77616 6.56075 4.64082 6.51313 4.5152C6.41702 4.26166 6.23978 3.96027 5.94632 3.46172Z" stroke="#333333" stroke-width="2"/>
+                </svg>
+                <a href="tel:{{ section.settings.header_phone }}" class="menu-drawer__phone_link">{{ section.settings.header_phone }}</a>
               </div>
-            {%- endif -%}
-            <ul class="list list-social list-unstyled" role="list">
-              {%- if settings.social_twitter_link != blank -%}
-                <li class="list-social__item">
-                  <a href="{{ settings.social_twitter_link }}" class="list-social__link link">
-                    {%- render 'icon-twitter' -%}
-                    <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-              {%- if settings.social_facebook_link != blank -%}
-                <li class="list-social__item">
-                  <a href="{{ settings.social_facebook_link }}" class="list-social__link link">
-                    {%- render 'icon-facebook' -%}
-                    <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-              {%- if settings.social_pinterest_link != blank -%}
-                <li class="list-social__item">
-                  <a href="{{ settings.social_pinterest_link }}" class="list-social__link link">
-                    {%- render 'icon-pinterest' -%}
-                    <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-              {%- if settings.social_instagram_link != blank -%}
-                <li class="list-social__item">
-                  <a href="{{ settings.social_instagram_link }}" class="list-social__link link">
-                    {%- render 'icon-instagram' -%}
-                    <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-              {%- if settings.social_tiktok_link != blank -%}
-                <li class="list-social__item">
-                  <a href="{{ settings.social_tiktok_link }}" class="list-social__link link">
-                    {%- render 'icon-tiktok' -%}
-                    <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-              {%- if settings.social_tumblr_link != blank -%}
-                <li class="list-social__item">
-                  <a href="{{ settings.social_tumblr_link }}" class="list-social__link link">
-                    {%- render 'icon-tumblr' -%}
-                    <span class="visually-hidden">{{ 'general.social.links.tumblr' | t }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-              {%- if settings.social_snapchat_link != blank -%}
-                <li class="list-social__item">
-                  <a href="{{ settings.social_snapchat_link }}" class="list-social__link link">
-                    {%- render 'icon-snapchat' -%}
-                    <span class="visually-hidden">{{ 'general.social.links.snapchat' | t }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-              {%- if settings.social_youtube_link != blank -%}
-                <li class="list-social__item">
-                  <a href="{{ settings.social_youtube_link }}" class="list-social__link link">
-                    {%- render 'icon-youtube' -%}
-                    <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-              {%- if settings.social_vimeo_link != blank -%}
-                <li class="list-social__item">
-                  <a href="{{ settings.social_vimeo_link }}" class="list-social__link link">
-                    {%- render 'icon-vimeo' -%}
-                    <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
-                  </a>
-                </li>
-              {%- endif -%}
-            </ul>
+            {% endif %}
+
+            {% if section.settings.header_email != blank %}
+              <div class="menu-drawer__email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="19" viewBox="0 0 22 19" fill="none">
+                  <path d="M5.375 5L8.50385 7.0859C9.71379 7.89252 10.3188 8.29584 11 8.29584C11.6812 8.29584 12.2862 7.89252 13.4961 7.0859L16.625 5M9.2 17.75H13.55C16.0702 17.75 17.3304 17.75 18.293 17.2595C19.1397 16.8281 19.8281 16.1397 20.2595 15.293C20.75 14.3304 20.75 13.0702 20.75 10.55V8.45C20.75 5.92976 20.75 4.66965 20.2595 3.70704C19.8281 2.86031 19.1397 2.1719 18.293 1.74047C17.3304 1.25 16.0702 1.25 13.55 1.25H9.2C6.67976 1.25 4.66965 1.25 3.70704 1.74047C2.86031 2.1719 2.1719 2.86031 1.74047 3.70704C1.25 4.66965 1.25 5.92976 1.25 8.45V10.55C1.25 13.0702 1.25 14.3304 1.74047 15.293C2.1719 16.1397 2.86031 16.8281 3.70704 17.2595C4.66965 17.75 6.67976 17.75 9.2 17.75Z" stroke="#333333" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <a href="mailto:{{ section.settings.header_email }}" class="menu-drawer__email_link">{{ section.settings.header_email }}</a>
+              </div>
+            {% endif %}
           </div>
+         
         </div>
       </div>
     </div>

@@ -18,7 +18,11 @@ document.querySelectorAll('[id^="Details-"] summary').forEach((summary) => {
     event.currentTarget.setAttribute('aria-expanded', !event.currentTarget.closest('details').hasAttribute('open'));
   });
 
-  if (summary.closest('header-drawer, menu-drawer')) return;
+  if (summary.closest('header-drawer, menu-drawer')) {
+    summary.parentElement.addEventListener('keyup', onKeyUpEscape);
+  };
+
+  if (summary.closest('header-drawer, megamenu-drawer')) return;
   summary.parentElement.addEventListener('keyup', onKeyUpEscape);
 });
 
@@ -524,6 +528,145 @@ class HeaderDrawer extends MenuDrawer {
 }
 
 customElements.define('header-drawer', HeaderDrawer);
+
+class HeaderMegamenuDrawer extends HTMLElement {
+  constructor() {
+    super();
+    this.mainDetailsToggle = this.querySelector('details');
+    this.bindEvents();
+  }
+
+  bindEvents() {console.log('test444',this);
+    const self = this;
+    
+    self.querySelector('.header__megamenu-trigger').addEventListener('click', self.onTriggerClick.bind(self));
+    self.querySelectorAll('summary.menu-drawer__menu-item').forEach(function(summary){
+      summary.addEventListener('mouseenter', self.onTriggerHover.bind(self));
+    });
+    self.querySelectorAll('a.menu-drawer__menu-item').forEach(function(summary){
+      summary.addEventListener('mouseleave', self.onLinkHover.bind(self));
+    });
+    self.querySelectorAll('summary').forEach((summary) =>
+      summary.addEventListener('click', self.onSummaryClick.bind(self))
+    );
+    this.querySelectorAll(
+      'button:not(.localization-selector):not(.country-selector__close-button):not(.country-filter__reset-button)'
+    ).forEach((button) => button.addEventListener('click', this.onCloseButtonClick.bind(this))
+    );
+  }
+
+  onTriggerClick(event) { 
+    const triggerEl = event.currentTarget;
+    const menuEl = document.getElementById('megamenu-drawer');
+
+    if (triggerEl.classList.contains('active')) {
+      triggerEl.classList.remove('active');
+      menuEl.classList.remove('menu-opening');
+      document.body.classList.remove('overflow-hidden-desktop');
+    } else {
+      triggerEl.classList.add('active');
+      menuEl.classList.add('menu-opening');
+      document.body.classList.add('overflow-hidden-desktop');
+    }
+  }
+
+  onTriggerHover(e) {
+    if( window.innerWidth > 780 ){ 
+      const menuEl = document.getElementById('megamenu-drawer');
+      e.target.parentNode.setAttribute('open','true');
+      e.target.closest('ul').querySelectorAll('details').forEach(function(details){
+        if ( !details.isEqualNode(e.target.parentNode) ) {
+          details.removeAttribute('open')
+        }
+      });
+      if (e.target.classList.contains('megamenu-banner_trigger')) {
+        if (!e.target.parentNode.classList.contains('megamenu-drawer__opened')) {
+          e.target.closest('ul').querySelectorAll('details').forEach(function(details){
+            details.classList.remove('megamenu-drawer__opened');
+          });
+          e.target.parentNode.classList.add('megamenu-drawer__opened');
+        }
+        if (!menuEl.classList.contains('megamenu-expanded')) {
+          menuEl.classList.add('megamenu-expanded'); 
+        }
+      }
+    } 
+  }
+
+  onLinkHover(e) {
+    if( window.innerWidth > 780 ){ 
+      e.target.closest('ul').querySelectorAll('details').forEach(function(details){
+        details.removeAttribute('open')
+      });
+    } 
+  }
+
+  onSummaryClick(event) {
+    const summaryElement = event.currentTarget;
+    const detailsElement = summaryElement.parentNode;
+    const parentMenuElement = detailsElement.closest('.has-submenu');
+    const isOpen = detailsElement.hasAttribute('open');
+
+    if (detailsElement === this.mainDetailsToggle) {
+      if (isOpen) event.preventDefault();
+      isOpen ? this.closeMenuDrawer(event, summaryElement) : this.openMenuDrawer(summaryElement);
+
+      if (window.matchMedia('(max-width: 990px)')) {
+        document.documentElement.style.setProperty('--viewport-height', `${window.innerHeight}px`);
+      }
+    } else {
+      setTimeout(() => {
+        detailsElement.classList.add('menu-opening');
+        summaryElement.setAttribute('aria-expanded', true);
+        parentMenuElement && parentMenuElement.classList.add('submenu-open');
+      }, 100);
+    }
+  }
+
+  onCloseButtonClick(event) {
+    const detailsElement = event.currentTarget.closest('details');
+    this.closeSubmenu(detailsElement);
+  }
+
+  closeMenuDrawer(event, elementToFocus = false) { console.log('test 4');
+    if (event === undefined) return;
+
+    this.mainDetailsToggle.classList.remove('menu-opening');
+    this.mainDetailsToggle.querySelectorAll('details').forEach((details) => {
+      details.removeAttribute('open');
+      details.classList.remove('menu-opening');
+    });
+    this.mainDetailsToggle.querySelectorAll('.submenu-open').forEach((submenu) => {
+      submenu.classList.remove('submenu-open');
+    });
+    document.body.classList.remove(`overflow-hidden-${this.dataset.breakpoint}`);
+    removeTrapFocus(elementToFocus);
+    //this.closeAnimation(this.mainDetailsToggle);
+
+    if (event instanceof KeyboardEvent) elementToFocus?.setAttribute('aria-expanded', false);
+  }
+
+  openMenuDrawer(summaryElement) {
+    setTimeout(() => {
+      this.mainDetailsToggle.classList.add('menu-opening');
+    });
+    summaryElement.setAttribute('aria-expanded', true);
+    trapFocus(this.mainDetailsToggle, summaryElement);
+    document.body.classList.add(`overflow-hidden-${this.dataset.breakpoint}`);
+  }
+
+  closeSubmenu(detailsElement) {
+    const parentMenuElement = detailsElement.closest('.submenu-open');
+    parentMenuElement && parentMenuElement.classList.remove('submenu-open');
+    detailsElement.classList.remove('menu-opening');
+    detailsElement.querySelector('summary').setAttribute('aria-expanded', false);
+    removeTrapFocus(detailsElement.querySelector('summary'));
+    //this.closeAnimation(detailsElement);
+  }
+
+}
+
+customElements.define('header-megamenu-drawer', HeaderMegamenuDrawer);
 
 class ModalDialog extends HTMLElement {
   constructor() {

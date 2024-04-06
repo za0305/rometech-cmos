@@ -141,6 +141,10 @@
   flex-grow: 1;
 }
 
+.card--media .card__inner .card__content.card__content-aditional {
+  padding: 40px 0 20px;
+}
+
 .card__content--auto-margins {
   grid-template-rows: minmax(0, auto) max-content minmax(0, auto);
 }
@@ -180,6 +184,12 @@
 
 .card__badge.right {
   justify-self: flex-end;
+}
+
+.card__wishlist {
+  position: absolute;
+  top: 15px;
+  right: 15px;
 }
 
 .card:not(.card--horizontal) > .card__content > .card__badge {

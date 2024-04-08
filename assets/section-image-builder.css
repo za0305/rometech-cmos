@@ -136,7 +136,7 @@
 }
 
 .builder__box-item.active {
-  border-color: var(--color-accent);
+  border-color: rgb(var(--color-accent)); 
 }
 
 .builder__box-item-image {
@@ -202,7 +202,7 @@
 }
 
 .builder_step-item.active {
-  border-color: var(--color-accent);
+  border-color: rgb(var(--color-accent)); 
 }
 
 .builder_step-item img {
@@ -359,7 +359,7 @@
   flex-grow: 1;
   height: 22px;
   opacity: 0.5;
-  background-color: var(--color-accent);
+  background-color: rgb(var(--color-accent)); 
   font-size: 20px;
   line-height: 22px;
 }

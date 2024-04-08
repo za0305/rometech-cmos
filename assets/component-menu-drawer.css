@@ -117,7 +117,7 @@ header-megamenu-drawer .megamenu-drawer__first-items > .menu-drawer__menu-item::
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: var(--color-accent);
+  background-color: rgb(var(--color-accent)); 
   border-radius: 0 30px 30px 0;
   z-index: -1;
   transition: all 0.3s ease;
@@ -165,7 +165,7 @@ header-megamenu-drawer .menu-drawer__close-button:before {
   top: 0;
   left: 0;
   bottom: 0;
-  background-color: var(--color-accent);
+  background-color: rgb(var(--color-accent)); 
   border-radius: 0 30px 30px 0;
   z-index: -1;
   transition: all 0.3s ease;
@@ -350,7 +350,7 @@ header-megamenu-drawer .menu-drawer__close-button:hover:before {
   left: 0;
   width: 4px;
   border-radius: 0 114px 114px 0;
-  background-color: var(--color-accent);
+  background-color: rgb(var(--color-accent)); 
   transition: all 0.3s linear;
   z-index: -1;
 }

@@ -93,7 +93,7 @@
         --color-badge-border: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
         --payment-terms-background-color: rgb({{ scheme.settings.background.rgb }});
         --color-text-accent: rgb({{ scheme.settings.text_accent.rgb }});
-        --color-accent: rgb({{ scheme.settings.accented.rgb }});
+        --color-accent: {{ scheme.settings.accented.red }},{{ scheme.settings.accented.green }},{{ scheme.settings.accented.blue }};
       }
       {% endfor %}
 
@@ -368,5 +368,7 @@
       <script src="{{ 'cursor.js' | asset_url }}" defer="defer"></script>
       {{ 'cursor.css' | asset_url | stylesheet_tag }}
     {%- endif -%}
+
+    {% render 'wishlist-app' %}
   </body>
 </html>

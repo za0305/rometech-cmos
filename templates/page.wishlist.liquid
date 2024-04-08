@@ -1,0 +1,14 @@
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+
+<div class="page-width">
+  <h1 class="main-page-title page-title h0">
+    {{ page.title | escape }}
+  </h1>
+  {%- if page.content != blank -%}
+    <div class="rte">
+      {{ page.content }}
+    </div>
+  {%- endif -%}
+  {% render 'wishlist-page' %}
+</div>
+

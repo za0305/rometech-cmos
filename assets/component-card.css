@@ -186,10 +186,19 @@
   justify-self: flex-end;
 }
 
+.card__badge .badge {
+  
+}
+
 .card__wishlist {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 10px;
+  right: 2px;
+  z-index: 3;
+}
+
+.card__wishlist .wishlist-button .wk-text {
+  display: none;
 }
 
 .card:not(.card--horizontal) > .card__content > .card__badge {

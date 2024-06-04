@@ -5,3 +5,34 @@
 .related-products__heading {
   margin: 0 0 3rem;
 }
+
+.related-products .slider-buttons {
+  width: 150px;
+  position: absolute;
+  left: auto;
+  right: 25px;
+  top: -55px;
+  justify-content: space-between;
+}
+
+.related-products .slider-button svg {
+  width: 10px;
+}
+
+@media screen and (min-width: 1200px) {
+  .related-products ul.contains-card--product {
+    min-height: 580px;
+    padding: 0 15px;
+  }
+  .related-products .slider-buttons {
+    width: auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    margin-top: -22px;
+    justify-content: space-between;
+  }
+  .related-products .slider-button svg {
+    width: 21px;
+  }
+}

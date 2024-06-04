@@ -114,14 +114,15 @@
       or predictive_search.resources.articles.size > 0
       or predictive_search.resources.pages.size > 0
     -%}
-      <div class="predictive-search__result-group">
+      <div class="predictive-search__result-group predictive-search__result-group-products">
         {%- if predictive_search.resources.products.size > 0 -%}
           <div>
             <h2
               id="predictive-search-products"
               class="predictive-search__heading text-body caption-with-letter-spacing"
             >
-              {{- 'templates.search.products' | t -}}
+              Search results
+              {% comment %} {{- 'templates.search.products' | t -}} {% endcomment %}
             </h2>
             <ul
               id="predictive-search-results-products-list"
@@ -132,7 +133,7 @@
               {%- for product in predictive_search.resources.products -%}
                 <li
                   id="predictive-search-option-product-{{ forloop.index }}"
-                  class="predictive-search__list-item"
+                  class="predictive-search__list-item predictive-search__item-product"
                   role="option"
                   aria-selected="false"
                 >
@@ -151,13 +152,20 @@
                       >
                     {%- endif -%}
                     <div class="predictive-search__item-content{% unless settings.predictive_search_show_vendor or settings.predictive_search_show_price %} predictive-search__item-content--centered{% endunless %}">
-                      {%- if settings.predictive_search_show_vendor -%}
-                        <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
-                        <div class="predictive-search__item-vendor caption-with-letter-spacing">
-                          {{ product.vendor }}
-                        </div>
-                      {%- endif -%}
-                      <p class="predictive-search__item-heading h5">{{ product.title }}</p>
+                      <div class="predictive-search__item-info">
+                        {%- if settings.predictive_search_show_vendor -%}
+                          <span class="visually-hidden">{{ 'accessibility.vendor' | t }}</span>
+                          <div class="predictive-search__item-vendor caption-with-letter-spacing">
+                            {{ product.vendor }}
+                          </div>
+                        {%- endif -%}
+                        <p class="predictive-search__item-heading h5">{{ product.title }}</p>
+                        {%- if product.type != blank -%}
+                          <div class="predictive-search__item-type">
+                            {{ product.type }}
+                          </div>
+                        {%- endif -%}
+                      </div>
                       {%- if settings.predictive_search_show_price -%}
                         {% render 'price', product: product, use_variant: true, show_badges: false %}
                       {%- endif -%}
@@ -223,15 +231,16 @@
 
     <div id="predictive-search-option-search-keywords" class="predictive-search__search-for-button">
       <button
-        class="predictive-search__item predictive-search__item--term link link--text h5 animate-arrow"
+        class="predictive-search__item predictive-search__item-button predictive-search__item--term link link--text h5 animate-arrow"
         tabindex="-1"
         role="option"
         aria-selected="false"
       >
-        <span data-predictive-search-search-for-text>
+        {% comment %} <span data-predictive-search-search-for-text>
           {{- 'templates.search.search_for' | t: terms: predictive_search.terms -}}
         </span>
-        {% render 'icon-arrow' %}
+        {% render 'icon-arrow' %} {% endcomment %}
+        Show all result
       </button>
     </div>
   </div>

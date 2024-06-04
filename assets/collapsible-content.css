@@ -48,7 +48,7 @@
   margin: 0 auto;
   padding-right: 1.5rem;
   padding-left: 1.5rem;
-  max-width: 73.4rem;
+  max-width: 128rem;
 }
 
 .collapsible-content__header {
@@ -109,6 +109,21 @@
   text-underline-offset: 0.3rem;
 }
 
+.collapsible-content .icon-plus,
+.collapsible-content .icon-minus {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  right: 1.5rem;
+  top: calc(50% - 1rem);
+}
+
+.collapsible-content .icon-minus {
+  opacity: 0.5;
+  display: none;
+}
+
+
 /* check for flexbox gap in older Safari versions */
 @supports not (inset: 10px) {
   @media screen and (min-width: 750px) {
@@ -124,5 +139,23 @@
     .collapsible-content__grid--reverse .collapsible-content__grid-item {
       padding-left: 7rem;
     }
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .collapsible-content .icon-plus,
+  .collapsible-content .icon-minus {
+    width: 24px;
+    height: 24px;
+    top: calc(50% - 1.2rem);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .collapsible-content .icon-plus,
+  .collapsible-content .icon-minus {
+    width: 30px;
+    height: 30px;
+    top: calc(50% - 1.5rem);
   }
 }

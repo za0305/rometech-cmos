@@ -536,7 +536,7 @@ class HeaderMegamenuDrawer extends HTMLElement {
     this.bindEvents();
   }
 
-  bindEvents() {console.log('test444',this);
+  bindEvents() {
     const self = this;
     
     self.querySelector('.header__megamenu-trigger').addEventListener('click', self.onTriggerClick.bind(self));
@@ -628,7 +628,7 @@ class HeaderMegamenuDrawer extends HTMLElement {
     this.closeSubmenu(detailsElement);
   }
 
-  closeMenuDrawer(event, elementToFocus = false) { console.log('test 4');
+  closeMenuDrawer(event, elementToFocus = false) { 
     if (event === undefined) return;
 
     this.mainDetailsToggle.classList.remove('menu-opening');
@@ -727,6 +727,35 @@ class ModalOpener extends HTMLElement {
 }
 customElements.define('modal-opener', ModalOpener);
 
+class PopupContent extends HTMLElement {
+  constructor() {
+    super();
+    const trigger = this.querySelector('summary');
+    if (!trigger) return;
+    trigger.addEventListener('click', this.openPopup.bind(this));
+    const closeTrigger = this.querySelector('.button-close');
+    if (!closeTrigger) return;
+    closeTrigger.addEventListener('click', this.closePopup.bind(this));
+    const closeCover = this.querySelector('.article-content__cover');
+    if (!closeCover) return;
+    closeCover.addEventListener('click', this.closePopup.bind(this));
+  }
+
+  openPopup(){
+    if ( this.querySelector('details').hasAttribute('open') ){
+      document.body.classList.remove('overflow-hidden');
+    } else {
+      document.body.classList.add('overflow-hidden');
+    }
+  }
+
+  closePopup(){
+    this.querySelector('details').removeAttribute('open');
+    document.body.classList.remove('overflow-hidden');
+  }
+}
+customElements.define('popup-content', PopupContent);
+
 class DeferredMedia extends HTMLElement {
   constructor() {
     super();
@@ -764,8 +793,13 @@ class SliderComponent extends HTMLElement {
     this.pageTotalElement = this.querySelector('.slider-counter--total');
     this.prevButton = this.querySelector('button[name="previous"]');
     this.nextButton = this.querySelector('button[name="next"]');
+    this.isThumbnails = false;
 
     if (!this.slider || !this.nextButton) return;
+
+    if (this.slider.classList.contains('thumbnail-list')) {
+      this.isThumbnails = true;
+    }
 
     this.initPages();
     const resizeObserver = new ResizeObserver((entries) => this.initPages());
@@ -776,15 +810,34 @@ class SliderComponent extends HTMLElement {
     this.nextButton.addEventListener('click', this.onButtonClick.bind(this));
   }
 
-  initPages() {
-    this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientWidth > 0);
-    if (this.sliderItemsToShow.length < 2) return;
-    this.sliderItemOffset = this.sliderItemsToShow[1].offsetLeft - this.sliderItemsToShow[0].offsetLeft;
-    this.slidesPerPage = Math.floor(
-      (this.slider.clientWidth - this.sliderItemsToShow[0].offsetLeft) / this.sliderItemOffset
-    );
+  initPages() { 
+    if (this.isThumbnails){
+      if(window.innerWidth >= 1200){
+        this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientHeight > 0);
+        if (this.sliderItemsToShow.length < 2) return;
+        this.sliderItemOffset = this.sliderItemsToShow[1].offsetTop - this.sliderItemsToShow[0].offsetTop;
+        this.slidesPerPage = Math.floor(
+          (this.slider.clientHeight - this.sliderItemsToShow[0].offsetTop) / this.sliderItemOffset
+        );
+      } else {
+        this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientWidth > 0);
+        if (this.sliderItemsToShow.length < 2) return;
+        this.sliderItemOffset = this.sliderItemsToShow[1].offsetLeft - this.sliderItemsToShow[0].offsetLeft;
+        this.slidesPerPage = Math.floor(
+          (this.slider.clientWidth - this.sliderItemsToShow[0].offsetLeft) / this.sliderItemOffset
+        );
+      }
+
+    } else {
+      this.sliderItemsToShow = Array.from(this.sliderItems).filter((element) => element.clientWidth > 0);
+      if (this.sliderItemsToShow.length < 2) return;
+      this.sliderItemOffset = this.sliderItemsToShow[1].offsetLeft - this.sliderItemsToShow[0].offsetLeft;
+      this.slidesPerPage = Math.floor(
+        (this.slider.clientWidth - this.sliderItemsToShow[0].offsetLeft) / this.sliderItemOffset
+      );
+    }
     this.totalPages = this.sliderItemsToShow.length - this.slidesPerPage + 1;
-    this.update();
+    this.update(); 
   }
 
   resetPages() {
@@ -798,7 +851,15 @@ class SliderComponent extends HTMLElement {
     if (!this.slider || !this.nextButton) return;
 
     const previousPage = this.currentPage;
-    this.currentPage = Math.round(this.slider.scrollLeft / this.sliderItemOffset) + 1;
+    if (this.isThumbnails){
+      if(window.innerWidth >= 1200){
+        this.currentPage = Math.round(this.slider.scrollTop / this.sliderItemOffset) + 1;
+      } else {
+        this.currentPage = Math.round(this.slider.scrollLeft / this.sliderItemOffset) + 1;
+      }
+    } else {
+      this.currentPage = Math.round(this.slider.scrollLeft / this.sliderItemOffset) + 1;
+    }
 
     if (this.currentPageElement && this.pageTotalElement) {
       this.currentPageElement.textContent = this.currentPage;
@@ -818,10 +879,26 @@ class SliderComponent extends HTMLElement {
 
     if (this.enableSliderLooping) return;
 
-    if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft === 0) {
-      this.prevButton.setAttribute('disabled', 'disabled');
+    if (this.isThumbnails){
+      if(window.innerWidth >= 1200){
+        if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollTop === 0) {
+          this.prevButton.setAttribute('disabled', 'disabled');
+        } else {
+          this.prevButton.removeAttribute('disabled');
+        }
+      } else {
+        if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft === 0) {
+          this.prevButton.setAttribute('disabled', 'disabled');
+        } else {
+          this.prevButton.removeAttribute('disabled');
+        }
+      }
     } else {
-      this.prevButton.removeAttribute('disabled');
+      if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft === 0) {
+        this.prevButton.setAttribute('disabled', 'disabled');
+      } else {
+        this.prevButton.removeAttribute('disabled');
+      }
     }
 
     if (this.isSlideVisible(this.sliderItemsToShow[this.sliderItemsToShow.length - 1])) {
@@ -832,24 +909,60 @@ class SliderComponent extends HTMLElement {
   }
 
   isSlideVisible(element, offset = 0) {
-    const lastVisibleSlide = this.slider.clientWidth + this.slider.scrollLeft - offset;
-    return element.offsetLeft + element.clientWidth <= lastVisibleSlide && element.offsetLeft >= this.slider.scrollLeft;
+    if (this.isThumbnails){
+      if(window.innerWidth >= 1200){
+        const lastVisibleSlide = this.slider.clientHeight + this.slider.scrollTop - offset;
+        return element.offsetTop + element.clientHeight <= lastVisibleSlide && element.offsetTop >= this.slider.scrollTop;
+      } else {
+        const lastVisibleSlide = this.slider.clientWidth + this.slider.scrollLeft - offset;
+        return element.offsetLeft + element.clientWidth <= lastVisibleSlide && element.offsetLeft >= this.slider.scrollLeft;
+      }
+    } else {
+      const lastVisibleSlide = this.slider.clientWidth + this.slider.scrollLeft - offset;
+      return element.offsetLeft + element.clientWidth <= lastVisibleSlide && element.offsetLeft >= this.slider.scrollLeft;
+    }
   }
 
-  onButtonClick(event) {
+  onButtonClick(event) { 
     event.preventDefault();
     const step = event.currentTarget.dataset.step || 1;
-    this.slideScrollPosition =
+    if (this.isThumbnails){
+      if(window.innerWidth >= 1200){
+        this.slideScrollPosition =
+          event.currentTarget.name === 'next'
+            ? this.slider.scrollTop + step * this.sliderItemOffset
+            : this.slider.scrollTop - step * this.sliderItemOffset;
+      } else {
+        this.slideScrollPosition =
+          event.currentTarget.name === 'next'
+            ? this.slider.scrollLeft + step * this.sliderItemOffset
+            : this.slider.scrollLeft - step * this.sliderItemOffset;
+      }
+    } else {
+      this.slideScrollPosition =
       event.currentTarget.name === 'next'
         ? this.slider.scrollLeft + step * this.sliderItemOffset
         : this.slider.scrollLeft - step * this.sliderItemOffset;
+    }
     this.setSlidePosition(this.slideScrollPosition);
   }
 
   setSlidePosition(position) {
-    this.slider.scrollTo({
-      left: position,
-    });
+    if (this.isThumbnails){
+      if(window.innerWidth >= 1200){
+        this.slider.scrollTo({
+          top: position,
+        });
+      } else {
+        this.slider.scrollTo({
+          left: position,
+        });
+      }
+    } else {
+      this.slider.scrollTo({
+        left: position,
+      });
+    }
   }
 }
 
@@ -860,6 +973,13 @@ class SlideshowComponent extends SliderComponent {
     super();
     this.sliderControlWrapper = this.querySelector('.slider-buttons');
     this.enableSliderLooping = true;
+
+    // dragging
+    this.enableisDragSlides = false;
+    this.dragIsDown = false;
+    this.dragStartX = 0;
+    this.dragScrollLeft = 0;
+
 
     if (!this.sliderControlWrapper) return;
 
@@ -874,6 +994,11 @@ class SlideshowComponent extends SliderComponent {
     this.sliderControlLinksArray.forEach((link) => link.addEventListener('click', this.linkToSlide.bind(this)));
     this.slider.addEventListener('scroll', this.setSlideVisibility.bind(this));
     this.setSlideVisibility();
+
+    // dragging
+    if (this.hasAttribute('dragging')) {
+      this.enableisDragSlides = true;
+    }
 
     if (this.announcementBarSlider) {
       this.announcementBarArrowButtonWasClicked = false;
@@ -895,6 +1020,14 @@ class SlideshowComponent extends SliderComponent {
     }
 
     if (this.slider.getAttribute('data-autoplay') === 'true') this.setAutoPlay();
+
+    // dragging
+    if (this.enableisDragSlides) { 
+      this.addEventListener('mousedown', this.dragStart.bind(this));
+      this.addEventListener('mousemove', this.dragging.bind(this));
+      this.addEventListener('mouseleave', this.dragStop.bind(this));
+      this.addEventListener('mouseup', this.dragStop.bind(this));
+    }
   }
 
   setAutoPlay() {
@@ -914,7 +1047,7 @@ class SlideshowComponent extends SliderComponent {
     }
   }
 
-  onButtonClick(event) {
+  onButtonClick(event) { 
     super.onButtonClick(event);
     this.wasClicked = true;
 
@@ -1084,6 +1217,27 @@ class SlideshowComponent extends SliderComponent {
     this.slider.scrollTo({
       left: slideScrollPosition,
     });
+  }
+
+  // dragging
+  dragStart(event) {
+    this.dragIsDown = true;
+    this.slider.classList.add('active');
+    this.dragStartX = event.pageX - this.slider.offsetLeft;
+    this.dragScrollLeft = this.slider.scrollLeft;
+  }
+
+  dragging(event) {
+    if (!this.dragIsDown) return;
+    event.preventDefault();
+    const x = event.pageX - this.slider.offsetLeft;
+    const walk = (x - this.dragStartX); //* 2; // Сила прокрутки
+    this.slider.scrollLeft = scrollLeft - walk;
+  }
+
+  dragStop(event) {
+    this.dragIsDown = false;
+    this.slider.classList.remove('active');
   }
 }
 
@@ -1416,3 +1570,36 @@ class ProductRecommendations extends HTMLElement {
 }
 
 customElements.define('product-recommendations', ProductRecommendations);
+
+
+function smoothScroll(event) {
+  event.preventDefault();
+  
+  var targetId = event.currentTarget.getAttribute("href").substring(1);
+  var targetElement = document.getElementById(targetId);
+  if (!targetElement) return;
+
+  var targetPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+  var startPosition = window.scrollY;
+  var distance = targetPosition - startPosition;
+  var duration = 1000; // Duration in ms
+  var startTime = null;
+
+  function animation(currentTime) {
+      if (startTime === null) startTime = currentTime;
+      var timeElapsed = currentTime - startTime;
+      var run = ease(timeElapsed, startPosition, distance, duration);
+      window.scrollTo(0, run);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+  }
+
+  function ease(t, b, c, d) {
+      t /= d / 2;
+      if (t < 1) return c / 2 * t * t + b;
+      t--;
+      return -c / 2 * (t * (t - 2) - 1) + b;
+  }
+
+  requestAnimationFrame(animation);
+}
+

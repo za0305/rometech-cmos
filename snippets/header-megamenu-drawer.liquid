@@ -62,8 +62,10 @@
                                           id="HeaderDrawer-{{ block.settings.name | handleize }}-{{ link.handle }}"
                                           class="menu-drawer__menu-item link link--text list-menu__item focus-inset megamenu-banner_trigger"
                                         >
-                                          {{ link.title | escape }}
-                                          {% render 'icon-caret' %}
+                                          <a href="{{ link.url }}" class="list-menu__item menu-item__mobile-nofollow">
+                                            {{ link.title | escape }}
+                                            {% render 'icon-caret' %}
+                                          </a>
                                         </summary>
                                         <div
                                           id="childlink-{{ link.handle | escape }}"

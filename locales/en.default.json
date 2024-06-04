@@ -13,11 +13,11 @@
     "social": {
       "alt_text": {
         "share_on_facebook": "Share on Facebook",
-        "share_on_twitter": "Tweet on Twitter",
+        "share_on_twitter": "Share on X",
         "share_on_pinterest": "Pin on Pinterest"
       },
       "links": {
-        "twitter": "Twitter",
+        "twitter": "X",
         "facebook": "Facebook",
         "pinterest": "Pinterest",
         "instagram": "Instagram",
@@ -246,11 +246,17 @@
     "contact": {
       "form": {
         "title": "Contact form",
-        "name": "Name",
+        "name": "First Name",
+        "name_placeholder": "Enter Name Here",
+        "last_name": "Last Name",
+        "last_name_placeholder": "Enter Name Here",
         "email": "Email",
+        "email_placeholder": "yourmail@mail.com",
         "phone": "Phone number",
-        "comment": "Comment",
-        "send": "Send",
+        "phone_placeholder": "___ - ___ - ____",
+        "comment": "Message",
+        "comment_placeholder": "Write your message...",
+        "send": "Send message",
         "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
         "error_heading": "Please adjust the following:"
       }
@@ -280,10 +286,11 @@
       "title": "Your cart",
       "caption": "Cart items",
       "remove_title": "Remove {{ title }}",
-      "estimated_total": "Estimated total",
+      "estimated_total": "Subtotal",
+      "grand_total": "Grand Total",
       "new_estimated_total": "New estimated total",
       "note": "Order special instructions",
-      "checkout": "Check out",
+      "checkout": "Checkout",
       "empty": "Your cart is empty",
       "cart_error": "There was an error while updating your cart. Please try again.",
       "cart_quantity_error_html": "You can only add {{ quantity }} of this item to your cart.",
@@ -292,7 +299,7 @@
       "taxes_included_and_shipping_policy_html": "Tax included. <a href=\"{{ link }}\">Shipping<\/a> and discounts calculated at checkout.",
       "taxes_and_shipping_at_checkout": "Taxes, discounts and shipping calculated at checkout",
       "headings": {
-        "product": "Product",
+        "product": "Cart items",
         "price": "Price",
         "total": "Total",
         "quantity": "Quantity",
@@ -313,7 +320,7 @@
       "onboarding_content": "Give your customers a summary of your blog post"
     },
     "featured_collection": {
-      "view_all": "View all",
+      "view_all": "See more",
       "view_all_label": "View all products in the {{ collection_name }} collection"
     },
     "collection_list": {
@@ -373,7 +380,7 @@
   },
   "customer": {
     "account": {
-      "title": "Account",
+      "title": "My account",
       "details": "Account details",
       "view_addresses": "View addresses",
       "return": "Return to Account details"
@@ -451,7 +458,7 @@
       "total_duties": "Duties"
     },
     "orders": {
-      "title": "Order history",
+      "title": "My Orders",
       "order_number": "Order",
       "order_number_link": "Order number {{ number }}",
       "date": "Date",

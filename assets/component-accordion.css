@@ -46,6 +46,14 @@
   transform: rotate(180deg);
 }
 
+.accordion details[open] > summary .icon-plus {
+  display: none;
+}
+
+.accordion details[open] > summary .icon-minus {
+  display: block;
+}
+
 .accordion__content {
   margin-bottom: 1.5rem;
   word-break: break-word;

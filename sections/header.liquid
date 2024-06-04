@@ -75,6 +75,8 @@
     display: flex;
     align-items: center;
     line-height: calc(1 + 0.3 / var(--font-body-scale));
+    text-decoration: none;
+    color: var(--color-background);
   }
 
   .list-menu__item--link {
@@ -94,7 +96,7 @@
 
 {%- style -%}
   .header {
-    padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 3rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 3rem;
+    padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 2rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 2rem;
   }
 
   .section-header {
@@ -386,15 +388,15 @@
                       {% render 'icon-orders' %}
                         My Orders
                       </a>
-                    </li>
-                    <li class="header__account-popup_item">
+                    </li> 
+                    {% comment %} <li class="header__account-popup_item">
                       <a href="/" class="header__account-popup_link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="27" height="17" viewBox="0 0 27 17" fill="none">
                           <path d="M1.33008 5.37838H20.0193C22.9523 5.37838 25.3301 7.75611 25.3301 10.6892C25.3301 13.6223 22.9523 16 20.0193 16H3.33008M1.33008 5.37838L5.83008 9.75676M1.33008 5.37838L5.83008 1" stroke="#333333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                         My Returns
                       </a>
-                    </li>
+                    </li> {% endcomment %}
                   </ul>
                   <a href="{{ routes.account_logout_url }}" class="header__account-popup_logout">
                     <svg xmlns="http://www.w3.org/2000/svg" width="29" height="26" viewBox="0 0 29 26" fill="none">
@@ -509,6 +511,7 @@
       this.header.classList.add('shopify-section-header-hidden', 'shopify-section-header-sticky');
       this.closeMenuDisclosure();
       this.closeSearchModal();
+      document.querySelector('cart-drawer').close();
     }
 
     reveal() {

@@ -1,5 +1,5 @@
 .instruction-index-section {
-  padding: 80px 0;
+  padding: 40px 0;
 }
 
 .shopify-section.instruction-index-section {
@@ -8,6 +8,7 @@
 
 .instruction-section {
   position: relative;
+  padding-bottom: 80px;
 }
 
 .instruction-section__media {
@@ -21,18 +22,13 @@
   background: transparent;
 }
 
-.instruction_container {
-  position: relative;
-  padding-left: 50%;
-
-}
 
 .instruction_container:before {
   content: '';
   display: block;
   position: absolute;
-  width: calc(100% - 8rem);
-  height: 170px;
+  width: calc(100% - 4rem);
+  height: 60px;
   left: 0;
   top: 0;
   background: rgb(0,224,79);
@@ -43,27 +39,22 @@
   content: '';
   display: block;
   position: absolute;
-  width: 8rem;
-  height: 170px;
+  width: 4rem;
+  height: 60px;
   right: 0;
   top: 0;
   background: rgba(251,188,5,0.51);
 }
 
 .instruction_video-container {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .instruction_video-inner {
-  width: 50%;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .instruction-caption-wrapper {
-  position: relative;
   z-index: 1;
   text-align: center;
 }
@@ -72,33 +63,49 @@
   content: '';
   display: block;
   position: absolute;
-  width: 39px;
-  height: 39px;
-  right: 10px;
-  top: 30px;
+  width: 13px;
+  height: 13px;
+  right: 33px;
+  top: 13px;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='39' height='40' viewBox='0 0 39 40' fill='none'%3e%3ccircle cx='19.3514' cy='20.1473' r='19.3514' fill='white'/%3e%3cpath d='M28.3816 20.1468H19.351M19.351 20.1468H10.3203M19.351 20.1468V29.1775M19.351 20.1468V11.1162' stroke='%2300E04F' stroke-width='3' stroke-linecap='round'/%3e%3c/svg%3e");
+  z-index: 1;
+  background-size: cover;
 }
 
 .instruction-caption-wrapper:after {
   content: '';
   display: block;
   position: absolute;
-  width: 39px;
-  height: 39px;
-  right: 10px;
-  top: 100px;
+  width: 13px;
+  height: 13px;
+  right: 33px;
+  top: 38px;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='39' height='40' viewBox='0 0 39 40' fill='none'%3e%3ccircle cx='19.3514' cy='19.8123' r='19.3514' fill='white'/%3e%3cpath d='M10.3203 19.8125H28.3816' stroke='%2300E04F' stroke-width='3' stroke-linecap='round'/%3e%3c/svg%3e");
+  z-index: 1;
+  background-size: cover;
 }
 
 
 .instruction-caption-wrapper .title {
   text-transform: uppercase;
-  margin-bottom: 30px;
-  padding: 30px 0;
+  margin-bottom: 35px;
+  padding-top: 5px;
+  font-size: 20px;
 }
 
 .instruction-caption-wrapper p {
   margin: 0;
+}
+
+.instruction-caption-wrapper .text {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 630px;
+  font-weight: 300;
+  line-height: 1.5;
 }
 
 .instruction-section__media.global-media-settings--full-width {
@@ -141,4 +148,87 @@
 
 .instruction_transparent {
   visibility: hidden;
+}
+
+@media screen and (min-width: 750px) {
+  .instruction-caption-wrapper .title {
+    font-size: 36px;
+    padding: 40px 0;
+    margin-bottom: 50px;
+  } 
+  .instruction-caption-wrapper:before {
+    width: 39px;
+    height: 39px;
+    right: 60px;
+    top: 30px;
+  }
+  .instruction-caption-wrapper:after {
+    width: 39px;
+    height: 39px;
+    right: 60px;
+    top: 100px;
+  }
+  .instruction_container:before {
+    width: calc(100% - 8rem);
+    height: 170px;
+  }
+  .instruction_container:after {
+    width: 8rem;
+    height: 170px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .instruction-index-section {
+    padding: 80px 0;
+  }
+  .instruction-section {
+    padding-bottom: 0;
+  }
+  .instruction_container {
+    padding-left: 50%;
+    position: relative;
+  }
+  .instruction-caption-wrapper {
+    position: relative;
+  }
+  .instruction-caption-wrapper:before,
+  .instruction-caption-wrapper:after {
+    right: 40px;
+  }
+  .instruction-caption-wrapper .title {
+    margin-bottom: 30px;
+    font-size: 40px;
+  } 
+  .instruction-caption-wrapper .text {
+    position: relative; 
+  }
+  .instruction_video-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .instruction_video-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .instruction_video-inner {
+    width: 50%;
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .instruction-index-section {
+    padding: 130px 0;
+  }
+  .instruction-caption-wrapper .title {
+    padding: 15px 0;
+    font-size: 54px;
+  }
 }

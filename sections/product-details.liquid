@@ -1,0 +1,69 @@
+{{ 'section-product-details.css' | asset_url | stylesheet_tag }}
+
+{%- if product -%}
+    <div class="color-{{ section.settings.color_scheme }} gradient">
+        <h2 class="product-details__title">Product Details</h2>
+        <div class="product-details__wrapper">
+            <div 
+                id="product-details__text" 
+                class="product-details__inner"
+            >
+                {{ product.description }}
+            </div>
+            <div class="product-details__action">
+                <button 
+                    id="product-details__show-more-btn" 
+                    class="button button--thin"
+                >
+                    read more
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const showMoreBtn = document.getElementById('product-details__show-more-btn');
+        const detailsText = document.getElementById('product-details__text');
+        const detailsHeight = detailsText.offsetHeight + detailsText.scrollHeight + 'px' || '1000px';
+
+        showMoreBtn.addEventListener('click', function() {
+            if (detailsText.classList.contains('expanded')) {
+                detailsText.classList.remove('expanded');
+                detailsText.style.maxHeight = '115px';
+                showMoreBtn.textContent = 'read more';
+            } else {
+                detailsText.classList.add('expanded');
+                detailsText.style.maxHeight = detailsHeight;
+                showMoreBtn.textContent = 'read less';
+            }
+        });
+    </script>
+
+{%- endif -%}
+
+
+{% schema %}
+{
+    "name": "Product Details",
+    "tag": "section",
+    "class": "section section-product-details",
+    "limit": 1,
+    "enabled_on": {
+        "templates": ["product"]
+    },
+    "settings": [
+        {
+            "type": "color_scheme",
+            "id": "color_scheme",
+            "label": "t:sections.all.colors.label",
+            "default": "scheme-1"
+        }
+    ],
+    "presets": [
+        {
+          "name": "Product Details"
+        }
+    ]
+}
+{% endschema %}
+    

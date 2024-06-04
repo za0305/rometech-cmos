@@ -47,7 +47,11 @@ if (!customElements.get('media-gallery')) {
         this.preventStickyHeader();
         window.setTimeout(() => {
           if (this.elements.thumbnails) {
-            activeMedia.parentElement.scrollTo({ left: activeMedia.offsetLeft });
+            if (window.innerWidth >= 1200) { console.log('test preventStickyHeader',activeMedia.offsetTop);
+              activeMedia.parentElement.scrollTo({ top: activeMedia.offsetTop }); // Change to vertical scrolling
+            } else {
+              activeMedia.parentElement.scrollTo({ left: activeMedia.offsetLeft });
+            }
           }
           if (!this.elements.thumbnails || this.dataset.desktopLayout === 'stacked') {
             activeMedia.scrollIntoView({ behavior: 'smooth' });
@@ -70,7 +74,11 @@ if (!customElements.get('media-gallery')) {
         thumbnail.querySelector('button').setAttribute('aria-current', true);
         if (this.elements.thumbnails.isSlideVisible(thumbnail, 10)) return;
 
-        this.elements.thumbnails.slider.scrollTo({ left: thumbnail.offsetLeft });
+        if (window.innerWidth >= 1200) { console.log('test setActiveThumbnail',thumbnail.offsetTop);
+          this.elements.thumbnails.slider.scrollTo({ top: thumbnail.offsetTop }); // Change to vertical scrolling
+        } else {
+          this.elements.thumbnails.slider.scrollTo({ left: thumbnail.offsetLeft });
+        }
       }
 
       announceLiveRegion(activeItem, position) {

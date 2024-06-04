@@ -1,0 +1,34 @@
+.policies__navigation {
+    padding: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-bottom: 1px solid rgba(var(--color-foreground),0.3);
+    
+    position: sticky;
+    top: 0;
+    background: #fff;
+}
+.policies__navigation__item {
+    padding: 5px 10px;
+    font-family: var(--font-heading-family);
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground));
+}
+.policies__navigation__item:hover {
+    opacity: 0.5;
+    text-decoration: none;
+}
+.policies__blocks {
+    max-width: 128rem;
+    margin: auto;
+}
+.policies__paragraph {
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+.policies__heading {
+    text-align: center;
+}

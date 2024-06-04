@@ -84,6 +84,7 @@ header-megamenu-drawer .menu-drawer__menu {
   width: 100%;
   max-height: 70vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 header-megamenu-drawer .menu-drawer__menu-item {
@@ -107,6 +108,14 @@ header-megamenu-drawer .menu-drawer__menu-item {
 header-megamenu-drawer .menu-drawer__menu-item .icon {
   right: 8px;
   transform: rotate(-90deg);
+}
+
+header-megamenu-drawer .megamenu-drawer__first-items > .menu-drawer__menu-item {
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 46px;
+  display: inline-flex;
+  line-height: 1.1; 
 }
 
 header-megamenu-drawer .megamenu-drawer__first-items > .menu-drawer__menu-item::before {
@@ -135,6 +144,9 @@ header-megamenu-drawer .megamenu-drawer__first-items > .menu-drawer__menu-item:h
   header-megamenu-drawer .menu-drawer__menu-item {
     margin-bottom: 15px;
   }
+  .menu-item__mobile-nofollow {
+    pointer-events: none;
+  }
 }
 
 header-megamenu-drawer .menu-drawer__submenu {
@@ -155,6 +167,8 @@ header-megamenu-drawer .menu-drawer__close-button {
 
 header-megamenu-drawer .menu-drawer__close-button .icon {
   transform: rotate(90deg);
+  top: -2px;
+  position: relative;
 }
 
 header-megamenu-drawer .menu-drawer__close-button:before {

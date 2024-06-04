@@ -1,0 +1,140 @@
+{%- unless template.name == 'index' -%}
+    <style>
+        .section-breadcrumbs {
+            position: relative;
+            top: 30px;
+        }
+        .breadcrumbs__list {
+            margin: 1.5rem 0;
+            padding: 0 1.5rem;
+            display: flex;
+            list-style: none;
+        }
+        .breadcrumbs__link {
+            text-decoration: none;
+            color: #333;
+        }
+        .breadcrumbs__link-home svg {
+            position: relative;
+            top: 3px;
+        }
+        @media screen and (min-width: 750px) {
+            .section-breadcrumbs {
+                position: relative;
+                top: 60px;
+            }
+        }
+    </style>
+
+    <nav class="breadcrumbs" role="navigation" aria-label="breadcrumbs">
+        <ul class="breadcrumbs__list">
+            <li class="breadcrumbs__item">
+                <a href="{{ routes.root_url }}" class="breadcrumbs__link breadcrumbs__link-home" title="Home">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7.43117 6.02673L6.75154 5.29318L7.43117 6.02673ZM9.30653 4.60538L9.60324 5.56035L9.30653 4.60538ZM12.5688 6.02673L11.8892 6.76029L12.5688 6.02673ZM10.6935 4.60538L10.3968 5.56035L10.6935 4.60538ZM5.31042 15.7307L4.84592 16.6163H4.84592L5.31042 15.7307ZM4.26158 14.651L3.36536 15.0946L4.26158 14.651ZM15.7384 14.651L16.6346 15.0946L15.7384 14.651ZM14.6896 15.7307L15.1541 16.6163L14.6896 15.7307ZM15.9246 9.69145L16.8948 9.44939L15.9246 9.69145ZM14.7288 8.02796L15.4085 7.29441L14.7288 8.02796ZM15.5988 8.93848L16.4389 8.39608L15.5988 8.93848ZM4.07544 9.69145L3.10518 9.44939L4.07544 9.69145ZM5.27118 8.02796L4.59154 7.29441L5.27118 8.02796ZM4.4012 8.93848L3.56107 8.39608H3.56107L4.4012 8.93848ZM10.8882 11.5513L10.6294 12.5172L10.8882 11.5513ZM11.9489 12.612L12.9148 12.3531V12.3531L11.9489 12.612ZM9.11177 11.5513L8.85295 10.5854L9.11177 11.5513ZM8.05111 12.612L7.08519 12.3531H7.08519L8.05111 12.612ZM15 10.9662V12.047H17V10.9662H15ZM12.16 15H7.84V17H12.16V15ZM5 12.047V10.9662H3V12.047H5ZM5.95081 8.76151L8.11081 6.76029L6.75154 5.29318L4.59154 7.29441L5.95081 8.76151ZM11.8892 6.76029L14.0492 8.76151L15.4085 7.29441L13.2485 5.29318L11.8892 6.76029ZM8.11081 6.76029C8.57632 6.32899 8.88375 6.04514 9.13707 5.84481C9.3811 5.65185 9.51188 5.58874 9.60324 5.56035L9.00982 3.65042C8.58775 3.78156 8.23484 4.00851 7.89653 4.27603C7.56753 4.5362 7.19399 4.88326 6.75154 5.29318L8.11081 6.76029ZM13.2485 5.29318C12.806 4.88325 12.4325 4.5362 12.1035 4.27603C11.7652 4.00851 11.4122 3.78156 10.9902 3.65042L10.3968 5.56035C10.4881 5.58874 10.6189 5.65185 10.8629 5.84481C11.1163 6.04513 11.4237 6.32899 11.8892 6.76029L13.2485 5.29318ZM9.60324 5.56035C9.86223 5.47988 10.1378 5.47988 10.3968 5.56035L10.9902 3.65042C10.3447 3.44986 9.65531 3.44986 9.00982 3.65042L9.60324 5.56035ZM7.84 15C7.15096 15 6.69607 14.9992 6.3475 14.9699C6.01148 14.9416 5.86463 14.8922 5.77493 14.8451L4.84592 16.6163C5.26961 16.8385 5.71548 16.9238 6.17987 16.9628C6.6317 17.0008 7.18492 17 7.84 17V15ZM3 12.047C3 12.7228 2.99927 13.2881 3.03583 13.7488C3.07326 14.2204 3.15444 14.6685 3.36536 15.0946L5.15781 14.2074C5.10714 14.105 5.05753 13.9429 5.02956 13.5906C5.00073 13.2273 5 12.7548 5 12.047H3ZM5.77493 14.8451C5.51372 14.7081 5.29599 14.4866 5.15781 14.2074L3.36536 15.0946C3.68737 15.7452 4.20395 16.2796 4.84592 16.6163L5.77493 14.8451ZM15 12.047C15 12.7548 14.9993 13.2273 14.9704 13.5906C14.9425 13.9429 14.8929 14.105 14.8422 14.2074L16.6346 15.0946C16.8456 14.6685 16.9267 14.2204 16.9642 13.7488C17.0007 13.2881 17 12.7228 17 12.047H15ZM12.16 17C12.8151 17 13.3683 17.0008 13.8201 16.9628C14.2845 16.9238 14.7304 16.8385 15.1541 16.6163L14.2251 14.8451C14.1354 14.8922 13.9885 14.9416 13.6525 14.9699C13.3039 14.9992 12.849 15 12.16 15V17ZM14.8422 14.2074C14.704 14.4866 14.4863 14.7081 14.2251 14.8451L15.1541 16.6163C15.796 16.2796 16.3126 15.7452 16.6346 15.0946L14.8422 14.2074ZM17 10.9662C17 10.368 17.007 9.89884 16.8948 9.44939L14.9543 9.93351C14.993 10.0888 15 10.268 15 10.9662H17ZM14.0492 8.76151C14.5543 9.2295 14.6749 9.35108 14.7587 9.48087L16.4389 8.39608C16.187 8.00585 15.8395 7.69376 15.4085 7.29441L14.0492 8.76151ZM16.8948 9.44939C16.8016 9.07557 16.6477 8.71946 16.4389 8.39608L14.7587 9.48087C14.8475 9.61838 14.9138 9.77134 14.9543 9.93351L16.8948 9.44939ZM5 10.9662C5 10.268 5.00695 10.0888 5.0457 9.93351L3.10518 9.44939C2.99305 9.89884 3 10.368 3 10.9662H5ZM4.59154 7.29441C4.16051 7.69376 3.81301 8.00585 3.56107 8.39608L5.24132 9.48087C5.32512 9.35108 5.44569 9.2295 5.95081 8.76151L4.59154 7.29441ZM5.0457 9.93351C5.08616 9.77134 5.15254 9.61838 5.24132 9.48087L3.56107 8.39608C3.35229 8.71946 3.19844 9.07557 3.10518 9.44939L5.0457 9.93351ZM11 13.5002V16.0002H13V13.5002H11ZM9 16.0002V13.5002H7V16.0002H9ZM10 12.5002C10.2416 12.5002 10.3894 12.5004 10.5014 12.5055C10.608 12.5104 10.6331 12.5182 10.6294 12.5172L11.147 10.5854C10.7971 10.4916 10.4006 10.5002 10 10.5002V12.5002ZM13 13.5002C13 13.0996 13.0086 12.7031 12.9148 12.3531L10.983 12.8708C10.982 12.867 10.9898 12.8921 10.9946 12.9988C10.9998 13.1108 11 13.2586 11 13.5002H13ZM10.6294 12.5172C10.802 12.5635 10.9367 12.6982 10.983 12.8708L12.9148 12.3531C12.6836 11.4904 12.0098 10.8165 11.147 10.5854L10.6294 12.5172ZM10 10.5002C9.5994 10.5002 9.20292 10.4916 8.85295 10.5854L9.37059 12.5172C9.36685 12.5182 9.39195 12.5104 9.49861 12.5055C9.61063 12.5004 9.75844 12.5002 10 12.5002V10.5002ZM9 13.5002C9 13.2586 9.00024 13.1108 9.00535 12.9988C9.01021 12.8921 9.01804 12.867 9.01704 12.8708L7.08519 12.3531C6.99141 12.7031 7 13.0996 7 13.5002H9ZM8.85295 10.5854C7.99022 10.8165 7.31635 11.4904 7.08519 12.3531L9.01704 12.8708C9.06327 12.6982 9.19804 12.5635 9.37059 12.5172L8.85295 10.5854Z" fill="#333333"/>
+                    </svg>
+                </a>  
+            </li>
+
+            {% if template contains 'page' %}
+                <li class="breadcrumbs__item">&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                        <path d="M1.1998 8.59961L4.79981 4.99961L1.1998 1.39961" stroke="#333333" stroke-opacity="0.65" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>&nbsp;
+                    {{ page.title | capitalize }}
+                </li>
+            {% elsif template contains 'product' %}
+                {%- if collection -%}
+                    <li class="breadcrumbs__item">&nbsp;
+                        <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                            <path d="M1.1998 8.59961L4.79981 4.99961L1.1998 1.39961" stroke="#333333" stroke-opacity="0.65" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>&nbsp;
+                        {{ collection.title | link_to: collection.url, class: 'breadcrumbs__link' }}
+                    </li>
+                {%- endif -%}
+                <li class="breadcrumbs__item">&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                        <path d="M1.1998 8.59961L4.79981 4.99961L1.1998 1.39961" stroke="#333333" stroke-opacity="0.65" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>&nbsp;
+                    {{ product.title }}
+                </li>
+    
+            {% elsif template contains 'collection' and collection.handle %}
+                {%- assign parrent_collection = collection.metafields.custom.parent_collection -%}
+                {%- if parrent_collection != blank -%}
+                    <li class="breadcrumbs__item">&nbsp;
+                        <a href="{{ parrent_collection.value.url }}" class="breadcrumbs__link" title="{{ parrent_collection.value.title }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                                <path d="M1.1998 8.59961L4.79981 4.99961L1.1998 1.39961" stroke="#333333" stroke-opacity="0.65" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>&nbsp;
+                            {{ parrent_collection.value.title }}
+                        </a>
+                    </li>
+                {%- endif -%}
+
+                <li class="breadcrumbs__item">&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                        <path d="M1.1998 8.59961L4.79981 4.99961L1.1998 1.39961" stroke="#333333" stroke-opacity="0.65" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>&nbsp;
+                    {{ collection.title }}
+                </li>
+        
+            {% elsif template == 'blog' %}
+                <li class="breadcrumbs__item">&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                        <path d="M1.1998 8.59961L4.79981 4.99961L1.1998 1.39961" stroke="#333333" stroke-opacity="0.65" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>&nbsp;
+                    {{ blog.title }}
+                </li>
+        
+            {% elsif template == 'article' %}
+                {%- if blog -%}
+                    <li class="breadcrumbs__item">&nbsp;
+                        <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                            <path d="M1.1998 8.59961L4.79981 4.99961L1.1998 1.39961" stroke="#333333" stroke-opacity="0.65" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>&nbsp;
+                        {{ blog.title | link_to: blog.url, class: 'breadcrumbs__link' }}
+                    </li>
+                {%- endif -%}
+                <li class="breadcrumbs__item">&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                        <path d="M1.1998 8.59961L4.79981 4.99961L1.1998 1.39961" stroke="#333333" stroke-opacity="0.65" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>&nbsp;
+                    {{ article.title }}
+                </li>
+        
+            {% else %}
+                <li class="breadcrumbs__item">&nbsp;
+                    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                        <path d="M1.1998 8.59961L4.79981 4.99961L1.1998 1.39961" stroke="#333333" stroke-opacity="0.65" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>&nbsp;
+                    {{ page_title }}
+                </li>
+        
+            {% endif %}
+        </ul>
+    </nav> 
+{%- endunless -%}
+
+{% schema %}
+{
+    "name": "Breadcrumbs",
+    "class": "section-breadcrumbs",
+    "enabled_on": {
+        "groups": ["header"]
+    },
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "breadcrumbs_in_homepage",
+            "default": false,
+            "label": "Show Breadcrumbs in homepage"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Breadcrumbs"
+        }
+    ]
+}
+{% endschema %}

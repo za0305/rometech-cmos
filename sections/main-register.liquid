@@ -50,6 +50,9 @@
       </ul>
     {%- endif -%}
     <div class="field">
+      <label for="RegisterForm-FirstName">
+        {{ 'customer.register.first_name' | t }}
+      </label>
       <input
         type="text"
         name="customer[first_name]"
@@ -60,11 +63,11 @@
         autocomplete="given-name"
         placeholder="{{ 'customer.register.first_name' | t }}"
       >
-      <label for="RegisterForm-FirstName">
-        {{ 'customer.register.first_name' | t }}
-      </label>
     </div>
     <div class="field">
+      <label for="RegisterForm-LastName">
+        {{ 'customer.register.last_name' | t }}
+      </label>
       <input
         type="text"
         name="customer[last_name]"
@@ -75,11 +78,11 @@
         autocomplete="family-name"
         placeholder="{{ 'customer.register.last_name' | t }}"
       >
-      <label for="RegisterForm-LastName">
-        {{ 'customer.register.last_name' | t }}
-      </label>
     </div>
     <div class="field">
+      <label for="RegisterForm-email">
+        {{ 'customer.register.email' | t }}
+      </label>
       <input
         type="email"
         name="customer[email]"
@@ -97,9 +100,6 @@
         {% endif %}
         placeholder="{{ 'customer.register.email' | t }}"
       >
-      <label for="RegisterForm-email">
-        {{ 'customer.register.email' | t }}
-      </label>
     </div>
     {%- if form.errors contains 'email' -%}
       <span id="RegisterForm-email-error" class="form__message">
@@ -111,6 +111,9 @@
       </span>
     {%- endif -%}
     <div class="field">
+      <label for="RegisterForm-password">
+        {{ 'customer.register.password' | t }}
+      </label>
       <input
         type="password"
         name="customer[password]"
@@ -122,9 +125,6 @@
         {% endif %}
         placeholder="{{ 'customer.register.password' | t }}"
       >
-      <label for="RegisterForm-password">
-        {{ 'customer.register.password' | t }}
-      </label>
     </div>
     {%- if form.errors contains 'password' -%}
       <span id="RegisterForm-password-error" class="form__message">
@@ -135,7 +135,7 @@
         {{ form.errors.messages.password }}.
       </span>
     {%- endif -%}
-    <button>
+    <button class="button">
       {{ 'customer.register.submit' | t }}
     </button>
   {%- endform -%}

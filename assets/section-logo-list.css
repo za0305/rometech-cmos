@@ -1,5 +1,12 @@
+.logo-list {
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
 .logo-list .title {
+  width: 100%;
   margin: 0;
+  text-align: center;
 }
 
 .logo-list.no-heading .title {
@@ -41,6 +48,11 @@
   margin-top: 1.5rem;
 }
 
+.logo-list .slider-button--next,
+.logo-list .slider-button--prev {
+  display: none;
+}
+
 @media screen and (min-width: 750px) {
   .logo-list .button {
     margin-top: 4rem;
@@ -63,7 +75,7 @@
 }
 
 .logo-list:not(.background-none) .logo-list-card {
-  background: rgb(var(--color-background));
+  /* background: rgb(var(--color-background)); */
   height: 100%;
 }
 

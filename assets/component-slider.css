@@ -19,7 +19,7 @@ slider-component.slider-component-full-width {
 
 @media screen and (min-width: 749px) and (max-width: 990px) {
   slider-component.page-width {
-    padding: 0 5rem;
+    padding: 0 2rem;
   }
 }
 
@@ -45,7 +45,7 @@ slider-component.slider-component-full-width {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    scroll-padding-left: 1.5rem;
+    scroll-padding-left: 0;
     -webkit-overflow-scrolling: touch;
     margin-bottom: 1rem;
   }
@@ -95,7 +95,6 @@ slider-component.slider-component-full-width {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    scroll-padding-left: 1.5rem;
     -webkit-overflow-scrolling: touch;
     margin-bottom: 1rem;
   }
@@ -128,14 +127,14 @@ slider-component.slider-component-full-width {
   flex-wrap: inherit;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   -webkit-overflow-scrolling: touch;
   margin-bottom: 1rem;
 }
 
 .slider.slider--everywhere .slider__slide {
   margin-bottom: 0;
-  scroll-snap-align: center;
+  scroll-snap-align: start;
 }
 
 @media screen and (min-width: 990px) {
@@ -151,7 +150,6 @@ slider-component.slider-component-full-width {
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     margin-bottom: 1rem;
-    scroll-padding-left: var(--desktop-margin-left-first-item);
   }
 
   /* Fix to show some space at the end of our sliders in all browsers */
@@ -192,7 +190,7 @@ slider-component.slider-component-full-width {
   }
 
   .slider--desktop.grid--4-col-desktop .grid__item {
-    width: calc((100% - var(--desktop-margin-left-first-item)) / 4 - var(--grid-desktop-horizontal-spacing) * 3);
+    width: calc(100% / 4 );
   }
 
   .slider--desktop.grid--3-col-desktop .grid__item {
@@ -219,6 +217,12 @@ slider-component.slider-component-full-width {
 @media (prefers-reduced-motion) {
   .slider {
     scroll-behavior: auto;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .slider--desktop {
+    scroll-padding-left: 1.5rem;
   }
 }
 

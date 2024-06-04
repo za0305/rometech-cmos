@@ -1,0 +1,265 @@
+{{ 'section-main-about.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="main-about page-width section-{{ section.id }}-padding">
+  <h1 class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    {%- if section.settings.title != blank -%}
+      {{ section.settings.title | escape }}
+    {%- else -%}
+      {{ page.title | escape }}
+    {%- endif -%}
+  </h1>
+
+  <div class="about-wrapper">
+    <popup-content
+      class="about-item about-item-info"
+      {% if settings.animations_reveal_on_scroll %}
+        data-cascade
+        style="--animation-order: 1;"
+      {% endif %}
+    >
+      <details class="about-card-wrapper card-wrapper">
+        <summary
+          class="card about-item__card"
+          aria-label="About-info"
+        >
+          <div class="about-item__inner color-{{ settings.blog_card_color_scheme }} gradient">
+            <h3 class="card__heading card__heading-info">{{ section.settings.info_text }}</h3>
+            {%- if section.settings.info_image -%}
+              {{
+                section.settings.info_image
+                | image_url: width: 447
+                | image_tag:
+                  width: 447,
+                  class: 'about-item-image'
+              }}
+            {%- endif -%}
+          </div>
+        </summary>
+        <div class="about-content" aria-label="About-info">
+          <div class="about-content__inner">
+            <button class="button-close" type="button" aria-label="Close">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M18.2526 1.73675L10.0031 9.98633M10.0031 9.98633L1.75348 18.2359M10.0031 9.98633L18.2526 18.2359M10.0031 9.98633L1.75348 1.73675" stroke="#333333" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div class="about-content__item">
+              <h2 class="about-content__title">{{ section.settings.info_text }}</h2>
+              <div class="about-content__container">
+                {{ page.content  }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </popup-content>
+    <popup-content
+      class="about-item about-item-team"
+      {% if settings.animations_reveal_on_scroll %}
+        data-cascade
+        style="--animation-order: 2;"
+      {% endif %}
+    >
+      <details class="about-card-wrapper card-wrapper">
+        <summary
+          class="card about-item__card"
+          aria-label="About-team"
+        >
+          <div class="about-item__inner color-{{ settings.blog_card_color_scheme }} gradient">
+            {%- if section.settings.team_image -%}
+              {{
+                section.settings.team_image
+                | image_url: width: 447
+                | image_tag:
+                  width: 447,
+                  class: 'about-item-image'
+              }}
+            {%- endif -%}
+            <h3 class="card__heading card__heading-team">{{ section.settings.team_text }}</h3>
+            <p class="about-item__inner-caption">{{ section.settings.team_caption }}</p>
+          </div>
+        </summary>
+        <div class="about-content" aria-label="About-team">
+          <div class="about-content__inner">
+            <button class="button-close" type="button" aria-label="Close">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M18.2526 1.73675L10.0031 9.98633M10.0031 9.98633L1.75348 18.2359M10.0031 9.98633L18.2526 18.2359M10.0031 9.98633L1.75348 1.73675" stroke="#333333" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div class="about-content__item">
+              {%- if section.settings.logo -%}
+                {{
+                  section.settings.logo
+                  | image_url: width: 451
+                  | image_tag:
+                    width: 451,
+                    class: 'about-content__logo'
+                }}
+              {%- endif -%}
+              <h2 class="about-content__title">{{ section.settings.team_popup_title }}</h2>
+              <div class="about-content__text">{{ section.settings.team_popup_text }}</div>
+              <div class="about-content__container about-content__container-members">
+                {%- for block in section.blocks -%}
+                  <div class="about-content__member">
+                    {%- if block.settings.image -%}
+                      {{
+                        block.settings.image
+                        | image_url: width: 282
+                        | image_tag:
+                          width: 282,
+                          class: 'about-item-image'
+                      }}
+                    {%- endif -%}
+                    <h5 class="about-content__member-name">{{ block.settings.name }}</h5>
+                    <p class="about-content__member-position">{{ block.settings.position }}</p>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </popup-content>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "About page",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "About Us",
+      "label": "Page title"
+    },
+    {
+      "type": "header",
+      "content": "About Us information"
+    },
+    {
+      "type": "text",
+      "id": "info_text",
+      "default": "WHY you must choose us.",
+      "label": "Information title"
+    },
+    {
+      "type": "image_picker",
+      "id": "info_image",
+      "label": "Information Image"
+    },
+    {
+      "type": "paragraph",
+      "content": "content from the page description"
+    },
+    {
+      "type": "header",
+      "content": "Our team"
+    },
+    {
+      "type": "text",
+      "id": "team_text",
+      "default": "Why you must choose us.",
+      "label": "Team title"
+    },
+    {
+      "type": "text",
+      "id": "team_caption",
+      "default": "Meet our team",
+      "label": "Team caption"
+    },
+    {
+      "type": "image_picker",
+      "id": "team_image",
+      "label": "Team Image"
+    },
+    {
+      "type": "paragraph",
+      "content": "popup content"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "text",
+      "id": "team_popup_title",
+      "default": "Our team",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "team_popup_text",
+      "label": "Text"
+    },
+    {
+      "type": "paragraph",
+      "content": "add a team member using block"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "member",
+      "name": "Team Member",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "text",
+          "id": "position",
+          "label": "Position"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

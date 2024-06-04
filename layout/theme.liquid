@@ -46,6 +46,7 @@
     %}
 
     {% style %}
+      {{ settings.type_body_font | font_modify: 'weight', '300'| font_face: font_display: 'swap' }}
       {{ settings.type_body_font | font_face: font_display: 'swap' }}
       {{ body_font_semibold | font_face: font_display: 'swap' }}
       {{ body_font_bold | font_face: font_display: 'swap' }} 
@@ -53,6 +54,7 @@
       {{ body_font_bold_italic | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_modify: 'weight', 'lighter' | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_modify: 'weight', '500' | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_modify: 'weight', '600' | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
 
       {% for scheme in settings.color_schemes -%}
@@ -370,5 +372,9 @@
     {%- endif -%}
 
     {% render 'wishlist-app' %}
+
+    {%- if settings.back_to_top -%}
+      {% render 'back-to-top-button' %}
+    {%- endif -%}
   </body>
 </html>

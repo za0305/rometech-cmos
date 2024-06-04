@@ -16,11 +16,10 @@
 {%- endstyle -%}
 
 {%- liquid
-  assign columns_mobile_int = section.settings.columns_mobile | plus: 0
   assign show_mobile_slider = true
 -%}
 
-<div class="logo-list color-{{ section.settings.color_scheme }}">
+<div class="logo-list color-{{ section.settings.color_scheme }}" {% if section.settings.image %}style="background-image:url({{ section.settings.image | image_url: width: 1920  }})"{% endif %}>
   <div class="page-width section-{{ section.id }}-padding isolate">
     {%- unless section.settings.title == blank -%}
       <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin">
@@ -29,9 +28,9 @@
         </h2>
       </div>
     {%- endunless -%}
-    <slider-component class="slider-mobile-gutter slider-component-desktop scroll-trigger animate--slide-in">
+    <slideshow-component class="slider-mobile-gutter slider-component-desktop" >
       <ul
-        class="logo-list-list contains-content-container grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop slider slider--everywhere"
+        class="logo-list-list contains-content-container grid grid--{{ section.settings.columns_desktop }}-col-desktop slider slider--everywhere"
         id="Slider-{{ section.id }}"
         role="list"
         aria-label="Slider"
@@ -44,7 +43,7 @@
 
           <li
             id="Slide-{{ section.id }}-{{ forloop.index }}"
-            class="logo-list-list__item grid__item slider__slide{% if section.settings.column_alignment == 'center' %} center{% endif %}{{ empty_column }}"
+            class="logo-list-list__item grid__item slideshow__slide{% if section.settings.column_alignment == 'center' %} center{% endif %}{{ empty_column }}"
             {{ block.shopify_attributes }}
           >
             <div class="logo-list-card content-container">
@@ -53,7 +52,7 @@
                 <a href="{{ block.settings.link }}" class="logo-list-card__image-wrapper logo-list-card__image-wrapper--full-width" role="link">
                   {%- liquid
                     assign number_of_columns = section.settings.columns_desktop
-                    assign number_of_columns_mobile = section.settings.columns_mobile
+                    assign number_of_columns_mobile = section.settings.columns_desktop
                     assign grid_space_desktop = number_of_columns | minus: 1 | times: settings.spacing_grid_horizontal | plus: 100 | append: 'px'
                     assign grid_space_tablet = number_of_columns_mobile | minus: 1 | times: settings.spacing_grid_horizontal | plus: 100 | append: 'px'
                     assign grid_space_mobile = number_of_columns_mobile | minus: 1 | times: settings.spacing_grid_horizontal | divided_by: 2 | plus: 30 | append: 'px'
@@ -77,8 +76,9 @@
         <div class="slider-counter slider-counter--dots">
    
             <div class="slideshow__control-wrapper">
-              {%- for i in (1..section.blocks.size) -%}
-                <button class="slider-counter__link slider-counter__link--dots link" aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}" aria-controls="Slider-{{ block.id }}">
+              {%- assign controls = section.blocks.size |  minus: section.settings.columns_desktop | plus: 1 -%}
+              {%- for i in (1..controls) -%}
+                <button class="slider-counter__link slider-counter__link--dots link" aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}" aria-controls="Slider-{{ section.id }}">
                   <span class="dot"></span>
                 </button>
               {%- endfor -%}
@@ -88,7 +88,7 @@
         <button type="button" class="slider-button slider-button--next" name="next" aria-label="{{ 'general.slider.next_slide' | t }}">{% render 'icon-caret' %}</button>
       </div>
       {% comment %}  {% endcomment %}
-    </slider-component>
+    </slideshow-component> 
   </div>
 </div>
 
@@ -101,6 +101,11 @@
     "groups": ["header", "footer"]
   },
   "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Bg image"
+    },
     {
       "type": "inline_richtext",
       "id": "title",
@@ -161,33 +166,13 @@
     },
     {
       "type": "header",
-      "content": "Mobile Layout"
-    },
-    {
-      "type": "select",
-      "id": "columns_mobile",
-      "options": [
-        {
-          "value": "1",
-          "label": "1 column"
-        },
-        {
-          "value": "2",
-          "label": "2 columns"
-        }
-      ],
-      "default": "1",
-      "label": "Number of columns on mobile"
-    },
-    {
-      "type": "header",
       "content": "Section padding"
     },
     {
       "type": "range",
       "id": "padding_top",
       "min": 0,
-      "max": 100,
+      "max": 160,
       "step": 4,
       "unit": "px",
       "label": "Top padding",
@@ -197,7 +182,7 @@
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
-      "max": 100,
+      "max": 160,
       "step": 4,
       "unit": "px",
       "label": "Bottom padding",

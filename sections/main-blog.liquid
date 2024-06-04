@@ -16,16 +16,20 @@
   }
 {%- endstyle -%}
 
-{%- paginate blog.articles by 6 -%}
+{%- paginate blog.articles by 4 -%}
   <div class="main-blog page-width section-{{ section.id }}-padding">
     <h1 class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      {{ blog.title | escape }}
+      {%- if section.settings.title != blank -%}
+        {{ section.settings.title | escape }}
+      {%- else -%}
+        {{ blog.title | escape }}
+      {%- endif -%}
     </h1>
 
-    <div class="blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}">
+    <div class="blog-articles">
       {%- for article in blog.articles -%}
-        <div
-          class="blog-articles__article article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+        <popup-content
+          class="blog-articles__article article"
           {% if settings.animations_reveal_on_scroll %}
             data-cascade
             style="--animation-order: {{ forloop.index }};"
@@ -34,13 +38,14 @@
           {%- render 'article-card',
             article: article,
             media_height: section.settings.image_height,
-            media_aspect_ratio: article.image.aspect_ratio,
+            media_aspect_ratio: 1,
             show_image: section.settings.show_image,
             show_date: section.settings.show_date,
             show_author: section.settings.show_author,
-            show_excerpt: true
+            show_excerpt: section.settings.show_excerpt,
+            type: 'popup'
           -%}
-        </div>
+        </popup-content>
       {%- endfor -%}
     </div>
 
@@ -57,25 +62,14 @@
   "class": "section",
   "settings": [
     {
-      "type": "header",
-      "content": "t:sections.main-blog.settings.header.content"
+      "type": "text",
+      "id": "title",
+      "default": "Our Blog",
+      "label": "Page title"
     },
     {
-      "type": "select",
-      "id": "layout",
-      "options": [
-        {
-          "value": "grid",
-          "label": "t:sections.main-blog.settings.layout.options__1.label"
-        },
-        {
-          "value": "collage",
-          "label": "t:sections.main-blog.settings.layout.options__2.label"
-        }
-      ],
-      "default": "collage",
-      "label": "t:sections.main-blog.settings.layout.label",
-      "info": "t:sections.main-blog.settings.layout.info"
+      "type": "header",
+      "content": "t:sections.main-blog.settings.header.content"
     },
     {
       "type": "checkbox",
@@ -119,6 +113,12 @@
       "id": "show_author",
       "default": false,
       "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "default": false,
+      "label": "Show excerpt"
     },
     {
       "type": "paragraph",

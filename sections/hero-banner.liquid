@@ -138,6 +138,9 @@
                     href="{{ block.settings.button_link_1 }}"
                   {% endif %}
                   class="button{% if block.settings.button_style_secondary_1 %} button--secondary{% else %} button--primary{% endif %} button--plus"
+                  {%- if block.settings.button_link_1 contains '#shopify-section' -%}
+                    onclick="smoothScroll(event)"
+                  {%- endif -%}
                 >
                   {{- block.settings.button_label_1 | escape -}}
                 </a>
@@ -163,8 +166,8 @@
 
 <script>
   const section = document.getElementById('shopify-section-{{ section.id }}');
-  const triggerPosition = section.getBoundingClientRect().top + section.clientHeight / 4;
-  const activeScrollZone = section.clientHeight - ( section.clientHeight / 4 ); 
+  const triggerPosition = section.getBoundingClientRect().top + section.clientHeight / 10;
+  const activeScrollZone = section.clientHeight - ( section.clientHeight / 10 ); 
   const bottonFinalPoint = section.getBoundingClientRect().top + section.clientHeight;
   const bgLeftImage = section.querySelector('.hero__media-left'); 
   const bgRightImage = section.querySelector('.hero__media-right');
@@ -179,7 +182,6 @@
         bgRightImage.style.transform = 'translateX(' + (100 - offset) + '%)';
       }
     } else {
-      console.log('pasive');
       bgLeftImage.style.transform = 'translateX(-100%)';
       bgRightImage.style.transform = 'translateX(100%)';
     }

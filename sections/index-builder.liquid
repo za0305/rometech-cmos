@@ -129,12 +129,18 @@
         <span :class="slide == 0 ? 'active' : ''" class="bullet">1</span>
         <span :class="slide == 1 ? 'active' : ''" class="bullet">2</span>
         <span :class="slide == 2 ? 'active' : ''" class="bullet">3</span>
-        <span :class="slide == 3 ? 'active' : ''" class="bullet">4</span>
+        <span v-if="active == 'second'" :class="slide == 3 ? 'active' : ''" class="bullet">4</span>
         <span v-if="active == 'second'" :class="slide == 4 ? 'active' : ''" class="bullet">5</span>
       </div>
 
+      <p v-if="active == 'first'" v-text="getSlideName" class="builder_step-title_mobile"></p>
+      <p v-if="active == 'second'" v-text="getSlideName" class="builder_step-title_mobile"></p>
+
       <div class="builder__slider-container">
-        <div class="builder__slider">
+        <div 
+          class="builder__slider"
+          :class="slide > 0 ? 'next-active' : '' " 
+        >
           {% comment %} first slide / chose product {% endcomment %}
           <div class="builder_step">
             <div class="builder__first-step-title">Start with</div> 
@@ -218,7 +224,7 @@
             </div>
           </div>
 
-          <div 
+          {% comment %} <div 
             v-if="first.mainLinks[first.brand].sublinks.length > 0 && first.mainLinks[first.brand].sublinks[first.series].subsublinks.length > 0 && active == 'first'" 
             class="builder_step"
           >
@@ -232,7 +238,7 @@
                 <p v-html="subsubitem.title"></p>
               </div>
             </div>
-          </div> 
+          </div>  {% endcomment %}
 
           {% comment %} for CMOS {% endcomment %}
           <div 
@@ -325,7 +331,7 @@
         <span 
           v-show="slide != 0" 
           class="button builder__prev" 
-          v-text="getArrowName"
+          v-html="getArrowName"
         ></span>
 
         <p v-if="active == 'first'" v-text="getSlideName" class="builder_step-title"></p>
@@ -343,28 +349,7 @@
 
   </div>
 
-  {% comment %} animation {% endcomment %}
-  <div class="moving-shape">
-      <svg class="a_1 " xmlns="http://www.w3.org/2000/svg" width="369" height="322" viewBox="0 0 369 322" fill="none">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M183.792 23.5786C200.049 27.2313 216.716 26.8373 233.319 25.4329C259.987 23.1771 288.872 -0.885009 311.906 12.7415C332.329 24.8232 318.17 59.8709 328.023 81.4575C337.504 102.23 372.656 113.778 368.249 136.183C363.029 162.719 317.426 163.378 307 188.331C298.222 209.342 328.952 234.792 318.581 255.063C309.095 273.603 281.889 277.374 261.076 278.093C240.718 278.796 223.061 253.142 203.562 259.034C180.708 265.94 176.145 300.376 154.437 310.314C133.062 320.099 103.568 327.368 84.5855 313.5C64.8806 299.105 77.8354 263.859 63.6587 243.996C49.9733 224.822 17.8031 224.328 6.27646 203.783C-4.79248 184.055 2.2918 159.154 3.37978 136.558C4.49656 113.364 -0.63023 87.0728 12.8079 68.1357C26.6639 48.6097 55.1348 46.9789 75.6758 34.6777C92.8509 24.3922 104.907 3.09932 124.822 1.05491C145.933 -1.11238 163.086 18.9261 183.792 23.5786Z" fill="#FFC553"/>
-      </svg>
-  
-      <svg  class="a_2 " xmlns="http://www.w3.org/2000/svg" width="315" height="331" viewBox="0 0 315 331" fill="none">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M172.224 3.59618C220.696 -9.96399 277.556 20.9868 304.566 63.4581C329.247 102.268 300.755 150.24 294.459 195.8C289.592 231.018 296.36 269.712 272.43 296.006C247.742 323.132 208.866 331.763 172.224 330.106C137.25 328.524 108.239 308.94 80.6916 287.333C47.6021 261.377 -3.29527 237.634 1.00144 195.8C5.32398 153.714 69.6005 152.908 97.7425 121.318C129.852 85.2738 125.737 16.6013 172.224 3.59618Z" fill="#77A366"/>
-      </svg>
-  
-      <svg class="a_3 " xmlns="http://www.w3.org/2000/svg" width="314" height="331" viewBox="0 0 314 331" fill="none">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M171.693 3.55322C220.165 -10.007 277.025 20.9438 304.035 63.4152C328.716 102.225 300.224 150.197 293.928 195.757C289.061 230.975 295.829 269.669 271.899 295.963C247.211 323.089 208.335 331.72 171.693 330.063C136.718 328.481 107.707 308.897 80.1604 287.29C47.0708 261.334 -3.82652 237.591 0.47019 195.757C4.79273 153.671 69.0693 152.865 97.2113 121.275C129.321 85.2308 125.206 16.5583 171.693 3.55322Z" fill="#DAF8CF"/>
-      </svg>
-  
-      <svg class="a_4 " xmlns="http://www.w3.org/2000/svg" width="370" height="322" viewBox="0 0 370 322" fill="none">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M184.478 23.4565C200.735 27.1093 217.401 26.7153 234.004 25.3108C260.672 23.055 289.558 -1.00708 312.592 12.6194C333.015 24.7011 318.856 59.7488 328.708 81.3354C338.19 102.108 373.342 113.656 368.934 136.061C363.715 162.597 318.112 163.256 307.686 188.209C298.908 209.22 329.638 234.67 319.266 254.941C309.781 273.481 282.574 277.252 261.761 277.971C241.404 278.673 223.747 253.02 204.248 258.912C181.394 265.817 176.83 300.254 155.122 310.192C133.748 319.977 104.253 327.246 85.2711 313.378C65.5662 298.983 78.521 263.737 64.3442 243.874C50.6588 224.7 18.4887 224.206 6.96201 203.661C-4.10694 183.933 2.97735 159.032 4.06533 136.436C5.18211 113.242 0.0553173 86.9508 13.4934 68.0136C27.3494 48.4876 55.8204 46.8569 76.3614 34.5556C93.5364 24.2702 105.593 2.97725 125.507 0.932842C146.619 -1.23445 163.771 18.8041 184.478 23.4565Z" fill="#FFDE9C"/>
-      </svg>
-  
-      <svg  class="a_5 " xmlns="http://www.w3.org/2000/svg" width="315" height="331" viewBox="0 0 315 331" fill="none">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M171.763 3.95263C220.235 -9.60754 277.095 21.3432 304.105 63.8146C328.787 102.624 300.294 150.596 293.998 196.156C289.131 231.374 295.899 270.069 271.969 296.362C247.281 323.489 208.405 332.12 171.763 330.462C136.789 328.88 107.778 309.297 80.2307 287.689C47.1411 261.734 -3.75621 237.991 0.540502 196.156C4.86304 154.07 69.1396 153.265 97.2816 121.675C129.391 85.6303 125.276 16.9578 171.763 3.95263Z" fill="#A9CE9B"/>
-      </svg>
-    </div>
+  {% render 'background-animation-placeholder' %}
 
 </div>
 
@@ -391,15 +376,7 @@
                 {%- for sublink in link.links -%}
                   {
                     "title": {{ sublink.title | json }},
-                    "link": {{ sublink.url | json }},
-                    "subsublinks": [
-                      {%- for subsublink in sublink.links -%}
-                        {
-                          "title": {{ subsublink.title | json }},
-                          "link": {{ subsublink.url | json }},
-                        }{%- unless forloop.last -%},{%- endunless -%}
-                      {%- endfor -%}
-                    ]
+                    "link": {{ sublink.url | json }}
                   }{%- unless forloop.last -%},{%- endunless -%}
                 {%- endfor -%}
               ]
@@ -411,7 +388,7 @@
       "series": 0,
       "subseries": 0
     },
-    "firstSelected": [0,0,0],
+    "firstSelected": [0,0],
     "second": {
       {%- if page_second_step_2 != blank -%}
         "step_2": [
@@ -510,14 +487,14 @@
         if (this.slide == 0) {
           return ''
         } else {
-          return `Back to ${this.slide} step`
+          return `Back&nbsp;<b>to ${this.slide} step</b>`
         }
       },
       getNextStepName: function() { // change next arrov text based on current step
         if (this.active == 'second' && this.slide == 4) {
           return 'Go to product'
-        } else if (this.active == 'first' && this.slide == 3) {
-          return 'Go to product'
+        } else if (this.active == 'first' && this.slide == 2) {
+          return 'Go to products'
         } else {
           return 'Next step'
         }
@@ -793,7 +770,7 @@
       choiceBuilderProduct: function(active) {  // toggle base products - laptop or CMOS
         if (active == 'first') {
           this.active = 'first';
-          this.slides = 4;
+          this.slides = 3;
         } else {
           this.active = 'second';
           this.slides = 5;
@@ -809,9 +786,9 @@
             this.first.series = option;
             break;
 
-          case 2:
-            this.first.subseries = option;
-            break;
+          // case 2:
+          //   this.first.subseries = option;
+          //   break;
         };
         Vue.set(this.firstSelected, index, option);
       },
@@ -844,9 +821,9 @@
         this.$forceUpdate();
       },
       goToLink: function() { // action in go to product button
-        if (this.active == 'first' && this.slide == 3) {
+        if (this.active == 'first' && this.slide == 2) {
           console.log('test-goToLink-first');
-          document.location.href = this.first.mainLinks[this.firstSelected[0]].sublinks[this.firstSelected[1]].subsublinks[this.firstSelected[2]].link;
+          document.location.href = this.first.mainLinks[this.firstSelected[0]].sublinks[this.firstSelected[1]].link;
         } else if (this.active == 'second' && this.slide == 4) {
           console.log('test-goToLink-second',this.secondProductSelected);
           document.location.href = this.secondSelectedLink;

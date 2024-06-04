@@ -1,19 +1,165 @@
+.main-blog {
+  max-width: 846px;
+}
+
 .blog-articles {
   display: grid;
   grid-gap: 1rem;
-  column-gap: var(--grid-mobile-horizontal-spacing);
-  row-gap: var(--grid-mobile-vertical-spacing);
+  column-gap: 20px;
+  row-gap: 20px;
 }
 
 .blog-articles .card-wrapper {
   width: 100%;
 }
 
+.main-blog .title--primary {
+  margin-bottom: 50px;
+  font-size: 24px;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.article-card {
+  padding: 20px;
+  border: 1px solid rgba(159,159,159,.8);
+  border-radius: 50px;
+  position: relative;
+}
+
+.article-card:after {
+  width: 30px;
+  height: 30px;
+  padding: 13px;
+  content: '';
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3e%3cpath d='M25.6654 13.9997H13.9987M13.9987 13.9997H2.33203M13.9987 13.9997V25.6663M13.9987 13.9997V2.33301' stroke='%2300E04F' stroke-width='3' stroke-linecap='round'/%3e%3c/svg%3e");
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 60%;
+  transition: all 0.4s ease;
+}
+
+.article-card:hover:after {
+  background-color: #00E04F;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3e%3cpath d='M25.6654 13.9997H13.9987M13.9987 13.9997H2.33203M13.9987 13.9997V25.6663M13.9987 13.9997V2.33301' stroke='%23FFFFFF' stroke-width='3' stroke-linecap='round'/%3e%3c/svg%3e");
+}
+
+.article-card .card__content {
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.article-card .article-card__image-wrapper.card__media {
+  border-radius: 40px 40px 0 0;
+  overflow: hidden;
+}
+
+.article-card .card__heading {
+  padding-right: 35px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.article-content {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: #fff;
+}
+
+.article-content__cover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block !important;
+}
+
+.article-content__inner {
+  max-width: 80%;
+  max-height: 90vh;
+  padding: 20px 20px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 8px 30px 0px #33333340;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.article-content__container {
+  height: calc(90vh - 40px);
+  padding: 0;
+  overflow-y: auto;
+  position: relative;
+}
+
+.article-content__container img {
+  max-width: 100%;
+}
+
+.article-content__bg {
+  padding-top: 20%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: block !important;
+  background-size: cover;
+  z-index: -1;
+}
+
+.article-content__inner .button-close {
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  border: none;
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  border-radius: 50%;
+  padding: 8px;
+  z-index: 2;
+}
+
+.article-content__inner .button-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+.article-content__title {
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
 @media screen and (min-width: 750px) {
+  .article-content__inner {
+    width: 635px;
+  }
+
+  .main-blog .title--primary {
+    font-size: 36px;
+  }
+
   .blog-articles {
     grid-template-columns: 1fr 1fr;
-    column-gap: var(--grid-desktop-horizontal-spacing);
-    row-gap: var(--grid-desktop-vertical-spacing);
+    column-gap: 20px;
+    row-gap: 20px;
   }
 
   .blog-articles--collage > *:nth-child(3n + 1),
@@ -41,9 +187,48 @@
   .blog-articles--collage > *:nth-child(3n + 2):last-child .article-card__image--large .ratio::before {
     padding-bottom: 66rem;
   }
+
+  .article-card {
+    padding: 20px  30px;
+  }
+
+  .article-content__container {
+    height: calc(90vh - 40px);
+    padding: 8% 20px 20px;
+  }
+
+  .article-card .card__heading {
+    font-size: 18px;
+  }
+
+  .article-content__inner .button-close {
+    width: 35px;
+    height: 35px;
+    top: 30px;
+    right: 40px;
+    padding: 10px;
+  }
+  
+  .article-content__inner .button-close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .article-content__title {
+    font-size: 36px;
+    padding: 0 20px;
+  }
 }
 
 @media screen and (min-width: 990px) {
+  .article-content__inner {
+    width: 848px;
+  }
+
+  .main-blog .title--primary {
+    font-size: 40px;
+  } 
+
   .blog-articles--collage > *:nth-child(3n + 1) .article-card__image--small .ratio .ratio::before,
   .blog-articles--collage > *:nth-child(3n + 2):last-child .article-card__image--small .ratio .ratio::before {
     padding-bottom: 27.5rem;
@@ -57,5 +242,71 @@
   .blog-articles--collage > *:nth-child(3n + 1) .article-card__image--large .ratio::before,
   .blog-articles--collage > *:nth-child(3n + 2):last-child .article-card__image--large .ratio::before {
     padding-bottom: 82.5rem;
+  }
+
+  .article-card .card__heading {
+    font-size: 18px;
+  }
+
+  .article-content__inner .button-close {
+    width: 40px;
+    height: 40px;
+    top: 40px;
+    right: 50px;
+    padding: 11px;
+  }
+  
+  .article-content__inner .button-close svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .article-card:after {
+    width: 50px;
+    height: 50px;
+  }
+
+  .article-content__title {
+    font-size: 40px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .article-content__inner {
+    width: 1136px;
+  }
+
+  .main-blog .title--primary {
+    font-size: 54px;
+} 
+
+  .main-blog {
+    max-width: 1162px;
+  }
+
+  .article-card .card__heading {
+    font-size: 24px;
+  }
+
+  .article-card .card__content {
+    margin-top: 0;
+    min-height: 100px;
+  }
+
+  .article-content__inner .button-close {
+    width: 50px;
+    height: 50px;
+    top: 50px;
+    right: 60px;
+    padding: 14px;
+  }
+  
+  .article-content__inner .button-close svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .article-content__title {
+    font-size: 54px;
   }
 }

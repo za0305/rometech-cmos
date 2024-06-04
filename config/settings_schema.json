@@ -1432,6 +1432,17 @@
     ]
   },
   {
+    "name": "Back to top button",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "back_to_top",
+        "label": "Enable back to top button",
+        "default": false
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.cart.name",
     "settings": [
       {

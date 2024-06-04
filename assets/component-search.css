@@ -1,5 +1,6 @@
 .search__input.field__input {
   padding-right: 9.8rem;
+  border: none;
 }
 
 .search__button {
@@ -71,4 +72,16 @@ input::-webkit-search-decoration {
 
 .template-search__results {
   position: relative;
+}
+
+.template-search__search .search__input.field__input {
+  border: 1px solid rgba(var(--color-foreground),.5);
+}
+
+.template-search__search .field__label {
+  display: none;
+}
+
+.template-search__search .predictive-search {
+  display: none !important;
 }

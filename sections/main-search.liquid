@@ -2,6 +2,7 @@
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-search.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
 
 {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
   {{ 'component-facets.css' | asset_url | stylesheet_tag }}
@@ -17,6 +18,10 @@
 <style>
   .template-search__header {
     margin-bottom: 3rem;
+  }
+
+  .template-search__header h1 {
+    font-weight: 500;
   }
 
   .template-search__search {
@@ -150,13 +155,13 @@
         and section.settings.filter_type == 'vertical'
         and search.filters != empty
       -%}
-        <facet-filters-form class="facets facets-vertical-sort page-width small-hide no-js-hidden">
+        <facet-filters-form class="facets facets-vertical-sort page-width no-js-hidden">
           <form class="facets-vertical-form" id="FacetSortForm">
             <div class="facet-filters sorting caption">
               <div class="facet-filters__field">
-                <h2 class="facet-filters__label caption-large text-body">
+                {% comment %} <h2 class="facet-filters__label caption-large text-body">
                   <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
-                </h2>
+                </h2> {% endcomment %}
                 <div class="select">
                   {%- assign sort_by = search.sort_by | default: search.default_sort_by -%}
                   <select
@@ -186,7 +191,7 @@
               </noscript>
             </div>
 
-            <div class="product-count-vertical light" role="status">
+            {% comment %} <div class="product-count-vertical light" role="status">
               <h2 class="product-count__text text-body">
                 <span id="ProductCountDesktop">
                   {%- if search.results_count -%}
@@ -202,7 +207,7 @@
                 </span>
               </h2>
               {%- render 'loading-spinner' -%}
-            </div>
+            </div> {% endcomment %}
           </form>
         </facet-filters-form>
       {%- endif -%}
@@ -281,6 +286,7 @@
                           show_secondary_image: section.settings.show_secondary_image,
                           show_vendor: section.settings.show_vendor,
                           show_rating: section.settings.show_rating,
+                          show_quick_add: true,
                           lazy_load: lazy_load
                         %}
                       {%- when 'article' -%}

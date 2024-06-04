@@ -59,21 +59,48 @@
                 </div>
 
                 <div class="totals">
-                  <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-                  <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+                  <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}:</h2>
+                  <p class="totals__total-value">{{ cart.items_subtotal_price | money }}</p>
+                </div> 
+
+                <div class="cart__tax">
+                  <h2 class="tax__text">Tax:</h2>
+                  <small class="tax-note caption-large rte">
+                    {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+                      {{ 'sections.cart.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                    {%- elsif cart.taxes_included -%}
+                      {{ 'sections.cart.taxes_included_but_shipping_at_checkout' | t }}
+                    {%- elsif shop.shipping_policy.body != blank -%}
+                      {{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+                    {%- else -%}
+                      {{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}
+                    {%- endif -%}
+                  </small>
                 </div>
 
-                <small class="tax-note caption-large rte">
-                  {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
-                    {{ 'sections.cart.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                  {%- elsif cart.taxes_included -%}
-                    {{ 'sections.cart.taxes_included_but_shipping_at_checkout' | t }}
-                  {%- elsif shop.shipping_policy.body != blank -%}
-                    {{ 'sections.cart.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+                <div class="grand-totals">
+                  <h2 class="totals__total">{{ 'sections.cart.grand_total' | t }}:</h2>
+                  <p class="totals__total-value">{{ cart.total_price | money }}</p>
+                </div>
+              </div>
+            {%- when 'free-shipping' -%}
+              <div class="cart__free-shipping" {{ block.shopify_attributes }}>
+                {%- assign threshold_in_cents = block.settings.free_shipping |  plus: 0 -%}
+
+                <div class="cart__free-shipping__info">
+                  {%- if cart.total_price >= threshold_in_cents -%}
+                    <div class="cart__free-shipping-text">{{ block.settings.free_shipping_text }}</div>
                   {%- else -%}
-                    {{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}
+                    {%- capture remaining_amount -%}{{ cart.total_price | minus: threshold_in_cents | abs | money }}{%- endcapture -%}
+                    <div class="cart__free-shipping-text">{{ block.settings.add_more_text |  replace: '#', remaining_amount }}</div>
                   {%- endif -%}
-                </small>
+
+                  {% render 'icon-truck' %}
+                </div>
+
+                <p class="cart__free-shipping__progress">
+                  <span class="cart__free-shipping__progress-inner" style="width: {{ cart.total_price | times: 100 | divided_by: threshold_in_cents }}%"></span>
+                </p>
               </div>
             {%- else -%}
               <div class="cart__ctas" {{ block.shopify_attributes }}>
@@ -86,7 +113,7 @@
                 <button
                   type="submit"
                   id="checkout"
-                  class="cart__checkout-button button"
+                  class="cart__checkout-button button button--black"
                   name="checkout"
                   {% if cart == empty %}
                     disabled
@@ -95,13 +122,17 @@
                 >
                   {{ 'sections.cart.checkout' | t }}
                 </button>
-              </div>
 
-              {%- if additional_checkout_buttons -%}
-                <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
-                  {{ content_for_additional_checkout_buttons }}
-                </div>
-              {%- endif -%}
+                {%- if additional_checkout_buttons and block.settings.additional_buttons -%}
+                  <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
+                    {{ content_for_additional_checkout_buttons }}
+                  </div>
+                {%- endif -%}
+
+                <p class="center">or</p>
+
+                <a href="{{ routes.all_products_collection_url }}" class="button cart__continue-button">continue shopping</a>
+              </div>
           {%- endcase -%}
         {% endfor %}
 
@@ -173,7 +204,41 @@
     {
       "type": "buttons",
       "name": "t:sections.main-cart-footer.blocks.buttons.name",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "additional_buttons",
+          "default": false,
+          "label": "Show additional checkout buttons"
+        }
+      ]
+    },
+    {
+      "type": "free-shipping",
+      "name": "Free shipping",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "free_shipping_text",
+          "default": "Congrats, you're eligible for Free Shipping",
+          "label": "message success"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "add_more_text",
+          "default": "Buy # more to get free shipping.",
+          "label": "add more message",
+          "info": "Use the # symbol to indicate the location of the remaining amount"
+        },
+        {
+          "type": "text",
+          "id": "free_shipping",
+          "default": "2000",
+          "label": "Insert free shipping amount (in cents, 1$ = 100)"
+        }
+      ]
     },
     {
       "type": "@app"

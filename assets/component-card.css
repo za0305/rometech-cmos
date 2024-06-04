@@ -136,7 +136,7 @@
 .card__content {
   display: grid;
   grid-template-rows: minmax(0, 1fr) max-content minmax(0, 1fr);
-  padding: 1rem;
+  padding: 1.5rem;
   width: 100%;
   flex-grow: 1;
 }
@@ -151,7 +151,7 @@
 
 .card__information {
   grid-row-start: 2;
-  padding: 1.3rem 1rem;
+  padding: 1rem 0;
 }
 
 .card:not(.ratio) > .card__content {
@@ -166,8 +166,8 @@
 
 @media screen and (min-width: 750px) {
   .card__information {
-    padding-bottom: 1.7rem;
-    padding-top: 1.7rem;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
   }
 }
 
@@ -250,6 +250,21 @@
   }
 }
 
+.card-rating .rating-star:before {
+  letter-spacing: 3px;
+}
+
+@media screen and (min-width: 1200px) {
+  .card-information .card-rating {
+    padding-right: 50%;
+  }
+  .card__content .price {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 5px);
+  } 
+}
+
 .card--card.card--media > .card__content {
   margin-top: calc(0rem - var(--image-padding));
 }
@@ -297,6 +312,13 @@
 }
 
 @media screen and (min-width: 990px) {
+  .underline-links-hover:hover a {
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+  }
+}
+
+@media screen and (max-width: 1199px) {
   .card .media.media--hover-effect > img:only-child,
   .card-wrapper .media.media--hover-effect > img:only-child {
     transition: transform var(--duration-long) ease;
@@ -315,11 +337,6 @@
     opacity: 1;
     transition: transform var(--duration-long) ease;
     transform: scale(1.03);
-  }
-
-  .underline-links-hover:hover a {
-    text-decoration: underline;
-    text-underline-offset: 0.3rem;
   }
 }
 
@@ -383,6 +400,7 @@
 
 .card-information {
   width: 100%;
+  position: relative;
 }
 
 .card-information > * {

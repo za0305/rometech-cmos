@@ -12,8 +12,10 @@
   - show_badge: {String} The setting either show the blog badge or not.
   - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
 
+  - type: {String} Type of content. Popup or blog post link.
+
   Usage:
-  {% render 'article-card' blog: blog, article: article, show_image: section.settings.show_image %}
+  {% render 'article-card' blog: blog, article: article, show_image: section.settings.show_image, type: 'popup' %}
 {% endcomment %}
 
 {%- if article and article != empty -%}
@@ -22,10 +24,14 @@
     if media_aspect_ratio != null
       assign ratio = media_aspect_ratio
     endif
+    assign popup = false
+    if type == 'popup'
+      assign popup = true
+    endif
   -%}
-  <div class="article-card-wrapper card-wrapper underline-links-hover">
+  <details class="article-card-wrapper card-wrapper">
     {% comment %} <article aria-labelledby="Article-{{ article.id }}"> {% endcomment %}
-    <div
+    <summary
       class="
         card article-card
         card--{{ settings.blog_card_style }}
@@ -35,6 +41,7 @@
         {% if settings.blog_card_style == 'card' and media_height == nil and article.image == empty or show_image == false %} ratio{% endif %}
       "
       style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
+      aria-label="Article"
     >
       <div
         class="card__inner {% if settings.blog_card_style == 'standard' %} color-{{ settings.blog_card_color_scheme }} gradient{% endif %}{% if article.image and show_image or settings.blog_card_style == 'standard' %} ratio{% endif %}"
@@ -76,9 +83,13 @@
         <div class="card__content">
           <div class="card__information">
             <h3 class="card__heading{% if show_excerpt %} h2{% endif %}">
-              <a href="{{ article.url }}" class="full-unstyled-link">
+              {% unless popup %}
+                <a href="{{ article.url }}" class="full-unstyled-link"></a>
+              {% endunless %}
                 {{ article.title | truncate: 50 | escape }}
-              </a>
+              {% unless condition %}
+                </a>
+              {% endunless %}
             </h3>
             <div class="article-card__info caption-with-letter-spacing h5">
               {%- if show_date -%}
@@ -115,9 +126,13 @@
       <div class="card__content">
         <div class="card__information">
           <h3 class="card__heading{% if show_excerpt %} h2{% endif %}">
-            <a href="{{ article.url }}" class="full-unstyled-link">
+            {% unless popup %}
+              <a href="{{ article.url }}" class="full-unstyled-link"></a>
+            {% endunless %}
               {{ article.title | truncate: 50 | escape }}
-            </a>
+            {% unless condition %}
+              </a>
+            {% endunless %}
           </h3>
           <div class="article-card__info caption-with-letter-spacing h5">
             {%- if show_date -%}
@@ -150,6 +165,21 @@
           </div>
         {%- endif -%}
       </div>
+    </summary>
+    <div class="article-content" aria-label="Article">
+      <div class="article-content__cover"></div>
+      <div class="article-content__inner">
+        <button class="button-close" type="button" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M18.2526 1.73675L10.0031 9.98633M10.0031 9.98633L1.75348 18.2359M10.0031 9.98633L18.2526 18.2359M10.0031 9.98633L1.75348 1.73675" stroke="#333333" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="article-content__container">
+          <div class="article-content__bg" style="background-image: url({{ 'popup-bg.png' | asset_img_url }})"></div>
+          <h2 class="article-content__title">{{ article.title }}</h2>
+          {{ article.content  }}
+        </div>
+      </div>
     </div>
-  </div>
+  </details>
 {%- endif -%}

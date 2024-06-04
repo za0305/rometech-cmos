@@ -39,8 +39,8 @@ class WishlistPage extends WishlistElement {
 
     return html`
       <section class="wk-page">
-        ${this.renderHeader()}
         <div class="wk-body">${this.renderWishlistItems()}</div>
+        ${this.renderHeader()}
       </section>
     `;
   }
@@ -48,16 +48,13 @@ class WishlistPage extends WishlistElement {
   renderHeader() {
     return html`
       <div class="wk-header">
-        <h1 class="wk-title">
-          ${this.getTranslation("wishlist_page.title")}
-        </h1>
         ${this.renderWishlistEmptyCallout()} ${this.renderLoginCallout()}
         ${this.renderControls()}
       </div>
     `;
   }
 
-  renderControls() {
+  renderControls() { 
     if (!this.wishlist.items.length) {
       return;
     }
@@ -142,11 +139,16 @@ class WishlistPage extends WishlistElement {
     const wishlistItems = this.wishlist.items.slice().reverse();
 
     return html`
-      <div class="wk-grid">
+      <div class="wk-list">
+        ${html`<div class="wk-products-header">
+          <div class="wk-header__product-item">Product Item</div>
+          <div class="wk-header__product-price">Price</div>
+          <div class="wk-header__product-stock">Stock Status</div>
+        </div>`}
         ${repeat(
-      wishlistItems,
-      (wishlistItem) => wishlistItem.id,
-      (wishlistItem) => html`
+          wishlistItems,
+          (wishlistItem) => wishlistItem.id,
+          (wishlistItem) => html`
             <wishlist-product-card
               data-wishlist-id=${this.wishlist.id}
               data-wishlist-item-id=${wishlistItem.id}
@@ -159,7 +161,7 @@ class WishlistPage extends WishlistElement {
               .productOptions=${this.productOptions}
             ></wishlist-product-card>
           `
-    )}
+        )}
       </div>
     `;
   }
@@ -252,7 +254,7 @@ class WishlistProductCard extends WishlistElement {
           });
         }
 
-        window.location.href = this.app.routes.cartUrl;
+        //window.location.href = this.app.routes.cartUrl;
       },
     };
   }
@@ -279,16 +281,22 @@ class WishlistProductCard extends WishlistElement {
           <img
             class="wk-image"
             src=${this.getImageUrl(product, variant, {
-      width: 1000,
-      height: 1000,
-    })}
+              width: 300,
+              height: 300,
+            })}
           />
         </a>
         <div class="wk-meta">
           ${this.renderVendor({ product, variant })}
           ${this.renderProductTitle({ product, variant })}
+          ${this.renderProductType({ product, variant })}
+          
+        </div>
+        <div class="wk-price">
+          <span class="wk-price-mobile-title">Price</span>
           ${this.renderPrice({ product, variant })}
         </div>
+        ${this.renderStockStatus({ product })}
         ${this.renderProductForm({ product, variant })}
         ${this.renderRemoveButton()}
       </div>
@@ -311,6 +319,21 @@ class WishlistProductCard extends WishlistElement {
         <a class="wk-text-link" href=${this.getProductUrl(product, variant)}>
           ${product.title}
         </a>
+      </div>
+    `;
+  }
+
+  renderStockStatus({ product }) {
+    return product.available ? html`<div class="wk-stock"><span class="wk-stock-mobile-title">Stock Status</span>In Stock</div>` : html`<div class="wk-stock wk-out-of-stock"><span class="wk-stock-mobile-title">Stock Status</span>Out of Stock</div>`;
+  }
+
+  renderProductType({ product, variant }) {
+    if (!this.showProductTitle) {
+      return;
+    }
+    return html`
+      <div class="wk-product-type">
+        ${product.type}
       </div>
     `;
   }
@@ -452,7 +475,7 @@ class WishlistProductCard extends WishlistElement {
         return html`
           <button
             type="submit"
-            class="wk-cta-button"
+            class="wk-cta-button button"
             data-wishlist-item-id=${this.wishlistItem.id}
             ?disabled=${!variant || !variant.available}
           >
@@ -463,7 +486,7 @@ class WishlistProductCard extends WishlistElement {
       case "view-product":
         return html`
           <a
-            class="wk-cta-button"
+            class="wk-cta-button button"
             data-wishlist-item-id=${this.wishlistItem.id}
             href=${product.url}
           >

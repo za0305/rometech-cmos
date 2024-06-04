@@ -13,7 +13,11 @@ class CartDrawer extends HTMLElement {
     cartLink.setAttribute('aria-haspopup', 'dialog');
     cartLink.addEventListener('click', (event) => {
       event.preventDefault();
-      this.open(cartLink);
+      if (this.classList.contains('active')) {
+        this.close();
+      } else {
+        this.open(cartLink);
+      }
     });
     cartLink.addEventListener('keydown', (event) => {
       if (event.code.toUpperCase() === 'SPACE') {
@@ -44,13 +48,13 @@ class CartDrawer extends HTMLElement {
       { once: true }
     );
 
-    document.body.classList.add('overflow-hidden');
+    // document.body.classList.add('overflow-hidden');
   }
 
   close() {
     this.classList.remove('active');
     removeTrapFocus(this.activeElement);
-    document.body.classList.remove('overflow-hidden');
+    // document.body.classList.remove('overflow-hidden');
   }
 
   setSummaryAccessibility(cartDrawerNote) {

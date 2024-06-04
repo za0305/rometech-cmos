@@ -104,9 +104,9 @@
                             placeholder="{{ 'newsletter.label' | t }}"
                             required
                           >
-                          <label class="field__label" for="NewsletterForm--{{ section.id }}">
+                          {% comment %} <label class="field__label" for="NewsletterForm--{{ section.id }}">
                             {{ 'newsletter.label' | t }}
-                          </label>
+                          </label> {% endcomment %}
                           <button
                             type="submit"
                             class="newsletter-form__button field__button"
@@ -190,7 +190,8 @@
                         {%- assign brand_image_height = settings.brand_image_width
                           | divided_by: settings.brand_image.aspect_ratio
                         -%}
-                        <div
+                        <a
+                          href="{{ routes.root_url }}"
                           class="footer-block__image-wrapper"
                           style="max-width: min(100%, {{ settings.brand_image_width }}px);"
                         >
@@ -203,7 +204,7 @@
                               height: brand_image_height,
                               width: settings.brand_image_width
                           }}
-                        </div>
+                        </a>
                       {%- endif -%}
                       {%- if settings.brand_headline != blank -%}
                         <h2 class="footer-block__heading rte">
@@ -270,9 +271,9 @@
                               placeholder="{{ 'newsletter.label' | t }}"
                               required
                             >
-                            <label class="field__label" for="NewsletterForm--{{ section.id }}">
+                            {% comment %} <label class="field__label" for="NewsletterForm--{{ section.id }}">
                               {{ 'newsletter.label' | t }}
-                            </label>
+                            </label> {% endcomment %}
                             <button
                               type="submit"
                               class="newsletter-form__button field__button"

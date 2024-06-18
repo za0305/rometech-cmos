@@ -36,3 +36,11 @@
     width: 21px;
   }
 }
+
+@media screen and (max-width: 599px) {
+  .related-products .slider-buttons {
+    width: 90px;
+    top: -37px;
+    right: 0;
+  }
+}

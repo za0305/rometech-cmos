@@ -17,7 +17,7 @@ body *, html * {
     left: 0;
     top: 0;
     transform: translate(calc(-50% + 15px),-50%) scale(0);
-    z-index: 21;
+    z-index: 101;
     opacity: 0
 }
 
@@ -32,7 +32,7 @@ body *, html * {
     transform: translate(-50%,-50%);
     pointer-events: none;
     transition: width .3s,height .3s,opacity .3s,scale .3s;
-    z-index: 21
+    z-index: 101
 }
 
 .hover {

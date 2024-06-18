@@ -553,16 +553,22 @@ class HeaderMegamenuDrawer extends HTMLElement {
       'button:not(.localization-selector):not(.country-selector__close-button):not(.country-filter__reset-button)'
     ).forEach((button) => button.addEventListener('click', this.onCloseButtonClick.bind(this))
     );
+    self.querySelector('.header__megamenu-trigger_close').addEventListener('click', self.onTriggerClick.bind(self));
   }
 
   onTriggerClick(event) { 
-    const triggerEl = event.currentTarget;
+    const triggerEl = this.querySelector('.header__megamenu-trigger');
     const menuEl = document.getElementById('megamenu-drawer');
 
     if (triggerEl.classList.contains('active')) {
       triggerEl.classList.remove('active');
       menuEl.classList.remove('menu-opening');
       document.body.classList.remove('overflow-hidden-desktop');
+
+      menuEl.querySelectorAll('details[open]').forEach((el) => {
+        el.removeAttribute('open');
+        el.classList.remove('menu-opening');
+      });
     } else {
       triggerEl.classList.add('active');
       menuEl.classList.add('menu-opening');
@@ -1232,7 +1238,7 @@ class SlideshowComponent extends SliderComponent {
     event.preventDefault();
     const x = event.pageX - this.slider.offsetLeft;
     const walk = (x - this.dragStartX); //* 2; // Сила прокрутки
-    this.slider.scrollLeft = scrollLeft - walk;
+    this.slider.scrollLeft = this.slider.scrollLeft - walk;
   }
 
   dragStop(event) {

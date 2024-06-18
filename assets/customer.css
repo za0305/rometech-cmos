@@ -1027,8 +1027,11 @@ li[data-address] > h2 {
 }
 
 .customer__icon--account svg {
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
+  padding: 3px;
+  background: rgb(var(--color-accent));
+  border-radius: 50%;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -1096,6 +1099,11 @@ li[data-address] > h2 {
   font-size: 2rem;
 }
 
+.add-address-button[aria-expanded='true'] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
 
 @media screen and (min-width: 750px) {
   .account-navigation__item {
@@ -1145,8 +1153,8 @@ li[data-address] > h2 {
     line-height: 117px;
   }
   .customer__icon--account svg {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
   .customer__greeting-text p,
   .customer__greeting-text h4 {

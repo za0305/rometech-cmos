@@ -116,6 +116,12 @@
   padding: 0 1px;
 }
 
+@media screen and (max-width: 599px) {
+  .featured-collection .slider-buttons {
+    width: 90px;
+  }
+}
+
 @media screen and (min-width: 1200px) {
   .collection__title--desktop-slider .title {
     margin-bottom: -2.5rem;

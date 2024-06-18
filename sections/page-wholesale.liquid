@@ -70,6 +70,7 @@
               name="contact[{{ 'templates.contact.form.name' | t }}]"
               value=""
               placeholder="Enter Name Here"
+              required
             >
           </div>
 
@@ -107,6 +108,7 @@
                 aria-describedby="ContactForm-email-error"
               {% endif %}
               placeholder="{{ 'templates.contact.form.email_placeholder' | t }}"
+              required
             >
             {%- if form.errors contains 'email' -%}
               <small class="contact__field-error" id="ContactForm-email-error">
@@ -233,6 +235,7 @@
               class="field__input"
               name="contact[{{ 'templates.contact.form.comment' | t }}]"
               placeholder="Notes about your..."
+              required
             >
               {{- form.body -}}
             </input>
@@ -257,6 +260,17 @@
     </div>
   </div>
 </div>
+
+<script>
+  window.addEventListener('load', () => {
+    document.querySelectorAll('input[type="tel"]').forEach((input) => {
+      input.addEventListener('input', function (event) {
+        let value = event.target.value;
+        event.target.value = value.replace(/[^0-9+-]/g, '');
+      });
+    });
+  });
+</script>
 
 {% schema %}
 {

@@ -48,7 +48,7 @@
 
 <div
   id="Hero-{{ section.id }}"
-  class="hero hero--content hero--content-align-{{ section.settings.desktop_content_alignment }} hero--content-align-mobile-{{ section.settings.mobile_content_alignment }} hero--{{ section.settings.image_height }}{% if section.settings.stack_images_on_mobile and section.settings.image != blank and section.settings.image_2 != blank %} hero--stacked{% endif %}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} hero--adapt{% endif %}{% if section.settings.show_text_below %} hero--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} hero--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+  class="hero hero--content hero--content-align-{{ section.settings.desktop_content_alignment }} hero--content-align-mobile-{{ section.settings.mobile_content_alignment }} hero--{{ section.settings.image_height }}{% if section.settings.image_height == 'adapt' and section.settings.image != blank %} hero--adapt{% endif %}{% if section.settings.show_text_below %} hero--mobile-bottom{%- endif -%}{% if section.settings.show_text_box == false %} hero--desktop-transparent{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
 >
   {%- if section.settings.image != blank -%}
     <div class="hero__media media{% if section.settings.image == blank and section.settings.image_2 == blank %} placeholder{% endif %}{% if section.settings.image_2 != blank %} hero__media-left{% endif %}">
@@ -57,9 +57,7 @@
         if section.settings.image_2 != blank
           assign image_class = 'hero__media-image-half'
         endif
-        if section.settings.image_2 != blank and section.settings.stack_images_on_mobile
-          assign sizes = stacked_sizes
-        elsif section.settings.image_2 != blank
+        if section.settings.image_2 != blank
           assign sizes = half_width
         else
           assign sizes = full_width
@@ -89,9 +87,7 @@
         if section.settings.image != blank
           assign image_class_2 = 'hero__media-image-half'
         endif
-        if section.settings.image != blank and section.settings.stack_images_on_mobile
-          assign sizes = stacked_sizes
-        elsif section.settings.image_2 != blank
+        if section.settings.image_2 != blank
           assign sizes = half_width
         else
           assign sizes = full_width
@@ -166,25 +162,11 @@
 
 <script>
   const section = document.getElementById('shopify-section-{{ section.id }}');
-  const triggerPosition = section.getBoundingClientRect().top + section.clientHeight / 10;
-  const activeScrollZone = section.clientHeight - ( section.clientHeight / 10 ); 
   const bottonFinalPoint = section.getBoundingClientRect().top + section.clientHeight;
-  const bgLeftImage = section.querySelector('.hero__media-left'); 
-  const bgRightImage = section.querySelector('.hero__media-right');
 
-  function shiftImages() {
+  function hideSection() {
     let scrollPosition = window.scrollY;
 
-    if (scrollPosition >= triggerPosition) {
-      let offset = Math.round( (scrollPosition * 100)/activeScrollZone  ) ; 
-      if (offset > 0 && offset < 100){
-        bgLeftImage.style.transform = 'translateX(-' + (100 - offset) + '%)';
-        bgRightImage.style.transform = 'translateX(' + (100 - offset) + '%)';
-      }
-    } else {
-      bgLeftImage.style.transform = 'translateX(-100%)';
-      bgRightImage.style.transform = 'translateX(100%)';
-    }
     if (scrollPosition > bottonFinalPoint) {
       section.classList.add('out-of-visible');
     } else {
@@ -192,7 +174,7 @@
     }
   }
 
-  document.addEventListener('scroll', shiftImages);
+  document.addEventListener('scroll', hideSection);
 
 </script>
 
@@ -299,12 +281,6 @@
       ],
       "default": "center",
       "label": "t:sections.image-banner.settings.mobile_content_alignment.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "stack_images_on_mobile",
-      "default": true,
-      "label": "t:sections.image-banner.settings.stack_images_on_mobile.label"
     },
     {
       "type": "checkbox",

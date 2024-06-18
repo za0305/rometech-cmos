@@ -62,13 +62,13 @@
                   <a href="{{ routes.account_url }}" class="header__account-popup_link">My Account</a>|<a href="{{ routes.account_logout_url }}" class="header__account-popup_link">{{ 'customer.log_out' | t }}</a>
       
                 {%- else -%}
-                  <a href="{{ routes.account_login_url }}" class="header__icon--account">
+                  <div href="{{ routes.account_login_url }}" class="header__icon--account">
                     {% render 'icon-account' %}
                     <div class="header__icon--account_caption">
-                      <span class="header__icon--account_title">{%- echo 'customer.log_in' | t -%}</span>|<span class="header__icon--account_title">{%- echo 'customer.login_page.sign_in' | t -%}</span>
+                      <a href="{{ routes.account_login_url }}" class="header__icon--account_title">{%- echo 'customer.log_in' | t -%}</a>|<a href="{{ routes.account_register_url }}" class="header__icon--account_title">{%- echo 'customer.login_page.sign_in' | t -%}</a>
                       <span>Log in for advanced features</span>
                     </div>
-                  </a>
+                  </div>
                 {%- endif -%}
               </div>
             {%- endif -%}

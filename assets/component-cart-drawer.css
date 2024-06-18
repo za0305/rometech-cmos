@@ -24,10 +24,10 @@
 }
 
 cart-drawer.drawer {
-  position: absolute;
+  position: absolute; 
   width: 335px;
   height: auto;
-  top: 62px;
+  top: 50px;
   right: 20px;
   left: auto;
   background: rgba(245, 245, 245, 1);
@@ -68,7 +68,10 @@ cart-drawer.drawer {
 }
 
 .cart-drawer__wrapper {
-  position: sticky;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
 }
 
@@ -448,6 +451,9 @@ cart-drawer .cart-remove-button {
 @media screen and (max-width: 749px) {
   .cart-drawer .cart-item cart-remove-button {
     margin-left: 0;
+  }
+  cart-drawer .cart__ctas .button {
+    font-size: 1.3rem;
   }
 }
 

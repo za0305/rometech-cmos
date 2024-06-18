@@ -50,6 +50,7 @@
   transform: perspective(0);
 }
 
+
 @media only screen and (max-width: 749px) {
   .hero--content-align-mobile-right .hero__box {
     text-align: right;
@@ -202,21 +203,18 @@
 }
 
 @media screen and (min-width: 750px) {
-  .hero-section {
-    min-height: 200vh;
-  }
   .hero__media {
     height: 50%;
     top: 25%;
   }
 }
 @media screen and (min-width: 1200px) {
-  .hero-section {
-    min-height: 300vh;
-  }
   .hero__media {
     height: 70%;
     top: 15%;
+  }
+  .hero__media-left {
+    padding-left: 8%;
   }
 }
 
@@ -227,11 +225,42 @@
 .hero__media-left {
   left: 0;
   transform: translateX(-100%);
+  animation: slideImageLeft 2s cubic-bezier(0, 0, .3, 1) forwards;
+  animation-delay: 600ms;
+  text-align: right;
 }
 
 .hero__media-right {
   right: 0;
   transform: translateX(100%);
+  animation: slideImageRight 2s cubic-bezier(0, 0, .3, 1) forwards;
+  animation-delay: 600ms;
+}
+
+.hero__media-left img {
+  object-position: right;
+}
+
+.hero__media-right img {
+  object-position: left;
+}
+
+@keyframes slideImageLeft {
+  from {
+    transform: translate(-100%);
+  }
+  to {
+    transform: translate(0%);
+  }
+}
+
+@keyframes slideImageRight {
+  from {
+    transform: translate(100%);
+  }
+  to {
+    transform: translate(0);
+  }
 }
 
 .hero__media-half {
@@ -312,14 +341,6 @@
 
   .hero--stacked .hero__media-half + .hero__media-half {
     order: 1;
-  }
-
-  .hero__media-left {
-    transform: none !important;
-  }
-  
-  .hero__media-right {
-    transform: none !important;
   }
 
   .builder__box-banner {

@@ -32,3 +32,9 @@
 .policies__heading {
     text-align: center;
 }
+@media screen and (max-width: 479px) {
+    .policies__navigation__item {
+        font-size: 18px;
+        text-align: center;
+    }
+}

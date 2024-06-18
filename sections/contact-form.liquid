@@ -100,7 +100,7 @@
       <div class="field">
         <input
           type="tel"
-          id="ContactForm-phone"
+          id="ContactForm-phone" 
           class="field__input"
           autocomplete="tel"
           name="contact[{{ 'templates.contact.form.phone' | t }}]"
@@ -132,6 +132,17 @@
     {%- endform -%}
   </div>
 </div>
+
+<script>
+  window.addEventListener('load', () => {
+    document.querySelectorAll('input[type="tel"]').forEach((input) => {
+      input.addEventListener('input', function (event) {
+        let value = event.target.value;
+        event.target.value = value.replace(/[^0-9+-]/g, '');
+      });
+    });
+  });
+</script>
 
 {% schema %}
 {

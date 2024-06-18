@@ -25,16 +25,8 @@
       <div class="customer__greeting">
         <p class="customer__icon--account">
           {{- customer.first_name | slice: 0 -}} {{- customer.last_name | slice: 0 -}}
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <g clip-path="url(#clip0_281_34600)">
-            <circle cx="20" cy="20" r="20" fill="#00E04F"/>
-            <path d="M21.3956 13.2534L21.7572 12.8919C23.0184 11.6306 23.649 11 24.4327 11C25.2163 11 25.8469 11.6306 27.1082 12.8919C28.3694 14.1531 29 14.7837 29 15.5673C29 16.351 28.3694 16.9816 27.1082 18.2428L26.7466 18.6044M21.3956 13.2534L12.1127 22.5363C11.5556 23.0935 11.277 23.3721 11.1328 23.727C10.9887 24.0819 10.9941 24.4758 11.0048 25.2636L11.0301 27.1042C11.042 27.9738 11.0479 28.4087 11.3196 28.6804C11.5913 28.9521 12.0262 28.958 12.8958 28.9699L14.7364 28.9952C15.5242 29.006 15.9182 29.0113 16.273 28.8672C16.6279 28.723 16.9065 28.4444 17.4637 27.8873L26.7466 18.6044M21.3956 13.2534L26.7466 18.6044M21.4211 28.9952L29 28.9952" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-            </g>
-            <defs>
-            <clipPath id="clip0_281_34600">
-            <rect width="40" height="40" fill="white"/>
-            </clipPath>
-            </defs>
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" height="25" viewBox="0 0 21 25" fill="none">
+            <path d="M10.3301 14.8C14.058 14.8 17.0801 11.7108 17.0801 7.9C17.0801 4.08923 14.058 1 10.3301 1C6.60216 1 3.58008 4.08923 3.58008 7.9C3.58008 11.7108 6.60216 14.8 10.3301 14.8ZM10.3301 14.8C1.33008 14.8 1.33008 18.919 1.33008 24M10.3301 14.8C19.3301 15 19.3301 18.919 19.3301 24" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </p>
         <div class="customer__greeting-text">
@@ -421,22 +413,21 @@
         break;
     }
 
-    document.querySelectorAll('.account-navigation__item-link').forEach((element) => {
-      element.addEventListener('click', function(e){ 
-        e.preventDefault();
-        if (window.location.pathname != this.pathname) {
-          window.location.href = this.href;
-        } else {
-          window.location.hash = this.hash; 
-          window.location.reload();
-        }
-      });
+    window.addEventListener('hashchange',function(){
+      window.location.reload();
     });
     
     document.querySelectorAll('[data-address-country-select]').forEach((select) => {
       const formId = select.dataset.formId;
       new Shopify.CountryProvinceSelector(`AddressCountry_${formId}`, `AddressProvince_${formId}`, {
         hideElement: `AddressProvinceContainer_${formId}`,
+      });
+    });
+
+    document.querySelectorAll('input[type="tel"]').forEach((input) => {
+      input.addEventListener('input', function (event) {
+        let value = event.target.value;
+        event.target.value = value.replace(/[^0-9+-]/g, '');
       });
     });
   });

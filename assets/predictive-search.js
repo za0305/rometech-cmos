@@ -77,7 +77,7 @@ class PredictiveSearch extends SearchForm {
 
   onFocusOut() {
     setTimeout(() => {
-      if (!this.contains(document.activeElement)) this.close();
+      if (!this.contains(document.activeElement)) this.close(true);
     });
   }
 

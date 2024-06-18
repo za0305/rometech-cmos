@@ -260,6 +260,10 @@ slider-component.slider-component-full-width {
   border-radius: 0.4rem;
 }
 
+.slider.active {
+  transition: none !important;
+}
+
 .slider-counter {
   display: flex;
   justify-content: center;
@@ -364,6 +368,10 @@ slider-component.slider-component-full-width {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.slider-button[disabled] {
+  opacity: 0.3;
 }
 
 .slider-button:not([disabled]):hover {

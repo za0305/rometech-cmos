@@ -16,7 +16,7 @@ if (!customElements.get('product-info')) {
         if (!this.input) return;
         this.quantityForm = this.querySelector('.product-form__quantity');
         if (!this.quantityForm) return;
-        this.setQuantityBoundries();
+        // this.setQuantityBoundries();
         if (!this.dataset.originalSection) {
           this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, this.fetchQuantityRules.bind(this));
         }
@@ -24,7 +24,7 @@ if (!customElements.get('product-info')) {
           const sectionId = this.dataset.originalSection ? this.dataset.originalSection : this.dataset.section;
           if (event.data.sectionId !== sectionId) return;
           this.updateQuantityRules(event.data.sectionId, event.data.html);
-          this.setQuantityBoundries();
+          // this.setQuantityBoundries();
         });
       }
 
@@ -37,24 +37,28 @@ if (!customElements.get('product-info')) {
         }
       }
 
-      setQuantityBoundries() {
-        const data = {
-          cartQuantity: this.input.dataset.cartQuantity ? parseInt(this.input.dataset.cartQuantity) : 0,
-          min: this.input.dataset.min ? parseInt(this.input.dataset.min) : 1,
-          max: this.input.dataset.max ? parseInt(this.input.dataset.max) : null,
-          step: this.input.step ? parseInt(this.input.step) : 1,
-        };
+      // setQuantityBoundries() {
+      //   if (wholesaleProduct) {
 
-        let min = data.min;
-        const max = data.max === null ? data.max : data.max - data.cartQuantity;
-        if (max !== null) min = Math.min(min, max);
-        if (data.cartQuantity >= data.min) min = Math.min(min, data.step);
-
-        this.input.min = min;
-        this.input.max = max;
-        this.input.value = min;
-        publish(PUB_SUB_EVENTS.quantityUpdate, undefined);
-      }
+      //   } else {
+      //     const data = {
+      //       cartQuantity: this.input.dataset.cartQuantity ? parseInt(this.input.dataset.cartQuantity) : 0,
+      //       min: this.input.dataset.min ? parseInt(this.input.dataset.min) : 1,
+      //       max: this.input.dataset.max ? parseInt(this.input.dataset.max) : null,
+      //       step: this.input.step ? parseInt(this.input.step) : 1,
+      //     };
+  
+      //     let min = data.min;
+      //     const max = data.max === null ? data.max : data.max - data.cartQuantity;
+      //     if (max !== null) min = Math.min(min, max);
+      //     if (data.cartQuantity >= data.min) min = Math.min(min, data.step);
+  
+      //     this.input.min = min;
+      //     this.input.max = max;
+      //     this.input.value = min;
+      //     publish(PUB_SUB_EVENTS.quantityUpdate, undefined);
+      //   }
+      // }
 
       fetchQuantityRules() {
         if (!this.currentVariant || !this.currentVariant.value) return;
@@ -66,7 +70,7 @@ if (!customElements.get('product-info')) {
           .then((responseText) => {
             const html = new DOMParser().parseFromString(responseText, 'text/html');
             this.updateQuantityRules(this.dataset.section, html);
-            this.setQuantityBoundries();
+            // this.setQuantityBoundries();
           })
           .catch((e) => {
             console.error(e);

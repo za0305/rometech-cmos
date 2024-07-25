@@ -605,15 +605,18 @@
         }
 
         function prevSlide() {
-          if (!this.hasAttribute('disabled')) {
-            goToSlide(currentIndex - 1);
-
+          if (!this.hasAttribute('disabled')) { 
+            setTimeout(() => {
+              goToSlide(currentIndex - 1);
+            }, 300);
           }
         }
 
-        function nextSlide(el) {
-          if (!this.hasAttribute('disabled')) {
-            goToSlide(currentIndex + 1);
+        function nextSlide(el) { 
+          if (!this.hasAttribute('disabled')) { 
+            setTimeout(() => { console.log('test second Timeout',this);
+              goToSlide(currentIndex + 1);
+            }, 300);
           }
         }
 
@@ -820,12 +823,12 @@
         };
         this.$forceUpdate();
       },
-      goToLink: function() { // action in go to product button
+      goToLink: function(e) { // action in go to product button
         if (this.active == 'first' && this.slide == 2) {
-          console.log('test-goToLink-first');
+          //console.log('test-goToLink-first');
           document.location.href = this.first.mainLinks[this.firstSelected[0]].sublinks[this.firstSelected[1]].link;
         } else if (this.active == 'second' && this.slide == 4) {
-          console.log('test-goToLink-second',this.secondProductSelected);
+          //console.log('test-goToLink-second',this.secondProductSelected);
           document.location.href = this.secondSelectedLink;
         }
       }

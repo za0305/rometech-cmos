@@ -900,7 +900,7 @@ class SliderComponent extends HTMLElement {
         }
       }
     } else {
-      if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft === 0) {
+      if (this.isSlideVisible(this.sliderItemsToShow[0]) && this.slider.scrollLeft < 20) {
         this.prevButton.setAttribute('disabled', 'disabled');
       } else {
         this.prevButton.removeAttribute('disabled');
@@ -1274,6 +1274,7 @@ class VariantSelects extends HTMLElement {
       this.renderProductInfo();
       this.updateShareUrl();
     }
+    this.updateWholesaleQuantity(event);
   }
 
   updateOptions() {
@@ -1533,6 +1534,19 @@ class VariantSelects extends HTMLElement {
     this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
     return this.variantData;
   }
+
+  updateWholesaleQuantity(data) {
+    if (wholesaleProduct) {
+      const quantityInput = document.querySelector('.quantity__input');
+      if (quantityInput){
+        quantityInput.value = parseInt(data.target.value);
+        quantityInput.setAttribute('min',data.target.value);
+        quantityInput.setAttribute('data-min',data.target.value);
+        quantityInput.setAttribute('max',data.target.dataset.quantity);
+      }
+      //console.log('wholesaleProduct',data);
+    }
+  }
 }
 
 customElements.define('variant-selects', VariantSelects);
@@ -1608,4 +1622,3 @@ function smoothScroll(event) {
 
   requestAnimationFrame(animation);
 }
-

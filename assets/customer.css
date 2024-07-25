@@ -35,10 +35,24 @@
 }
 
 .customer.addresses .addresses-inner .field input,
-.customer.addresses .addresses-inner .field select {
+.customer.addresses .addresses-inner select {
   padding-left: 0;
   border-radius: 0;
   border-width: 0 0 2px 0;
+}
+
+.customer.addresses #AddressProvinceContainerNew,
+.customer__fields [id^=AddressProvinceContainer]  {
+  margin: 2rem 0 0;
+}
+
+.customer.addresses #AddressProvinceContainerNew label,
+.customer__fields [id^=AddressProvinceContainer] label {
+  font-size: 1.6rem;
+  letter-spacing: .1rem;
+  line-height: 1.5;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
 }
 
 .addresses-list-item {
@@ -463,12 +477,15 @@
 .login h1#login,
 .login h1#recover,
 .login p,
-.register h1 {
+.register h1,
+.reset-password h1,
+.reset-password p {
   text-align: center;
 }
 
 .login form,
-.register form {
+.register form,
+.reset-password form {
   max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
@@ -553,7 +570,8 @@
 }
 
 .customer.login,
-.customer.register {
+.customer.register,
+.customer.reset-password {
   max-width: 75rem;
 }
 

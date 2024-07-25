@@ -422,7 +422,7 @@ header-megamenu-drawer .menu-drawer__close-button:hover:before {
   width: 4px;
   border-radius: 0 114px 114px 0;
   background-color: rgb(var(--color-accent)); 
-  transition: all 0.3s linear;
+  /* transition: all 0.05s linear; */
   z-index: -1;
 }
 
@@ -481,6 +481,9 @@ header-megamenu-drawer .menu-drawer__close-button:hover:before {
   }
   .menu-drawer__header_account .header__icon--account_personal {
     border-color: rgb(var(--color-background));
+  }
+  .menu-drawer__header_account .header__icon--account_title {
+    color: rgb(var(--color-background));
   }
 }
 

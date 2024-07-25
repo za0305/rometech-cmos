@@ -13,10 +13,12 @@ class CartDrawer extends HTMLElement {
     cartLink.setAttribute('aria-haspopup', 'dialog');
     cartLink.addEventListener('click', (event) => {
       event.preventDefault();
-      if (this.classList.contains('active')) {
-        this.close();
-      } else {
-        this.open(cartLink);
+      if (theme.pageTemplate != 'cart'){
+        if (this.classList.contains('active')) {
+          this.close();
+        } else {
+          this.open(cartLink);
+        }
       }
     });
     cartLink.addEventListener('keydown', (event) => {
@@ -34,6 +36,7 @@ class CartDrawer extends HTMLElement {
     // here the animation doesn't seem to always get triggered. A timeout seem to help
     setTimeout(() => {
       this.classList.add('animate', 'active');
+      document.querySelector('.section-header').classList.remove('shopify-section-header-hidden');
     });
 
     this.addEventListener(

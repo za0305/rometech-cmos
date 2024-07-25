@@ -101,3 +101,25 @@
   text-transform: uppercase;
   color: rgba(var(--color-foreground), 0.7);
 }
+
+.product__info-wrapper .price-item--sale.price-item--last {
+  margin-right: 15px;
+}
+
+@media screen and (min-width: 750px) {
+  .product__info-wrapper .price-item--regular {
+    margin-right: 5px;
+  }
+  .product__info-wrapper .price-item--sale.price-item--last {
+    margin-right: 10px;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .product__info-wrapper .price-item--regular {
+    margin-right: 10px;
+  }
+  .product__info-wrapper .price-item--sale.price-item--last {
+    margin-right: 20px;
+  }
+}

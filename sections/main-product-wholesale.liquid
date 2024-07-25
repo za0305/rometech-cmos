@@ -85,6 +85,51 @@
     <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
     <div class="grid__item product__media-wrapper{% if section.settings.media_position == 'right' %} medium-hide large-up-hide{% endif %}">
       {% render 'product-media-gallery', variant_images: variant_images %}
+
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'specifications' -%}
+            <div class="product__specifications product__specifications-desctop">
+              <h4 class="product__specifications-title">Specifications</h4>
+              {%- if product.metafields.specifications.cable_length != blank -%}
+                <p class="product__specifications-item">
+                  <span class="product__specifications-name">Cable Length:</span>
+                  <span class="product__specifications-value">{{ product.metafields.specifications.cable_length }}</span>
+                </p>
+              {%- endif -%}
+              {%- if product.metafields.specifications.capacity != blank -%}
+                <p class="product__specifications-item">
+                  <span class="product__specifications-name">Capacity:</span>
+                  <span class="product__specifications-value">{{ product.metafields.specifications.capacity }}</span>
+                </p>
+              {%- endif -%}
+              {%- if product.metafields.specifications.chemistry != blank -%}
+                <p class="product__specifications-item">
+                  <span class="product__specifications-name">Chemistry:</span>
+                  <span class="product__specifications-value">{{ product.metafields.specifications.chemistry }}</span>
+                </p>
+              {%- endif -%}
+              {%- if product.metafields.specifications.voltage != blank -%}
+                <p class="product__specifications-item">
+                  <span class="product__specifications-name">Voltage:</span>
+                  <span class="product__specifications-value">{{ product.metafields.specifications.voltage }}</span>
+                </p>
+              {%- endif -%}
+              {%- if product.metafields.specifications.warranty != blank -%}
+                <p class="product__specifications-item">
+                  <span class="product__specifications-name">Warranty:</span>
+                  <span class="product__specifications-value">{{ product.metafields.specifications.warranty }}</span>
+                </p>
+              {%- endif -%}
+              {%- if product.metafields.specifications.battery_type != blank -%}
+                <p class="product__specifications-item">
+                  <span class="product__specifications-name">Battery Type:</span>
+                  <span class="product__specifications-value">{{ product.metafields.specifications.battery_type }}</span>
+                </p>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
     </div>
     <div class="product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
       <product-info
@@ -125,7 +170,6 @@
                   show_badges: true,
                   price_class: 'price--large'
                 -%}
-
                 {%- if product.available -%} 
                   <p class="product__stock product__stock-available">In Stock</p>
                 {%- else -%}
@@ -278,6 +322,8 @@
                         {% if product.selected_or_first_available_variant.quantity_rule.max != null %}
                           data-max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
                           max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                        {% elsif product.selected_variant %}
+                          max="{{ product.selected_variant.inventory_quantity }}"
                         {% endif %}
                         step="{{ product.selected_or_first_available_variant.quantity_rule.increment }}"
                         value="{{ product.selected_or_first_available_variant.quantity_rule.min }}"
@@ -429,7 +475,7 @@
                     {%- for item in wholesale_offer -%}
                       {%- if item contains 'Free shipping' or item contains 'Shipping' or item contains 'shipping' -%}
                         <p class="free-shipping">{{ item }}</p>
-                      {%- else -%} 
+                      {%- else -%}
                         <p>{{ item }}</p>
                       {%- endif -%}
                     {%- endfor -%}
@@ -465,7 +511,8 @@
               %}
 
             {%- when 'variant_picker' -%}
-              {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+              {% render 'product-wholesale-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+              
             {%- when 'buy_buttons' -%}
               {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true -%}
             {%- when 'rating' -%}
@@ -591,7 +638,7 @@
               %}
 
             {%- when 'specifications' -%}
-              <div class="product__specifications">
+              <div class="product__specifications product__specifications-mobile">
                 <h4 class="product__specifications-title">Specifications</h4>
                 {%- if product.metafields.specifications.cable_length != blank -%}
                   <p class="product__specifications-item">
@@ -765,6 +812,56 @@
   </script>
   </div>
 </section>
+
+{% comment %} <script>
+  const wholesaleProduct = {{ product | json }};
+  let wholesaleVariantsValues = [];
+  for (let i = 0; i < wholesaleProduct.variants.length; i++) {
+    wholesaleVariantsValues.push(parseInt(wholesaleProduct.variants[i].title));
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    const quantitySelector = document.querySelector('.product .quantity__input');
+    const variantSelects = document.querySelectorAll('.product variant-selects label');
+    
+    if (variantSelects){
+      let timer;
+      quantitySelector.addEventListener('input', function(e){
+        clearTimeout(timer);
+        const value = parseFloat(this.value);
+        let interval = null;
+        timer = setTimeout(() => {
+          for (let j = 0; j < wholesaleVariantsValues.length; j++) {
+            // const element = wholesaleVariantsValues[j];
+            if (value >= wholesaleVariantsValues[j] && value < wholesaleVariantsValues[j + 1]) {
+              interval = j;
+              break;
+            } else if (value >= wholesaleVariantsValues[wholesaleVariantsValues.length - 1]) {
+              interval = wholesaleVariantsValues.length - 1;
+              break;
+            }
+          }
+          variantSelects[interval].click();
+        }, 500); 
+      });
+
+      quantitySelector.addEventListener('change', function(e){
+        const value = parseFloat(this.value);
+        let interval = null;
+        for (let j = 0; j < wholesaleVariantsValues.length; j++) {
+          // const element = wholesaleVariantsValues[j];
+          if (value >= wholesaleVariantsValues[j] && value < wholesaleVariantsValues[j + 1]) {
+            interval = j;
+            break;
+          } else if (value >= wholesaleVariantsValues[wholesaleVariantsValues.length - 1]) {
+            interval = wholesaleVariantsValues.length - 1;
+            break;
+          }
+        }
+        variantSelects[interval].click();
+      });
+    }
+  });
+</script> {% endcomment %}
 
 {% schema %}
 {

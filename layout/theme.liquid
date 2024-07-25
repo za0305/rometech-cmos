@@ -356,6 +356,9 @@
         recipientFormCollapsed: `{{ 'recipient.form.collapsed' | t }}`,
         countrySelectorSearchCount: `{{ 'localization.country_results_count' | t: count: '[count]' }}`,
       };
+      window.theme = {
+        pageTemplate: '{{ template.name }}{% if template.suffix %}__{{ template.suffix }}{% endif %}',
+      };
     </script>
 
     {%- if settings.predictive_search_enabled -%}

@@ -251,7 +251,7 @@
 }
 
 .card-rating .rating-star:before {
-  letter-spacing: 3px;
+  letter-spacing: 1.5px;
 }
 
 @media screen and (min-width: 1200px) {
@@ -261,8 +261,11 @@
   .card__content .price {
     position: absolute;
     right: 0;
-    bottom: calc(100% + 5px);
+    bottom: calc(100% - 8px);
   } 
+  .card-wrapper:hover .card__content .price {
+    bottom: calc(100% + 5px);
+  }
 }
 
 .card--card.card--media > .card__content {

@@ -14,7 +14,7 @@ customElements.define('cart-remove-button', CartRemoveButton);
 
 class CartItems extends HTMLElement {
   constructor() {
-    super();
+    super(); 
     this.lineItemStatusElement =
       document.getElementById('shopping-cart-line-item-status') || document.getElementById('CartDrawer-LineItemStatus');
 
@@ -23,6 +23,8 @@ class CartItems extends HTMLElement {
     }, ON_CHANGE_DEBOUNCE_TIMER);
 
     this.addEventListener('change', debouncedOnChange.bind(this));
+    window.addEventListener('pageshow', this.onCartUpdate.bind(this));
+    document.addEventListener('wk:wishlist:add-to-cart:success', this.onCartUpdate.bind(this));
   }
 
   cartUpdateUnsubscriber = undefined;
@@ -40,25 +42,29 @@ class CartItems extends HTMLElement {
     if (this.cartUpdateUnsubscriber) {
       this.cartUpdateUnsubscriber();
     }
-  }
+  } 
 
   onChange(event) {
     this.updateQuantity(event.target.dataset.index, event.target.value, document.activeElement.getAttribute('name'), event.target.dataset.quantityVariantId);
   }
 
-  onCartUpdate() {
+  onCartUpdate() { 
     if (this.tagName === 'CART-DRAWER-ITEMS') {
       fetch(`${routes.cart_url}?section_id=cart-drawer`)
         .then((response) => response.text())
         .then((responseText) => {
           const html = new DOMParser().parseFromString(responseText, 'text/html');
           const selectors = ['cart-drawer-items', '.cart-drawer__footer'];
+          const cartBubble = html.getElementById('cartDrawerBubble');
           for (const selector of selectors) {
             const targetElement = document.querySelector(selector);
             const sourceElement = html.querySelector(selector);
             if (targetElement && sourceElement) {
               targetElement.replaceWith(sourceElement);
             }
+          }
+          if (cartBubble){
+            this.updateQuantityBubble(cartBubble.innerHTML);
           }
         })
         .catch((e) => {
@@ -106,6 +112,13 @@ class CartItems extends HTMLElement {
         selector: '.cart__free-shipping',
       },
     ];
+  }
+
+  updateQuantityBubble(elem) {
+    const bubble = document.getElementById('cart-icon-bubble'); 
+    if (bubble) { 
+      bubble.innerHTML = elem;
+    }
   }
 
   updateQuantity(line, quantity, name, variantId) {
@@ -249,3 +262,4 @@ if (!customElements.get('cart-note')) {
     }
   );
 }
+

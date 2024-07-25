@@ -305,7 +305,7 @@
                   <select
                     id="AddressCountryNew"
                     name="address[country]"
-                    data-default="{{ customer.default_address.country }}"
+                    data-default="{% if customer.default_address.country %}{{ customer.default_address.country }}{% else %}United States{% endif %}"
                     autocomplete="country"
                     required
                   >

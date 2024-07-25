@@ -20,6 +20,23 @@
 <div class="cart-drawer__wrapper">
   <cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
     <div id="CartDrawer" class="cart-drawer">
+      <div id="cartDrawerBubble" style="display: none;">
+        {%- liquid
+          render 'icon-cart-empty'
+        -%}
+        <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+        {%- if cart != empty -%}
+          <div class="cart-count-bubble">
+            {%- if cart.item_count < 100 -%}
+              <span aria-hidden="true">{{ cart.item_count }}</span>
+            {%- else -%}
+            <span class="cart-count-bubble-small" aria-hidden="true">{{ cart.item_count }}</span>
+            {%- endif -%}
+            <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+          </div>
+        {%- endif -%}
+      </div>
+      
       <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
       <div
         class="drawer__inner"

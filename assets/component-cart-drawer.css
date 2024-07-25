@@ -332,6 +332,7 @@ cart-drawer quantity-popover {
 .cart-drawer .cart-item__media {
   width: 8.8rem;
   grid-row: 1 / 3;
+  flex-shrink: 0;
 }
 
 .cart-drawer .cart-item__image {

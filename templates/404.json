@@ -2,7 +2,13 @@
   "sections": {
     "main": {
       "type": "main-404",
-      "settings": {}
+      "settings": {
+        "image": "shopify:\/\/shop_images\/404.png",
+        "text": "<p>Sorry, the page not found<\/p>",
+        "title": false,
+        "button": false,
+        "btn_text": "Continue Shopping"
+      }
     }
   },
   "order": [

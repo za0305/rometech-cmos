@@ -1,57 +1,56 @@
 {
-    "sections": {
-      "main": {
-        "type": "main-page",
-        "settings": {
-          "padding_top": 28,
-          "padding_bottom": 28
-        }
-      },
-      "rich_text_TyUxLF": {
-        "type": "rich-text",
-        "blocks": {
-          "heading_CHFUjD": {
-            "type": "heading",
-            "settings": {
-              "heading": "Talk about your brand",
-              "heading_size": "h1"
-            }
-          },
-          "text_3HMcpJ": {
-            "type": "text",
-            "settings": {
-              "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
-            }
-          },
-          "button_6RApdh": {
-            "type": "button",
-            "settings": {
-              "button_label": "Button label",
-              "button_link": "",
-              "button_style_secondary": false,
-              "button_label_2": "",
-              "button_link_2": "",
-              "button_style_secondary_2": false
-            }
+  "sections": {
+    "policy_paragraph_RwVCUb": {
+      "type": "policy-paragraph",
+      "blocks": {
+        "policy_FVtMnr": {
+          "type": "policy",
+          "settings": {
+            "anchor": "RETURN POLICY",
+            "heading": "RETURN POLICY - 100% SATISFACTION GUARANTEE",
+            "text": "<p>At Rome Tech, customer satisfaction is our highest priority. That's why we have designed our 100% Satisfaction Guarantee to ensure that you are completely satisfied with every purchase you make. Please read the details of our return policy below:<br\/><br\/><strong>Returns for Any Reason<\/strong>: We accept returns for any reason, no questions asked. If you're not satisfied with your purchase, simply return the item to us within the specified time frame, and we will process a full refund.<br\/><br\/><strong>60-Day Returns on Website Purchases:<\/strong> For all purchases made on our website (www.RomeTechBatteries.com), you can return your product within 60 days of the order date for a full refund.<br\/><br\/><strong>30-Day Returns on Marketplace Purchases:<\/strong> For all purchases made through our partner marketplaces (eBay, Amazon, Walmart, Newegg), you can return your product within 30 days of the order date for a full refund.<br\/><br\/><strong>International Orders:<\/strong> Buyers are responsible for paying return shipping costs for all international orders. Please ensure you use a trackable shipping method to avoid any complications.<br\/><br\/><strong>One-Year Warranty (excluding eBay orders):<\/strong> In addition to our return policy, we also offer a one-year warranty from the order date on all products. This warranty covers any manufacturing defects and includes a one-time product replacement. To claim your warranty, please contact our customer support team with your order details and a description of the issue. One-year warranty does not apply to eBay orders.<br\/><br\/>To initiate a return or claim your warranty, please contact our customer support team at support@rometechbatteries.com. We're always here to help and ensure you have a seamless experience with Rome Tech.<\/p>"
           }
         },
-        "block_order": [
-          "heading_CHFUjD",
-          "text_3HMcpJ",
-          "button_6RApdh"
-        ],
-        "settings": {
-          "desktop_content_position": "center",
-          "content_alignment": "center",
-          "color_scheme": "",
-          "full_width": true,
-          "padding_top": 40,
-          "padding_bottom": 52
+        "policy_3ifQPi": {
+          "type": "policy",
+          "settings": {
+            "anchor": "LIMITED WARRANTY POLICY",
+            "heading": "LIMITED WARRANTY POLICY",
+            "text": "<p>At Rome Tech, we are committed to providing our customers with quality products that perform reliably. That's why we offer a one-year warranty on all purchases, excluding those from our eBay outlet store which have a 30-day warranty. This warranty covers defects in materials and workmanship. If you ever have an issue with a Rome Tech product, don't hesitate to contact our customer support team at support@rometechcases.com or contact us via the contact us page to initiate a claim so we can make it right.<br\/><br\/><strong>eBay Outlet Purchases:<\/strong> A limited 30-day warranty from the product purchase date.<br\/><br\/><strong>One-Year Limited Warranty:<\/strong> In addition to our return policy, we also offer a one-year limited warranty (excluding eBay) from the order date on all products. This warranty covers any manufacturing defects and includes a one-time product replacement. To claim your warranty, please contact our customer support team at support@rometechcases.com or contact us via the contact us page with your order details and a description of the issue.<br\/><br\/>Our goal is complete customer satisfaction, and our warranty program demonstrates our dedication to that goal. We're always here to help and ensure you have a seamless experience with Rome Tech.<\/p>"
+          }
+        },
+        "policy_w9YFc6": {
+          "type": "policy",
+          "settings": {
+            "anchor": "EXCHANGE POLICY",
+            "heading": "EXCHANGE POLICY",
+            "text": "<p><strong>Rome Tech Exchange Policy:<\/strong><br\/><br\/>We want you to be completely satisfied with your purchase. If you need to exchange a product, follow these steps:<br\/><br\/>1. Eligibility: Products must be unused, undamaged, and returned within 30 days of delivery.<br\/>2. Place a new order for the desired product on our website.<br\/>3. Email support@rometechbatteries.com with:<br\/>- Original order number<br\/>- New order number<br\/>- Reason for exchange<br\/>4. We'll send you a prepaid return label and envelope.<br\/>5. Ship the original product back using the provided label and packaging.<br\/>6. Once received, we'll process a refund for the original order within 3-5 business days, using the original payment method.<br\/><br\/><strong>Please note:<\/strong><br\/>- Original shipping costs are non-refundable.<br\/>- You're responsible for any taxes, duties, or fees associated with the exchange.<br\/><br\/>Contact support@rometechbatteries.com if you have any questions.<\/p>"
+          }
+        },
+        "policy_nfQJhb": {
+          "type": "policy",
+          "settings": {
+            "anchor": "DELIVERY POLICY",
+            "heading": "DELIVERY POLICY",
+            "text": "<p><strong>Here's a clearer, more concise version of the delivery\/shipping policy:<\/strong><br\/><br\/><strong>Domestic Shipping (Continental US)<\/strong><br\/>- Free shipping on all orders within the continental US.<br\/>- Orders shipped within 1 business day via USPS.<br\/><br\/><strong>International Shipping<\/strong><br\/>- Flat $5 rate for courier shipping.<br\/>- Estimated delivery time is 30 days. Remote areas in some countries may take up to 45 days.<br\/><br\/><strong>Shipping Carrier<\/strong><br\/>- USPS (United States Postal Service) for all orders.<br\/>- First Class shipping for domestic, couriers for international.<br\/><br\/><strong>Undeliverable Orders<\/strong><br\/>- Refunds for undeliverable orders are subject to deductions:<br\/>- $4.99 for USPS First Class<br\/>- $9.99 for USPS Priority Mail<br\/><br\/><strong>Reshipment Fees<\/strong><br\/>- Domestic: $4.99 to $9.99 depending on the shipping method.<br\/>- International: $11.99 to $14.99 depending on the country's logistic's costs.<br\/><br\/><strong>Pre-Orders \/ Backorders<\/strong><br\/>- Shipping dates indicated and updated weekly on product pages.<br\/><br\/><strong>Order Tracking<\/strong><br\/>- Tracking info provided via email after shipment.<br\/><br\/><strong>Customer Support<\/strong><br\/>- Contact support@rometechbatteries.com for inquiries.<br\/><br\/>By placing an order, you agree to this Delivery Policy. Rome Tech reserves the right to modify this policy without notice.<\/p>"
+          }
         }
+      },
+      "block_order": [
+        "policy_FVtMnr",
+        "policy_3ifQPi",
+        "policy_w9YFc6",
+        "policy_nfQJhb"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "full_width": false,
+        "padding_top": 60,
+        "padding_bottom": 60
       }
-    },
-    "order": [
-      "main",
-      "rich_text_TyUxLF"
-    ]
-  }
+    }
+  },
+  "order": [
+    "policy_paragraph_RwVCUb"
+  ]
+}

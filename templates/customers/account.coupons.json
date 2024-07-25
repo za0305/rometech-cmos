@@ -3,8 +3,6 @@
     "main": {
       "type": "main-account",
       "settings": {
-        "coupons": "<p>NC321APT  <strong>10%<\/strong><\/p><h6>NC321APT  <strong>10%<\/strong><\/h6>",
-        "b2b": "account-b2b",
         "padding_top": 36,
         "padding_bottom": 36
       }

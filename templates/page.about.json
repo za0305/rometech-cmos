@@ -1,0 +1,80 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-about",
+      "blocks": {
+        "member_yXMDNM": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/image_264.jpg",
+            "name": "Roman S",
+            "position": "Founder & CEO"
+          }
+        },
+        "member_rmctGm": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/photo_2021-11-19_17-22-46.jpg",
+            "name": "Volodymyr M",
+            "position": "Project Manager"
+          }
+        },
+        "member_BFbb93": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/Image_from_iOS.jpg",
+            "name": "Ricky D",
+            "position": "Customer Success Manager"
+          }
+        },
+        "member_jx4GjV": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/image_276.jpg",
+            "name": "REVGENIY S",
+            "position": "CEO"
+          }
+        },
+        "member_RqCqra": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/photo_2021-11-23_09-17-30.jpg",
+            "name": "YAROSLAV S",
+            "position": "Marketplace Manager"
+          }
+        },
+        "member_PDmChQ": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/DSC05834.jpg",
+            "name": "Taras B",
+            "position": "Product Manager"
+          }
+        }
+      },
+      "block_order": [
+        "member_yXMDNM",
+        "member_rmctGm",
+        "member_BFbb93",
+        "member_jx4GjV",
+        "member_RqCqra",
+        "member_PDmChQ"
+      ],
+      "settings": {
+        "title": "About Us",
+        "info_text": "Why you must choose us.",
+        "info_image": "shopify:\/\/shop_images\/00_22SLIMPN2032M_1_1.png",
+        "team_text": "Team",
+        "team_image": "shopify:\/\/shop_images\/RTB_3_1.png",
+        "logo": "shopify:\/\/shop_images\/RTB_H_2_1.png",
+        "team_popup_title": "Our team",
+        "team_popup_text": "<p><strong>Think outside the screen.<\/strong><\/p><p>Our customers choose us because we provide the latest high-quality cellular accessories, deliver unmatched customer service, and offer some of the best value in the industry. Over the last decade, our approach to business has helped us transform from a small cellular accessory retailer to a global provider of cellular accessories.<br\/><\/p>",
+        "padding_top": 36,
+        "padding_bottom": 100
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

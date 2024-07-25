@@ -2,51 +2,101 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
+    "header": {
+      "type": "header",
       "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
+        "megamenu_item_XqFFMf": {
+          "type": "megamenu_item",
           "settings": {
-            "text": "Welcome to our store",
-            "link": ""
+            "name": "CMOS Batteries",
+            "image": "shopify:\/\/shop_images\/00_22SLIMPN2032M_1.png",
+            "link_text": "See all CMOS BATTERIES",
+            "link": "shopify:\/\/collections\/cmos-batteries",
+            "item_menu": "builder-laptop-options"
+          }
+        },
+        "megamenu_item_GM3U8i": {
+          "type": "megamenu_item",
+          "settings": {
+            "name": "Part Number Batteries",
+            "image": "shopify:\/\/shop_images\/43-22-LONGNP2032-S_2512d6b7-af33-4c40-a4af-8bb5c92cdf54.webp",
+            "link_text": "Part Number Batteries",
+            "link": "shopify:\/\/collections\/part-number-battery",
+            "item_menu": "part-number-batteries"
+          }
+        },
+        "megamenu_item_6hJybz": {
+          "type": "megamenu_item",
+          "settings": {
+            "name": "Watch Batteries",
+            "image": "shopify:\/\/shop_images\/CASIO-WV200-R-3-A.webp",
+            "link_text": "See all Watch Batteries",
+            "link": "shopify:\/\/collections\/watch-batteries",
+            "item_menu": "watch-batteries"
+          }
+        },
+        "megamenu_item_kGJfHq": {
+          "type": "megamenu_item",
+          "settings": {
+            "name": "Key Fob Batteries",
+            "image": "shopify:\/\/shop_images\/CR_1220.png",
+            "link_text": "See all Key Fob Batteries",
+            "link": "shopify:\/\/collections\/key-fob",
+            "item_menu": "key-fob-batteries"
+          }
+        },
+        "megamenu_item_LXk3Nn": {
+          "type": "megamenu_item",
+          "settings": {
+            "name": "Medical Devices Batteries",
+            "image": "shopify:\/\/shop_images\/CR_1220.png",
+            "link_text": "See all Medical Devices Batteries",
+            "link": "shopify:\/\/collections\/medical-devices",
+            "item_menu": "medical-devices-batteries"
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
+        "megamenu_item_XqFFMf",
+        "megamenu_item_GM3U8i",
+        "megamenu_item_6hJybz",
+        "megamenu_item_kGJfHq",
+        "megamenu_item_LXk3Nn"
       ],
-      "settings": {
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      }
-    },
-    "header": {
-      "type": "header",
       "settings": {
         "logo_position": "middle-left",
         "menu": "main-menu",
-        "menu_type_desktop": "dropdown",
+        "menu_type_desktop": "drawer",
         "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "color_scheme": "scheme-1",
+        "show_line_separator": false,
+        "color_scheme": "scheme-4",
         "menu_color_scheme": "scheme-1",
         "enable_country_selector": true,
-        "enable_language_selector": true,
+        "header_phone": "856-336-8157",
+        "header_email": "support@rometechbatteries.com",
+        "enable_language_selector": false,
         "mobile_logo_position": "center",
         "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "1712227772a192a188": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "breadcrumbs_Xb8Gwg": {
+      "type": "breadcrumbs",
+      "settings": {
+        "breadcrumbs_in_homepage": false
       }
     }
   },
   "order": [
-    "announcement-bar",
-    "header"
+    "header",
+    "1712227772a192a188",
+    "breadcrumbs_Xb8Gwg"
   ]
 }

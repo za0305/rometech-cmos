@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "page-wholesale",
+      "settings": {
+        "heading": "Wholesale",
+        "heading_size": "h1",
+        "image": "shopify:\/\/shop_images\/72adb00d1e62491048b9bc2c0580aa30.jpg",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

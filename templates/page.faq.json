@@ -1,0 +1,86 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "collapsible_content_99z8hw": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_38XRpU": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How can I order?",
+            "icon": "none",
+            "row_content": "<p>You can order easily using our online platform. When you find a product you need, you can add it to cart, fill in the form and go through the ordering process. After the order is ready, you will receive order summary to your email. Order summary will also be stored to your account.<\/p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_TrLDNB": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Can I pay for my order by credit card?",
+            "icon": "none",
+            "row_content": "<p>Yes, you can pay for your order by a credit card using such payment systems as PayPal and Stripe. You can pay for your order using the system that is most convenient for you to use.<\/p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_niMzdn": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Is shipping included in the prices?",
+            "icon": "none",
+            "row_content": "<p>Delivery is free for all products and orders.<\/p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_haXAR4": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Is it possible to refund or replace any order?",
+            "icon": "none",
+            "row_content": "<p>Yes, it is possible. If you would like to cancel your order for some reason, you can cancel it by going to your account on the website.<\/p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_BtHdqx": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Why was my order cancelled?",
+            "icon": "none",
+            "row_content": "<p>Your order may be cancelled due to lack of stock. However, you will receive the relevant information for your order, in any case. You will be sent an email to the email address you left in the order form and you will also be contacted by the customer service department.<\/p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_38XRpU",
+        "collapsible_row_TrLDNB",
+        "collapsible_row_niMzdn",
+        "collapsible_row_haXAR4",
+        "collapsible_row_BtHdqx"
+      ],
+      "settings": {
+        "caption": "",
+        "heading": "",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "color_scheme": "",
+        "container_color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 92
+      }
+    }
+  },
+  "order": [
+    "main",
+    "collapsible_content_99z8hw"
+  ]
+}

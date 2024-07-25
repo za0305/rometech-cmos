@@ -1,21 +1,28 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "hero_banner_rRCRcp": {
+      "type": "hero-banner",
       "blocks": {
-        "heading": {
+        "heading_frkAKi": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
+            "heading": "<p>LET'S START<\/p><p><strong>LOOKING<\/strong><\/p>",
             "heading_size": "h0"
           }
         },
-        "button": {
+        "text_46eAPx": {
+          "type": "text",
+          "settings": {
+            "text": "for the right <strong>CMOS<\/strong> battery",
+            "text_style": "body"
+          }
+        },
+        "buttons_yfcKcM": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify:\/\/collections\/all",
-            "button_style_secondary_1": true,
+            "button_label_1": "Start",
+            "button_link_1": "#shopify-section-template--16755324747933__index_builder_4r64wz",
+            "button_style_secondary_1": false,
             "button_label_2": "",
             "button_link_2": "",
             "button_style_secondary_2": false
@@ -23,53 +30,219 @@
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "heading_frkAKi",
+        "text_46eAPx",
+        "buttons_yfcKcM"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
+        "image": "shopify:\/\/shop_images\/CR.png",
+        "image_2": "shopify:\/\/shop_images\/CMOS_img.png",
+        "image_height": "medium",
         "show_text_box": false,
         "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "image_behavior": "none",
+        "color_scheme": "",
         "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "show_text_below": true
+      }
+    },
+    "index_builder_4r64wz": {
+      "type": "index-builder",
+      "blocks": {
+        "heading_6kHCyX": {
+          "type": "heading",
+          "settings": {
+            "heading": "EASY <strong>CMOS<\/strong>",
+            "heading_size": "h0"
+          }
+        },
+        "heading_fjfXxz": {
+          "type": "heading",
+          "settings": {
+            "heading": "BATTERY BUILDER",
+            "heading_size": "h1"
+          }
+        },
+        "text_piHCb3": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Not sure what your computer’s model number is? No Worries! We’ll make you a customized CMOS battery that matches yours.<\/strong><\/p><p>With <strong>4 easy steps<\/strong>, we can match the battery size, length, polarity, and the connector type of your original battery for a 100% fit.<\/p>",
+            "divider": "or",
+            "footer_text": "You can see all the CMOS batteries on our website."
+          }
+        },
+        "buttons_GdjQPq": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "See all batteries",
+            "button_link_1": "shopify:\/\/collections\/catalog"
+          }
+        }
+      },
+      "block_order": [
+        "heading_6kHCyX",
+        "heading_fjfXxz",
+        "text_piHCb3",
+        "buttons_GdjQPq"
+      ],
+      "settings": {
+        "image_overlay_opacity": 0,
+        "image_height": "large",
+        "show_text_box": false,
+        "color_scheme": "",
+        "linklist": "builder-laptop-options",
+        "image_first": "shopify:\/\/shop_images\/1458_cbbbbeeb-0728-43f1-b270-a3466b802dd6.png",
+        "text_first": "I know the laptop model",
+        "page_second": "builder-cmos",
+        "image_second": "shopify:\/\/shop_images\/website.png",
+        "text_second": "I know the type of battery"
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured products",
+        "title": "<strong>BEST SELLERS<\/strong>",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
+        "collection": "best-sellers",
+        "products_to_show": 6,
         "columns_desktop": 4,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": false,
+        "enable_desktop_slider": true,
         "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": false,
-        "enable_quick_add": false,
+        "show_rating": true,
+        "enable_quick_add": true,
         "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 44,
-        "padding_bottom": 36
+        "swipe_on_mobile": true,
+        "padding_top": 0,
+        "padding_bottom": 32
+      }
+    },
+    "instruction_6PUXiH": {
+      "type": "instruction",
+      "settings": {
+        "heading": "<p>Let's help you<\/p><p>choose a battery<\/p>",
+        "heading_size": "h1",
+        "text": "In this video, we will explore crucial factors like connector types, polarity, wire length, and coin cell type to ensure compatibility with your hardware.",
+        "enable_instruction_looping": false,
+        "video_url": "https:\/\/www.youtube.com\/watch?v=C63v7cKHies",
+        "cover_image": "shopify:\/\/shop_images\/iScreen_Shoter_-_Google_Chrome_-_240321160002.jpg",
+        "description": "",
+        "full_width": true,
+        "color_scheme": ""
+      }
+    },
+    "logo_list_zgcaTV": {
+      "type": "logo-list",
+      "blocks": {
+        "logo_bKnFFe": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo2.png",
+            "link": "shopify:\/\/products\/test-ptoduct-1"
+          }
+        },
+        "logo_VGc6cX": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo4.png",
+            "link": "shopify:\/\/products\/test-ptoduct-2"
+          }
+        },
+        "logo_cU8bQz": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo1.png",
+            "link": "shopify:\/\/products\/test-ptoduct-3"
+          }
+        },
+        "logo_rew8JH": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo5.png",
+            "link": "shopify:\/\/products\/test-ptoduct-6"
+          }
+        },
+        "logo_BzqVPy": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo3.png",
+            "link": "shopify:\/\/products\/test-ptoduct-4"
+          }
+        },
+        "logo_4FRjLD": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo2.png",
+            "link": "shopify:\/\/products\/test-ptoduct-7"
+          }
+        },
+        "logo_KxHwEq": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo1.png",
+            "link": "shopify:\/\/products\/test-ptoduct-1"
+          }
+        },
+        "logo_6eK797": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo4.png",
+            "link": "shopify:\/\/products\/test-ptoduct-2"
+          }
+        },
+        "logo_ezPPPH": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo5.png",
+            "link": "shopify:\/\/products\/test-ptoduct-5"
+          }
+        },
+        "logo_mBpqjb": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/logo3.png",
+            "link": "shopify:\/\/products\/test-ptoduct-2"
+          }
+        }
+      },
+      "block_order": [
+        "logo_bKnFFe",
+        "logo_VGc6cX",
+        "logo_cU8bQz",
+        "logo_rew8JH",
+        "logo_BzqVPy",
+        "logo_4FRjLD",
+        "logo_KxHwEq",
+        "logo_6eK797",
+        "logo_ezPPPH",
+        "logo_mBpqjb"
+      ],
+      "settings": {
+        "image": "shopify:\/\/shop_images\/bg_1.png",
+        "title": "OUR CLIENTS",
+        "columns_desktop": 5,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_link": "",
+        "color_scheme": "",
+        "padding_top": 100,
+        "padding_bottom": 160
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero_banner_rRCRcp",
+    "index_builder_4r64wz",
+    "featured_collection",
+    "instruction_6PUXiH",
+    "logo_list_zgcaTV"
   ]
 }

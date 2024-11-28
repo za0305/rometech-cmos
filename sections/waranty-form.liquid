@@ -31,254 +31,356 @@
             <div class="warranty_nav">
                 <p class="warranty_nav_item active" data-id="warranty_tab_{{ section.id }}_1">{{ se_stts.first_tab_title }}</p>
                 <p class="warranty_nav_item" data-id="warranty_tab_{{ section.id }}_2">{{ se_stts.second_tab_title }}</p>
+                <p class="warranty_nav_item" data-id="warranty_tab_{{ section.id }}_3">{{ se_stts.third_tab_title }}</p>
             </div>
             <div class="warranty_tabs">
                 <div id="warranty_tab_{{ section.id }}_1" class="warranty_tab_item warranty_tab_first open"> 
-                    {%- if se_stts.first_tab_form != blank -%}
-                        {{ se_stts.first_tab_form }}
-                    {%- else -%}
-                        {%- form 'contact', id: 'warranty_form' -%}
-                            {%- render 'form-status', form: form, form_id: 'warranty_form' -%}
-                            {%- if form.posted_successfully? -%}
-                                <p class="t4s-form-message t4s-form-message--success" tabindex="-1" data-form-status>
-                                    {{ success_message | default: 'templates.contact.form.post_success' | t }}
-                                </p>
-                            {%- endif -%}
-                            {% assign error_order = "author, email, body, password, form" | split: ", " %}
-                            {%- if form.errors -%}
-                                {%- if form.errors.translated_fields.size == 1 and form.errors.first == 'form' -%}
-                                    <p class="t4s-form-message" tabindex="-1" data-form-status>{{ form.errors.messages['form'] }}</p>
-                                {%- else -%}
-                                    <div class="t4s-form-message t4s-form-message--error">
-                                        <h2 class="t4s-form-message__title " tabindex="-1" data-form-status>{{ 'templates.contact.form.error_heading' | t }}</h2>
-                                        <ul>
-                                            {% for error in error_order %}
-                                                {% for field in form.errors %}
-                                                    {% if error == field %}
-                                                        {% capture field_label %}
-                                                            {% case field %}
-                                                                {% when 'author' %}
-                                                                    {{ 'templates.contact.form.name' | t }}
-                                                                {% when 'body' %}
-                                                                    {{ 'templates.contact.form.message' | t }}
-                                                                {% else %}
-                                                                    {{ form.errors.translated_fields[field] }}
-                                                            {% endcase %}
-                                                        {% endcapture %}
-                                                        <li>
-                                                            {%- if field == 'form' -%}
-                                                                {{ form.errors.messages[field] }}
-                                                            {%- else -%}
-                                                                <a href="#warranty_form-{{ field }}" class="t4s-form-message__link">{{ field_label | strip | capitalize }} {{ form.errors.messages[field] }}</a>
-                                                            {%- endif -%}
-                                                        </li>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                {%- endif -%}
-                            {%- endif -%}
-                            {%- for block in section.blocks -%}
-                                {%- if block.type == 'first_form_radio' or block.type == 'first_form_order_details' or block.type == 'form_subscribe' -%}
-                                    {%- assign bk_stts = block.settings -%} 
-                                    {%- case block.type -%}
-                                        {%- when 'first_form_radio' -%}
-                                            <div class="warranty_form_radio">
-                                                {%- if bk_stts.heading != blank -%}
-                                                    <h4 class="warranty_form_option-title">{{ bk_stts.heading  }}</h4>
-                                                {%- endif -%}
-                                                <div class="warranty_form_options">
-                                                    {% for i in (1..8) %}
-                                                        {%- capture option -%}option_{{ i }}{%- endcapture -%}
-                                                        {%- assign option_set = bk_stts[option] -%}
-                                                        {%- assign option_name = bk_stts.heading | handleize -%}
-                                                        {% if option_set != blank %}
-                                                            <p class="warranty_form_options_item">
-                                                                <label class="warranty_form_radio-lable">
-                                                                    <input type="radio" name="contact[{{ bk_stts.heading }}]" value="{{ option_set }}" {% if forloop.first %}checked{% endif %}> 
-                                                                    {{ option_set }}
-                                                                </label>
-                                                            </p>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                    {%- if bk_stts.option_other -%}
-                                                        <p class="warranty_form_options_item">
-                                                            <label class="warranty_form_radio-lable">
-                                                                <input type="radio" name="contact[{{ bk_stts.heading }}]" value=""> 
-                                                                Other
-                                                                <input type="text" class="warranty_form_other-item" placeholder="Type Here">
-                                                            </label>
-                                                        </p>
-                                                    {%- endif -%}
-                                                </div>
-                                            </div>
-                                        {%- when 'first_form_order_details' -%}
-                                            <div class="warranty_form_detail">
-                                                {%- if bk_stts.heading != blank -%}
-                                                    <h4 class="warranty_form_option-title">{{ bk_stts.heading  }}</h4>
-                                                {%- endif -%}
-
-                                                <div class="warranty_form_detail-wrap">
-                                                    {%- if bk_stts.name != blank  -%}
-                                                        <lable class="warranty_form_detail-lable">
-                                                            {{ bk_stts.name }}
-                                                            <input type="text" class="warranty_form_detail-input" name="contact[name]" placeholder="Enter Name Here" required>
-                                                        </lable>
-                                                    {%- endif -%}
-
-                                                    {%- if bk_stts.email != blank  -%}
-                                                        <lable class="warranty_form_detail-lable">
-                                                            {{ bk_stts.email }}
-                                                            <input type="text" class="warranty_form_detail-input" name="contact[email]" placeholder="youremail@mail.com" required>
-                                                        </lable>
-                                                    {%- endif -%}
-
-                                                    {%- if bk_stts.order_id != blank  -%}
-                                                        <lable class="warranty_form_detail-lable">
-                                                            {{ bk_stts.order_id }}
-                                                            <input type="text" class="warranty_form_detail-input" name="contact[order_id]" placeholder="Enter Order ID Here">
-                                                        </lable>
-                                                    {%- endif -%}
-
-                                                    {%- if bk_stts.note != blank  -%}
-                                                        <p class="warranty_form_detail-note"><span>Note:</span><span>{{ bk_stts.note }}</span></p>
-                                                    {%- endif -%}
-                                                </div>
-
-                                            </div>
-                        
-                                        {%- when 'form_subscribe' -%}
-                                            <div class="warranty_form_detail">
-                                                {%- if bk_stts.subscribe -%}
-                                                    <label class="warranty_form_subscribe-label">
-                                                        <input type="radio" name="contact[subscribe]" value="true" checked />
-                                                        {{ bk_stts.subscribe }}
-                                                    </label>
-                                                {%- endif -%}
-
-                                                {%- if bk_stts.not_subscribe -%}
-                                                    <label class="warranty_form_subscribe-label">
-                                                        <input type="radio" name="contact[subscribe]" value="false" />
-                                                        {{ bk_stts.not_subscribe }}
-                                                    </label>
-                                                {%- endif -%}
-                                            </div>
-                                            
-                                    {%- endcase -%}
-
-                                {%- endif -%}
-                            {%- endfor -%}
-
-                            <input type="submit" class="t4s-btn t4s-btn-base t4s-btn-style-{{button_style}} t4s-btn-size-{{bk_stts.btn_size}} t4s-btn-color-{{bk_stts.btn_cl}}{% if bk_stts.enable_full_btn %} t4s-w-100 t4s-justify-content-center{% endif %} t4s-btn-effect-fade t4s-cursor-pointer" value="{{ 'templates.contact.form.submit' | t }}">
-                        {%- endform -%}
-                    {%- endif -%}
+                    {% render 'warranty-extension-form' %}
                 </div>
 
                 <div id="warranty_tab_{{ section.id }}_2" class="warranty_tab_item warranty_tab_second">
-                    {%- if se_stts.second_tab_form != balnk -%}
-                        {{ se_stts.second_tab_form }}
-                    {%- else -%}
-                        {%- form 'contact', id: 'warranty_after_form' -%}
-                            {%- for block in section.blocks -%}
-                                {%- if block.type == 'second_form_radio' or block.type == 'second_form_order_details' or block.type == 'form_subscribe' or block.type == 'second_form_contact' -%}
-                                    {%- assign bk_stts = block.settings -%} 
-                                    {%- case block.type -%}
-                                        {%- when 'second_form_radio' -%}
-                                            <div class="warranty_form_radio">
-                                                {%- if bk_stts.heading != blank -%}
-                                                    <h4 class="warranty_form_option-title">{{ bk_stts.heading  }}</h4>
-                                                {%- endif -%}
-                                                <div class="warranty_form_options">
-                                                    {% for i in (1..8) %}
-                                                        {%- capture option -%}option_{{ i }}{%- endcapture -%}
-                                                        {%- assign option_set = bk_stts[option] -%}
-                                                        {%- assign option_name = bk_stts.heading | handleize -%}
-                                                        {% if option_set != blank %}
-                                                            <p class="warranty_form_options_item">
-                                                                <label class="warranty_form_radio-lable">
-                                                                    <input type="radio" name="contact[{{ bk_stts.heading }}]" value="{{ option_set }}" {% if forloop.first %}checked{% endif %}>
-                                                                    {{ option_set }}
-                                                                </label>
-                                                            </p>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
+                    {% render 'after-sales-service-form.liquid' %}
+                </div>
 
-                                        {%- when 'second_form_order_details' -%}
-                                            <div class="warranty_form_detail">
-                                                {%- if bk_stts.heading != blank -%}
-                                                    <h4 class="warranty_form_option-title">{{ bk_stts.heading  }}</h4>
-                                                {%- endif -%}
-
-                                                <div class="warranty_form_detail-wrap">
-                                                    {%- if bk_stts.order_id != blank  -%}
-                                                        <lable class="warranty_form_detail-lable">
-                                                            {{ bk_stts.order_id }}
-                                                            <input type="text" class="warranty_form_detail-input" name="contact[order_id]" placeholder="Enter Order ID Here">
-                                                        </lable>
-                                                    {%- endif -%}
-        
-                                                    {%- if bk_stts.note != blank  -%}
-                                                        <p class="warranty_form_detail-note"><span>Note:</span><span>{{ bk_stts.note }}</span></p>
-                                                    {%- endif -%}
-                                                </div>
-                                            </div>
-
-                                        {%- when 'second_form_contact' -%}
-                                            <div class="warranty_form_contact">
-                                                {%- if bk_stts.heading != blank -%}
-                                                    <h4 class="warranty_form_option-title">{{ bk_stts.heading  }}</h4>
-                                                {%- endif -%}
-
-                                                <div class="warranty_form_contact-wrap">
-                                                    {%- if bk_stts.name != blank  -%}
-                                                        <lable class="warranty_form_detail-lable">
-                                                            {{ bk_stts.name }}
-                                                            <input type="text" class="warranty_form_detail-input" name="contact[name]" placeholder="Enter Name Here" required>
-                                                        </lable>
-                                                    {%- endif -%}
-
-                                                    {%- if bk_stts.email != blank  -%}
-                                                        <lable class="warranty_form_detail-lable">
-                                                            {{ bk_stts.email }}
-                                                            <input type="text" class="warranty_form_detail-input" name="contact[email]" placeholder="youremail@mail.com" required>
-                                                        </lable>
-                                                    {%- endif -%}
-                                                </div>
-                                            </div>
-                    
-                                        {%- when 'form_subscribe' -%}
-                                            <div class="warranty_form_detail">
-                                                {%- if bk_stts.subscribe -%}
-                                                    <label class="warranty_form_subscribe-label">
-                                                        <input type="radio" name="contact[subscribe]" value="true" checked />
-                                                        {{ bk_stts.subscribe }}
-                                                    </label>
-                                                {%- endif -%}
-
-                                                {%- if bk_stts.not_subscribe -%}
-                                                    <label class="warranty_form_subscribe-label">
-                                                        <input type="radio" name="contact[subscribe]" value="false" />
-                                                        {{ bk_stts.not_subscribe }}
-                                                    </label>
-                                                {%- endif -%}
-                                            </div>
-                                            
-                                    {%- endcase -%}
-                                {%- endif -%}
-                            {%- endfor -%}
-
-                            <input type="submit" class="t4s-btn t4s-btn-base t4s-btn-style-{{button_style}} t4s-btn-size-{{bk_stts.btn_size}} t4s-btn-color-{{bk_stts.btn_cl}}{% if bk_stts.enable_full_btn %} t4s-w-100 t4s-justify-content-center{% endif %} t4s-btn-effect-fade t4s-cursor-pointer" value="{{ 'templates.contact.form.submit' | t }}">
-                        {%- endform -%}
-                    {%- endif -%}
+                <div id="warranty_tab_{{ section.id }}_3" class="warranty_tab_item warranty_tab_third"> 
+                    {% render 'coin-batteries-form' %}
                 </div>
             </div>
         </div>
     {{-html_layout[1]-}}
 </div>
+
+<script type="module">
+
+    // init firebase App
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDrDQAyrugmI1PVOTW0hSK-6jt0lxtzmvM",
+        authDomain: "rometechbatteries-test.firebaseapp.com",
+        projectId: "rometechbatteries-test",
+        storageBucket: "rometechbatteries-test.appspot.com",
+        messagingSenderId: "773880603728",
+        appId: "1:773880603728:web:70ec23b7ba20c9628b9d55",
+        measurementId: "G-ELMSWK7988"
+    };
+
+    const firebaseApp = initializeApp(firebaseConfig);
+    const firebaseStorage = getStorage();
+
+    //console.log('test app', firebaseApp, firebaseStorage)
+
+
+    // submiting the form
+    document.querySelectorAll('.contact-warranty-form').forEach((form) => {
+        const clearFormInputs = function(){
+            form.reset();
+        };
+        clearFormInputs();
+
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+
+            form.classList.add('progress');
+
+            const formData = new FormData(form); 
+
+            const sendDataToGoogleTable = function(){
+                fetch('{{ se_stts.script-url }}', { 
+                    method: 'POST',
+                    body: formData
+                }).then(response => {
+                    //console.log(response);
+                    clearFormInputs();
+                    return response.text();
+                }).then(data => {
+                    console.log('data sent successfully!');
+                    form.classList.remove('progress');
+                    form.classList.add('posted');
+                }).catch(error => {
+                    console.error('Error:', error);
+                });
+            };
+
+            // upload file if input exist
+            if (form.classList.contains('contact-form-with-media')){
+
+                const file = form.querySelector('.fileupload-input').files[0];
+
+                if (file) {
+                    const unicRef = 'images/' + file.name;
+                    const storageRef = ref(firebaseStorage, unicRef);
+
+                    uploadBytes(storageRef, file).then((snapshot) => {
+                        console.log('Uploaded a blob or file!',snapshot);
+                        getDownloadURL(snapshot.ref).then((downloadURL) => {
+                            console.log('File available at', downloadURL);
+                            if (downloadURL) {
+                                formData.append('file',downloadURL);
+                            }
+                            sendDataToGoogleTable();
+                        });
+
+                    });
+
+                } else {
+                    console.log('file empty',file);
+                    formData.set('file','');
+                    sendDataToGoogleTable();
+                }
+            } else {
+                sendDataToGoogleTable();
+            }
+
+        });
+    });
+
+    // other option input show/hide
+    document.querySelectorAll('.contact-warranty-form').forEach((form) => {
+        const otherInput = form.querySelector('.form-radio-other-input');
+        
+        form.querySelectorAll('.form-radio-jointed').forEach((radio) => {
+            radio.addEventListener("change", function(e){
+                if (radio.value === 'other') {
+                    otherInput.classList.add('show');
+                } else {
+                    otherInput.classList.remove('show');
+                }
+            });
+        });
+    });
+
+    // input type file view
+    document.querySelectorAll('.contact-warranty-form .fileupload-input').forEach((input) => {
+        input.addEventListener("change", function(e){
+            if (input.files[0]){
+                input.parentNode.classList.add('loaded');
+            } else {
+                input.parentNode.classList.remove('loaded');
+            }
+        });
+    });
+
+    // OrderID input validation
+    document.querySelectorAll('.contact-warranty-form .form-textbox[name="orderId"]').forEach((input) => { 
+        input.addEventListener('input', function () {
+            this.value = this.value.replace(/[^a-zA-Z0-9-]/g, '');
+        });
+    });
+
+    // Email input validation
+    document.querySelectorAll('.contact-warranty-form .form-textbox[name="yourEmail"]').forEach((input) => { 
+        const errorMessage = input.nextElementSibling;
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        input.addEventListener('input', function () { 
+            this.value = this.value.replace(/[^a-zA-Z0-9.@_-]/g, '');
+            if (emailPattern.test(this.value)) {
+                errorMessage.textContent = '';
+            }
+        });
+
+        input.addEventListener('change', function () { 
+            if (!emailPattern.test(this.value)) {
+                errorMessage.textContent = 'Incorrect email format';
+            } else {
+                errorMessage.textContent = '';
+            }
+        });
+    });
+
+</script>
+
+
 <style>
+    /* styles for warranty form */
+    .contact-warranty-form .posted-message {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff;
+        display: none;
+        z-index: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .contact-warranty-form.posted {
+        max-height: 100vh;
+    }
+    .contact-warranty-form.posted .posted-message {
+        display: flex;
+    }
+    .contact-warranty-form .form-multiple-column {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100;
+    }
+    .contact-warranty-form .form-line {
+        position: relative;
+    }
+    .contact-warranty-form .form-column-1 {
+        margin: 15px 0;
+    }
+    .contact-warranty-form .form-column-3 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    @media screen and (min-width: 481px) {
+        .contact-warranty-form .form-column-3 {
+            width: 50%;
+        }
+    }
+    @media screen and (min-width: 881px) {
+        .contact-warranty-form .form-column-3 {
+            width: 33.33%;
+        }
+    }
+    .contact-warranty-form .form-title {
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+    .contact-warranty-form .form-textbox,
+    .contact-warranty-form .form-textarea {
+        font-size: 16px;
+        border-width: 0 0 1px 0;
+        box-shadow: none;
+        border-color: #141414;
+    }
+    .contact-warranty-form .form-sub-label {
+        display: block;
+        margin-top: 10px;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: 0;
+        color: #464d5f;
+    }
+    .contact-warranty-form .form-radio {
+        margin: 0 5px 0 0;
+    }
+    .contact-warranty-form .form-radio-other-input {
+        height: 0 !important;
+        overflow: hidden !important;
+        transition: height 0.3s linear !important;
+        opacity: 0;
+    }
+    .contact-warranty-form .form-radio-other-input.show {
+        height: 40px !important;
+        opacity: 1;
+    }
+    .contact-warranty-form .form-submit-button {
+        min-width: 210px;
+    }
+    .contact-warranty-error {
+        margin: 0;
+        position: absolute;
+        bottom: -16px;
+        left: 0;
+        color: #bc1010;
+        font-weight: bold;
+        font-size: 12px;
+        line-height: 16px;
+        text-transform: uppercase;
+    }
+    .contact-warranty-form .form-fileupload {
+        padding: 10px 0;
+        margin-bottom: 20px;
+    }
+    .contact-warranty-form .fileupload-label {
+        width: 100px;
+        height: 100px;
+        display: block;
+        border-radius: 10px;
+        border: 3px dashed lightgray;
+        position: relative;
+        cursor: pointer;
+    }
+    .contact-warranty-form .fileupload-label.loaded {
+        border-color: rgb(var(--color-accent));
+    }
+    .contact-warranty-form .fileupload-label:before {
+        content: '';
+        width: 40px;
+        height: 40px;
+        display: block;
+        position: absolute;
+        top: 27px;
+        left: 27px;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px' fill='%23d3d3d3'%3e%3cpath d='M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .contact-warranty-form .fileupload-label:after {
+        content: '';
+        width: 40px;
+        height: 40px;
+        display: block;
+        position: absolute;
+        top: 27px;
+        left: 27px;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -960 960 960' width='24px' fill='%2300e04f'%3e%3cpath d='M440-200h80v-167l64 64 56-57-160-160-160 160 57 56 63-63v167ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-size: cover;
+        opacity: 0;
+    }
+    .contact-warranty-form .fileupload-label.loaded:before {
+        opacity: 0;
+    }
+    .contact-warranty-form .fileupload-label.loaded:after {
+        opacity: 1;
+    }
+    .contact-warranty-form .fileupload-input {
+        display: none;
+    }
+    .contact-warranty-form {
+        position: relative;
+    }
+    .contact-warranty-form:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        display: none;
+        z-index: 1;
+    }
+    .contact-warranty-form:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -30px;  
+        margin-left: -30px;
+        width: 50px;
+        height: 50px; 
+        border-radius: 50px;
+        border: 5px solid lightgray;
+        border-top-color: gray;
+        animation: loading 1.5s linear infinite;
+        display: none;
+        z-index: 2;
+    }
+    .contact-warranty-form.progress:before,
+    .contact-warranty-form.progress:after {
+        display: block;
+    }
+    @keyframes loading {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    /* end styles for warranty form */
+
 .t4s-contact-form input.t4s-input--error {
     border-color: var(--t4s-error-color)!important;
     margin-bottom: 5px;
@@ -555,18 +657,33 @@
             "default": "After-sales Service"
         },
         {
-            "type": "header",
-            "content": "Third party form"
+            "type": "text",
+            "id": "third_tab_title",
+            "label": "Third tab title",
+            "default": "Coin Batteries Replacement"
         },
         {
-            "type": "html",
-            "id": "first_tab_form",
-            "label": "First tab Form"
+            "type": "richtext",
+            "id": "first_form_success",
+            "label": "First Form success mesage",
+            "default": "<p>Your Warranty Form Have Been Submitted.</p><p>Thank you!</p>"
         },
         {
-            "type": "html",
-            "id": "second_tab_form",
-            "label": "Second tab Form"
+            "type": "richtext",
+            "id": "second_form_success",
+            "label": "Second Form success mesage",
+            "default": "<p>Your After-sales Form Have Been Submitted.</p><p>Thank you!</p>"
+        },
+        {
+            "type": "richtext",
+            "id": "third_form_success",
+            "label": "Third Form success mesage",
+            "default": "<p>Your Batteries Replacement Form Have Been Submitted.</p><p>Thank you!</p>"
+        },
+        {
+            "type": "text",
+            "id": "script-url",
+            "label": "url of script for writing to Google table"
         },
         {
             "type": "color",

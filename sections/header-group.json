@@ -25,8 +25,29 @@
             "item_menu": "part-number-batteries"
           }
         },
+        "megamenu_item_9Kz8UB": {
+          "type": "megamenu_item",
+          "settings": {
+            "name": "Motherboard Batteries",
+            "image": "shopify:\/\/shop_images\/43-22-LONGNP2032-S_2512d6b7-af33-4c40-a4af-8bb5c92cdf54.webp",
+            "link_text": "Motherboard Batteries",
+            "link": "shopify:\/\/collections\/motherboard-batteries",
+            "item_menu": "motherboadfi-motherboard-rd-batteries"
+          }
+        },
+        "megamenu_item_V3cVa3": {
+          "type": "megamenu_item",
+          "settings": {
+            "name": "Server Batteries",
+            "image": "shopify:\/\/shop_images\/43-22-LONGNP2032-S_2512d6b7-af33-4c40-a4af-8bb5c92cdf54.webp",
+            "link_text": "Server Batteries",
+            "link": "shopify:\/\/collections\/server-batteries",
+            "item_menu": "server-batteries"
+          }
+        },
         "megamenu_item_6hJybz": {
           "type": "megamenu_item",
+          "disabled": true,
           "settings": {
             "name": "Watch Batteries",
             "image": "shopify:\/\/shop_images\/CASIO-WV200-R-3-A.webp",
@@ -54,14 +75,27 @@
             "link": "shopify:\/\/collections\/medical-devices",
             "item_menu": "medical-devices-batteries"
           }
+        },
+        "megamenu_item_GCRQJX": {
+          "type": "megamenu_item",
+          "settings": {
+            "name": "Other Devices Batteries",
+            "image": "shopify:\/\/shop_images\/CR2032-x1_7b659a3b-8afd-4f10-9746-8507f71820fa.jpg",
+            "link_text": "Other Devices Batteries",
+            "link": "shopify:\/\/collections\/other-devices-batteries",
+            "item_menu": "other-devices-batteries"
+          }
         }
       },
       "block_order": [
         "megamenu_item_XqFFMf",
         "megamenu_item_GM3U8i",
+        "megamenu_item_9Kz8UB",
+        "megamenu_item_V3cVa3",
         "megamenu_item_6hJybz",
         "megamenu_item_kGJfHq",
-        "megamenu_item_LXk3Nn"
+        "megamenu_item_LXk3Nn",
+        "megamenu_item_GCRQJX"
       ],
       "settings": {
         "logo_position": "middle-left",

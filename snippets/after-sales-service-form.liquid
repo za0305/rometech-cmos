@@ -1,0 +1,125 @@
+<form class="contact-warranty-form contact-form-with-media" action="/" method="post" accept-charset="utf-8" autocomplete="on" novalidate="true">
+	<div class="posted-message">
+		{% render 'icon-checkmark-circle' %}
+		{{ section.settings.second_form_success }}
+	</div>
+	<input type="hidden" name="form" value="after-sales-service">
+	<input type="hidden" name="location" value="rometechbatteries">
+	<div class="form-all">
+		<div class="form-line form-line-radio">
+			<p class="form-subtitle"> Product Category<span class="form-required">*</span></p>
+			<div class="form-multiple-column">
+				<div class="form-column-3">
+					<input type="radio" class="form-radio" id="input_6_0" name="type" checked="" value="Batteries" required="">
+					<label id="label_input_6_0" for="input_6_0">Batteries</label>
+				</div>
+				
+				<div class="form-column-3">
+					<input type="radio" class="form-radio" id="input_6_1" name="type" value="Multiple Items" required="">
+					<label id="label_input_6_1" for="input_6_1">Multiple Items</label>
+				</div>
+				
+				<div class="form-column-3">
+					<input type="radio" class="form-radio" id="input_6_2" name="type" value="Key fob batteries" required="">
+					<label id="label_input_6_2" for="input_6_2">Key fob batteries</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-line">
+			<p class="form-subtitle">Where did you buy it?</p>
+			<div class="form-multiple-column">
+				<div class="form-column-3">
+					<input type="radio" class="form-radio form-radio-jointed" id="input_7_0" name="whereDidYouBuy" checked="" value="Amazon">
+					<label id="label_input_7_0" for="input_7_0">Amazon</label>
+				</div>
+				
+				<div class="form-column-3">
+					<input type="radio" class="form-radio form-radio-jointed" id="input_7_1" name="whereDidYouBuy" value="Walmart">
+					<label id="label_input_7_1" for="input_7_1">Walmart</label>
+				</div>
+
+				<div class="form-column-3">
+					<input type="radio" class="form-radio form-radio-jointed" id="input_7_2" name="whereDidYouBuy" value="rometechproducts.com">
+					<label id="label_input_7_2" for="input_7_2">rometechproducts.com</label>
+				</div>
+
+				<div class="form-column-3">
+					<input type="radio" class="form-radio form-radio-jointed" id="input_7_3" name="whereDidYouBuy" value="eBay">
+					<label id="label_input_7_3" for="input_7_3">eBay</label>
+				</div>
+
+				<div class="form-column-3">
+					<input type="radio" class="form-radio form-radio-jointed" id="input_7_4" name="whereDidYouBuy" value="rometechcases.com">
+					<label id="label_input_7_4" for="input_7_4">rometechcases.com</label>
+				</div>
+
+				<div class="form-column-3">
+					<input type="radio" class="form-radio form-radio-jointed" id="input_7_5" name="whereDidYouBuy" value="rometechbatteries.com">
+					<label id="label_input_7_5" for="input_7_5">rometechbatteries.com</label>
+				</div>
+
+				<div class="form-column-3">
+					<input type="radio" class="form-radio form-radio-jointed" name="whereDidYouBuy" id="other_7" value="other">
+					<label id="label_other_7" style="text-indent:0" for="other_7">Other</label>
+				</div>
+				
+				<input type="text" class="form-radio-other-input form-textbox" name="otherPlace" size="15" id="input_7"  placeholder="Please type another option here">
+			</div>
+		</div>
+
+		<h2 class="form-title">Order Details</h2>
+		
+		<div class="form-line">
+			<p class="form-subtitle">Your Name<span class="form-required">*</span></p>
+			<input type="text" name="yourName" class="form-textbox" placeholder="Enter Name Here" required="" value="">
+		</div>
+
+		<div class="form-line">
+			<p class="form-subtitle">Email Address<span class="form-required">*</span></p>
+			<input type="text" name="yourEmail" class="form-textbox" placeholder="youremail@mail.com" required="" value="">
+			<p class="contact-warranty-error"></p> 
+		</div>
+
+		<div class="form-line">
+			<p class="form-subtitle">Order ID<span class="form-required">*</span></p>
+			<input type="text" id="input_9" name="orderId" class="form-textbox" placeholder="Enter Order ID Here" required="" value="">
+			<label class="form-sub-label" for="input_9">Note: Amazon Order ID example is 123-1234567-1234567; eBay Order ID example is 12-12345-12345; Walmart Order ID example is 123456789012345; rometechcases.com Order ID example is SY1234; rometechproducts.com, rometechbatteries.com Order ID example is 12345</label>
+		</div>
+
+		<div class="form-line">
+			<p class="form-subtitle">Purchase Date<span class="form-required">*</span></p>
+			<input type="date" class="form-textbox form-date" name="purchaseDate" value="{{ 'now'| date: '%Y-%m-%d' }}" min="" max="">
+		</div>
+
+		<div class="form-line">
+			<p class="form-subtitle">Description</p>
+			<textarea class="form-textarea" name="description" placeholder="Type Here" spellcheck="false"></textarea> 
+		</div>
+
+		<div class="form-line">
+			<p class="form-subtitle">Choose a file...</p>
+			<div class="form-fileupload">
+				<label class="fileupload-label">
+					<input class="fileupload-input" type="file" name="file" accept="image/png, image/jpeg">
+				</label>
+			</div>
+		</div>
+
+		<div class="form-line">
+			<div class="form-column-1">
+				<input type="radio" class="form-radio form-full" id="input_14_0" name="subscribtion" checked="" value="Subscribe to Get the Latest News &amp; Promos">
+				<label id="label_input_14_0" for="input_14_0">Subscribe to Get the Latest News &amp; Promos</label>
+			</div>
+			
+			<div class="form-column-1">
+				<input type="radio" class="form-radio form-full" id="input_14_1" name="subscribtion" value="Do Not Subscribe">
+				<label id="label_input_14_1" for="input_14_1">Do Not Subscribe</label>
+			</div>
+		</div>
+
+		<div class="form-line">
+			<button type="submit" class="form-submit-button button">Send</button>
+		</div>
+	</div>
+</form>

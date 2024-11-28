@@ -3780,10 +3780,9 @@ details-disclosure > details {
   }
 
   .collection .card-wrapper:hover {
-    /* height: calc(100% + 40px);
-    margin: -20px -10px -20px -10px;  */
     transform: scale(1.08);
   }
+  
   .featured-collection .collection .card-wrapper:hover {
     transform: scale(1.05);
   }
@@ -4465,11 +4464,8 @@ details-disclosure > details {
     width: 100%; 
     left: 0;
     box-shadow: none;
-    /* transition: width 0.3s ease, left 0.3s ease, box-shadow 0.3s ease; */
   }
   .product-card-wrapper:hover .card {
-    /* width: calc(100% + 16px); 
-    left: -8px; */
     box-shadow: 0 3px 10px rgba(0,0,0,.15);
   }
   .product-card-wrapper:hover .quantity {
@@ -4499,9 +4495,6 @@ details-disclosure > details {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-  }
-  .product-card-wrapper:hover .card__content {
-    /* width: calc(100% - 40px); */
   }
   .product-card-wrapper .quick-add_action .quick-add__container,
   .product-card-wrapper .quick-link__wrap .quick-add__container {

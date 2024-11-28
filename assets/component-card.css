@@ -175,6 +175,9 @@
   align-self: flex-end;
   grid-row-start: 3;
   justify-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  width: auto;
 }
 
 .card__badge.top {
@@ -184,10 +187,22 @@
 
 .card__badge.right {
   justify-self: flex-end;
+  align-items: flex-end;
 }
 
 .card__badge .badge {
-  
+  margin-bottom: 3px;
+  max-width: fit-content;
+}
+
+.badge.badge--pre {
+  color: white;
+  background-color: #0774d7;
+  font-size: 1.2rem;
+  min-height: 27px;
+  padding-top: 7px;
+  padding-left: 7px;
+  padding-right: 7px;
 }
 
 .card__wishlist {
@@ -260,12 +275,12 @@
   }
   .card__content .price {
     position: absolute;
-    right: 0;
+    left: 0;
     bottom: calc(100% - 8px);
   } 
-  .card-wrapper:hover .card__content .price {
+  /* .card-wrapper:hover .card__content .price {
     bottom: calc(100% + 5px);
-  }
+  } */
 }
 
 .card--card.card--media > .card__content {

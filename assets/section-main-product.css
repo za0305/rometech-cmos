@@ -13,6 +13,22 @@
 
 .product__media-wrapper {
   padding-left: 0;
+  position: relative;
+}
+
+.product__badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.product__badge-item {
+  margin: 10px 10px;
+  padding: 5px 10px;
+  background-color: #0774d7;
+  font-size: 14px;
+  line-height: 16px;
+  color: white;
 }
 
 @media screen and (min-width: 750px) {
@@ -1460,6 +1476,10 @@ a.product__text {
 
 .product__stock-available {
   color: rgb(var(--color-accent));
+}
+
+.product__stock-pre {
+  color: #0774d7;
 }
 
 .product__short-description,

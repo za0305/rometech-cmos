@@ -33,7 +33,8 @@
   endif
 
   if target == product and product.price_varies
-    assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+    assign money_price_text = 'products.product.price.from_price_html' | t
+    assign money_price = '<span class="price-from">' | append: money_price_text | append: '</span>' | append: money_price
   endif
 -%}
 
@@ -97,7 +98,7 @@
         </span>
       {%- endunless -%}
       <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.sale_price' | t }}</span>
-      <span class="price_badge color-scheme-5 visually-hidden">–{{ product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' }}%</span>
+      {% comment %} <span class="price_badge color-scheme-5 visually-hidden">–{{ product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' }}%</span> {% endcomment %}
       <span class="price-item price-item--sale price-item--last">
         {{ money_price }}
       </span>

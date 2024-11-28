@@ -1,0 +1,5 @@
+<div class="product__badge">
+    {%- if current_variant.inventory_policy == 'continue' and current_variant.inventory_management == 'shopify' and current_variant.inventory_quantity <= 0 -%}
+        <p class="product__badge-item">Pre order</p>  
+    {%- endif -%}
+</div>

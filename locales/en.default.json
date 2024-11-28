@@ -108,6 +108,7 @@
     "product": {
       "add_to_cart": "Add to cart",
       "choose_options": "Choose options",
+      "view_options": "View options",
       "choose_product_options": "Choose options for {{ product_name }}",
       "description": "Description",
       "inventory_in_stock": "In stock",
@@ -157,7 +158,7 @@
         "refresh": "Refresh"
       },
       "price": {
-        "from_price_html": "From {{ price }}",
+        "from_price_html": "From ",
         "regular_price": "Regular price",
         "sale_price": "Sale price",
         "unit_price": "Unit price"

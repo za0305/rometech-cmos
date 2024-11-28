@@ -65,6 +65,12 @@
     >
   {%- endif -%}
 
+  {%- if variant -%}
+    {%- assign current_variant = variant -%}
+  {%- else -%}
+    {%- assign current_variant = product.variants.first -%}
+  {%- endif -%}
+
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
   <div class="page-width">
     {%- for block in section.blocks -%}
@@ -85,6 +91,7 @@
     <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
     <div class="grid__item product__media-wrapper{% if section.settings.media_position == 'right' %} medium-hide large-up-hide{% endif %}">
       {% render 'product-media-gallery', variant_images: variant_images %}
+      {% render 'product-badge', current_variant: current_variant %} 
 
       {%- for block in section.blocks -%}
         {%- case block.type -%}
@@ -171,7 +178,11 @@
                   price_class: 'price--large'
                 -%}
                 {%- if product.available -%} 
-                  <p class="product__stock product__stock-available">In Stock</p>
+                  {%- if current_variant.inventory_policy == 'continue' and current_variant.inventory_management == 'shopify' and current_variant.inventory_quantity <= 0 -%}
+                    <p class="product__stock product__stock-pre">Pre order</p>
+                  {%- else -%}
+                    <p class="product__stock product__stock-available">In Stock</p>
+                  {%- endif -%}
                 {%- else -%}
                   <p class="product__stock">Out of Stock</p>
                 {%- endif -%}
@@ -514,7 +525,7 @@
               {% render 'product-wholesale-variant-picker', product: product, block: block, product_form_id: product_form_id %}
               
             {%- when 'buy_buttons' -%}
-              {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true -%}
+              {%- render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true, current_variant: current_variant -%}
             {%- when 'rating' -%}
               {%- if product.metafields.reviews.rating.value != blank -%}
                 {% liquid

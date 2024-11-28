@@ -143,6 +143,10 @@
                 –{{ card_product.compare_at_price_max | minus: card_product.price | times: 100.0 | divided_by: card_product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' }}%
               </span>
             {%- endif -%}
+
+            {%- if card_product.variants.first.inventory_policy == 'continue' and card_product.variants.first.inventory_management == 'shopify' and card_product.variants.first.inventory_quantity <= 0 -%}
+              <span class="badge badge--bottom-left badge--pre">Pre order</span>
+            {%- endif -%}
           </div>
         </div>
       </div>
@@ -238,42 +242,25 @@
               endif
             -%}
             {%- if multivariant or qty_rules -%}
-              <modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
-                <button
-                  id="{{ product_form_id }}-submit"
-                  type="submit"
-                  name="add"
-                  class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add animate-arrow{% endif %}"
-                  aria-haspopup="dialog"
-                  aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
-                  data-product-url="{{ card_product.url }}"
-                >
-                  {{ 'products.product.choose_options' | t }}
-                  {%- if horizontal_quick_add -%}
-                    <span class="icon-wrap">{% render 'icon-arrow' %}</span>
-                  {%- endif -%}
-                  {%- render 'loading-spinner' -%}
-                </button>
-              </modal-opener>
-              <quick-add-modal id="QuickAdd-{{ card_product.id }}" class="quick-add-modal">
-                <div
-                  role="dialog"
-                  aria-label="{{ 'products.product.choose_product_options' | t: product_name: card_product.title | escape }}"
-                  aria-modal="true"
-                  class="quick-add-modal__content global-settings-popup"
-                  tabindex="-1"
-                >
-                  <button
-                    id="ModalClose-{{ card_product.id }}"
-                    type="button"
-                    class="quick-add-modal__toggle"
-                    aria-label="{{ 'accessibility.close' | t }}"
-                  >
-                    {% render 'icon-close' %}
-                  </button>
-                  <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
+              <div class="quick-option__wrap">
+                {% if card_product.tags contains 'wholesale' %}
+                  {% render 'price-wholesale', product: card_product, price_class: '', show_compare_at_price: true, use_variant: true %}
+                {% else %}
+                  {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
+                {% endif %}
+
+                <div class="quick-link__wrap">
+                  <div class="quick-add__container">
+                    <a
+                      href="{{ card_product.url }}"
+                      class="quick-add__submit button button--full-width button--secondary cart-drawer__warnings quick-add__link"
+                    >
+                      <span class="quick-link_text">{{ 'products.product.view_options' | t }}</span>
+                      <span class="quick-add_icon">{%- render 'icon-cart' -%}</span>
+                    </a>
+                  </div>
                 </div>
-              </quick-add-modal>
+              </div>
             {%- else -%}
               <product-form data-section-id="{{ section.id }}">
                 {%- form 'product',
@@ -323,37 +310,43 @@
                     {% endif %}
         
                   <div class="quick-add_action">
-                    <button
-                      id="{{ product_form_id }}-submit"
-                      type="submit"
-                      name="add"
-                      class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
-                      aria-haspopup="dialog"
-                      aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
-                      aria-live="polite"
-                      data-sold-out-message="true"
-                      {% if card_product.selected_or_first_available_variant.available == false %}
-                        disabled
-                      {% endif %}
-                    >
-                      <span class="quick-add_text">
-                        {%- if card_product.selected_or_first_available_variant.available -%}
-                          {{ 'products.product.add_to_cart' | t }}
-                        {%- else -%}
+                    <div class="quick-add__container">
+                      <button
+                        id="{{ product_form_id }}-submit"
+                        type="submit"
+                        name="add"
+                        class="quick-add__submit button button--full-width button--secondary{% if horizontal_quick_add %} card--horizontal__quick-add{% endif %}"
+                        aria-haspopup="dialog"
+                        aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ card_product.id }}"
+                        aria-live="polite"
+                        data-sold-out-message="true"
+                        {% if card_product.selected_or_first_available_variant.available == false %}
+                          disabled
+                        {% endif %}
+                      >
+                        <span class="quick-add_text">
+                          {%- if card_product.selected_or_first_available_variant.available -%}
+                            {%- if card_product.variants.first.inventory_policy == 'continue' and card_product.variants.first.inventory_management == 'shopify' and card_product.variants.first.inventory_quantity <= 0 -%}
+                              Pre order
+                            {%- else -%}
+                              {{ 'products.product.add_to_cart' | t }}
+                            {%- endif -%}
+                          {%- else -%}
+                            {{ 'products.product.sold_out' | t }}
+                          {%- endif -%}
+                        </span>
+                        <span class="quick-add_icon">
+                          {%- render 'icon-cart' -%}
+                        </span>
+                        <span class="sold-out-message hidden">
                           {{ 'products.product.sold_out' | t }}
+                        </span>
+                        {%- if horizontal_quick_add -%}
+                          <span class="icon-wrap">{% render 'icon-plus' %}</span>
                         {%- endif -%}
-                      </span>
-                      <span class="quick-add_icon">
-                        {%- render 'icon-cart' -%}
-                      </span>
-                      <span class="sold-out-message hidden">
-                        {{ 'products.product.sold_out' | t }}
-                      </span>
-                      {%- if horizontal_quick_add -%}
-                        <span class="icon-wrap">{% render 'icon-plus' %}</span>
-                      {%- endif -%}
-                      {%- render 'loading-spinner' -%}
-                    </button>
+                        {%- render 'loading-spinner' -%}
+                      </button>
+                    </div>
                   </div>
                 {%- endform -%}
               </product-form>
